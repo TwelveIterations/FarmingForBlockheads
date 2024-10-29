@@ -73,10 +73,11 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> {
         }
         filterButtons.clear();
 
+        int curX = 87;
         int curY = -80;
         final var categories = menu.getCategories();
         for (final var category : categories) {
-            MarketFilterButton filterButton = new MarketFilterButton(width / 2 + 87, height / 2 + curY, menu, category, button -> {
+            MarketFilterButton filterButton = new MarketFilterButton(width / 2 + curX, height / 2 + curY, menu, category, button -> {
                 if (menu.getCurrentCategory().map(it -> it.equals(category)).orElse(false)) {
                     menu.setCategory(null);
                 } else {
@@ -90,6 +91,10 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> {
             filterButtons.add(filterButton);
 
             curY += 20;
+            if (curY > 60) {
+                curY = -80;
+                curX += 20;
+            }
         }
     }
 
