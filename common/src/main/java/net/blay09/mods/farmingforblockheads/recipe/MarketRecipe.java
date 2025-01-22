@@ -98,9 +98,7 @@ public class MarketRecipe implements Recipe<RecipeInput> {
     static class Serializer implements RecipeSerializer<MarketRecipe> {
 
         private static final MapCodec<ItemStack> RESULT_CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
-                BuiltInRegistries.ITEM.holderByNameCodec().fieldOf("item")
-                        .orElse(BuiltInRegistries.ITEM.wrapAsHolder(Items.AIR))
-                        .forGetter(ItemStack::getItemHolder),
+                BuiltInRegistries.ITEM.holderByNameCodec().fieldOf("item").forGetter(ItemStack::getItemHolder),
                 ExtraCodecs.POSITIVE_INT.fieldOf("count").orElse(1).forGetter(ItemStack::getCount),
                 DataComponentPatch.CODEC.optionalFieldOf("components", DataComponentPatch.EMPTY).forGetter(ItemStack::getComponentsPatch)
         ).apply(instance, ItemStack::new));
