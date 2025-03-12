@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -31,6 +32,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class FeedingTroughBlock extends BaseEntityBlock {
 
@@ -74,27 +76,8 @@ public class FeedingTroughBlock extends BaseEntityBlock {
         return InteractionResult.SUCCESS;
     }
 
-    @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (!level.isClientSide && !state.is(newState.getBlock())) {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof FeedingTroughBlockEntity feedingTrough) {
-                Container container = feedingTrough.getContainer();
-                for (int i = 0; i < container.getContainerSize(); i++) {
-                    ItemStack itemStack = container.getItem(i);
-                    if (!itemStack.isEmpty()) {
-                        level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, itemStack.copy()));
-                    }
-                }
-            }
-        }
-
-        super.onRemove(state, level, pos, newState, isMoving);
-    }
-
-    @Override
-    public void appendHoverText(ItemStack itemStack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable("tooltip.farmingforblockheads.feeding_trough").withStyle(ChatFormatting.GRAY));
+    public void appendHoverText(ItemStack itemStack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
+        tooltip.accept(Component.translatable("tooltip.farmingforblockheads.feeding_trough").withStyle(ChatFormatting.GRAY));
     }
 
     @Override

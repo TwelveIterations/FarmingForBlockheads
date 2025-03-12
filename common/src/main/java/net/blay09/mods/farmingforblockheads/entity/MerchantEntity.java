@@ -1,5 +1,6 @@
 package net.blay09.mods.farmingforblockheads.entity;
 
+import com.mojang.serialization.Codec;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheads;
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheadsConfig;
@@ -17,6 +18,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -109,11 +111,11 @@ public class MerchantEntity extends PathfinderMob {
             String merchantName = FarmingForBlockheadsConfig.getActive().getRandomMerchantName(rand);
             setCustomName(Component.literal(merchantName));
         }
-        if (compound.contains("MarketPos")) {
-            setMarket(BlockPos.of(compound.getLong("MarketPos")), Direction.from3DDataValue(compound.getByte("Facing")));
-        }
-        spawnDone = compound.getBoolean("SpawnDone");
-        spawnAnimation = SpawnAnimationType.values()[compound.getByte("SpawnAnimation")];
+        compound.getLong("MarketPos").map(BlockPos::of).ifPresent(marketPos -> {
+            setMarket(marketPos, Direction.from3DDataValue(compound.getByteOr("Facing", (byte) 0)));
+        });
+        spawnDone = compound.getBooleanOr("SpawnDone", false);
+        spawnAnimation = SpawnAnimationType.values()[compound.getByteOr("SpawnAnimation", (byte) 0)];
     }
 
     @Override

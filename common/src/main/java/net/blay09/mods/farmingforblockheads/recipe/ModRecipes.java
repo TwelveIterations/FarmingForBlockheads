@@ -3,15 +3,13 @@ package net.blay09.mods.farmingforblockheads.recipe;
 import net.blay09.mods.balm.api.recipe.BalmRecipes;
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheads;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.RecipeBookCategories;
 import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 
-public class ModRecipes {
+import static net.blay09.mods.farmingforblockheads.FarmingForBlockheads.id;
 
-    public static final String MARKET_RECIPE_GROUP = "market";
-    public static final ResourceLocation MARKET_RECIPE_TYPE = ResourceLocation.fromNamespaceAndPath(FarmingForBlockheads.MOD_ID, MARKET_RECIPE_GROUP);
+public class ModRecipes {
 
     public static RecipeBookCategory marketRecipeBookCategory;
     public static RecipeType<MarketRecipe> marketRecipeType;
@@ -21,12 +19,12 @@ public class ModRecipes {
         registry.registerRecipeBookCategory(() -> marketRecipeBookCategory = new RecipeBookCategory(),
                 ResourceLocation.fromNamespaceAndPath(FarmingForBlockheads.MOD_ID, "market"));
         registry.registerRecipeDisplayType(() -> MarketRecipeDisplay.TYPE, ResourceLocation.fromNamespaceAndPath(FarmingForBlockheads.MOD_ID, "market"));
-        registry.registerRecipeType(() -> marketRecipeType = new RecipeType<>() {
+        registry.registerRecipeType((identifier) -> marketRecipeType = new RecipeType<>() {
                     @Override
                     public String toString() {
-                        return MARKET_RECIPE_GROUP;
+                        return identifier.getPath();
                     }
-                },
-                () -> marketRecipeSerializer = new MarketRecipe.Serializer(), MARKET_RECIPE_TYPE);
+                }, id("market"));
+        registry.registerRecipeSerializer(() -> marketRecipeSerializer = new MarketRecipe.Serializer(), id("market"));
     }
 }

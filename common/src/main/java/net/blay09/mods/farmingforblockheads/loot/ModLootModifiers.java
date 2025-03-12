@@ -7,6 +7,7 @@ import net.blay09.mods.farmingforblockheads.FarmingForBlockheadsConfig;
 import net.blay09.mods.farmingforblockheads.FarmlandHandler;
 import net.blay09.mods.farmingforblockheads.tag.ModBlockTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
@@ -55,7 +56,6 @@ public class ModLootModifiers {
     }
 
     private static boolean isProbablySeed(ItemStack itemStack) {
-        ResourceLocation registryName = Balm.getRegistries().getKey(itemStack.getItem());
-        return registryName != null && registryName.getPath().contains("seed");
+        return BuiltInRegistries.ITEM.getKey(itemStack.getItem()).getPath().contains("seed");
     }
 }

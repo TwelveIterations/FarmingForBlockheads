@@ -16,6 +16,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -25,6 +26,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class FertilizedFarmlandBlock extends FarmBlock implements CustomFarmBlock {
 
@@ -49,7 +51,7 @@ public class FertilizedFarmlandBlock extends FarmBlock implements CustomFarmBloc
     }
 
     @Override
-    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
+    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, double fallDistance) {
         if (!state.is(ModBlockTags.STABLE_FARMLAND)) {
             super.fallOn(level, state, pos, entity, fallDistance);
         }
@@ -70,16 +72,15 @@ public class FertilizedFarmlandBlock extends FarmBlock implements CustomFarmBloc
         }
     }
 
-    @Override
-    public void appendHoverText(ItemStack itemStack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack itemStack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
         if(itemStack.is(ModItemTags.HEALTHY_FARMLAND)) {
-            tooltip.add(FertilizerItem.FertilizerType.HEALTHY.getTooltip());
+            tooltip.accept(FertilizerItem.FertilizerType.HEALTHY.getTooltip());
         }
         if(itemStack.is(ModItemTags.RICH_FARMLAND)) {
-            tooltip.add(FertilizerItem.FertilizerType.RICH.getTooltip());
+            tooltip.accept(FertilizerItem.FertilizerType.RICH.getTooltip());
         }
         if(itemStack.is(ModItemTags.STABLE_FARMLAND)) {
-            tooltip.add(FertilizerItem.FertilizerType.STABLE.getTooltip());
+            tooltip.accept(FertilizerItem.FertilizerType.STABLE.getTooltip());
         }
     }
 

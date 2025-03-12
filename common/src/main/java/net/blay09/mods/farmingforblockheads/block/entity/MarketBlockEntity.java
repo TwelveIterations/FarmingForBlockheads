@@ -78,7 +78,7 @@ public class MarketBlockEntity extends BalmBlockEntity implements BalmMenuProvid
     }
 
     public void openMenu(Player player) {
-        Balm.getNetworking().openGui(player, this);
+        Balm.getNetworking().openMenu(player, this);
 
         final var displays = getRecipeDisplays();
         final var categories = getCategories(displays);

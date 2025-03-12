@@ -17,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 public class ChickenNestRenderer implements BlockEntityRenderer<ChickenNestBlockEntity> {
 
@@ -41,7 +42,7 @@ public class ChickenNestRenderer implements BlockEntityRenderer<ChickenNestBlock
     }
 
     @Override
-    public void render(ChickenNestBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffers, int combinedLight, int combinedOverlay) {
+    public void render(ChickenNestBlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource buffers, int combinedLight, int combinedOverlay, Vec3 cameraPos) {
         if (!blockEntity.hasLevel()) {
             return;
         }

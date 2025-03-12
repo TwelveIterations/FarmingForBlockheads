@@ -1,31 +1,28 @@
 package net.blay09.mods.farmingforblockheads.network;
 
-import net.blay09.mods.farmingforblockheads.FarmingForBlockheads;
 import net.blay09.mods.farmingforblockheads.api.MarketCategory;
 import net.blay09.mods.farmingforblockheads.menu.MarketMenu;
 import net.blay09.mods.farmingforblockheads.registry.MarketCategoryImpl;
 import net.blay09.mods.farmingforblockheads.registry.SimpleHolder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MarketCategoriesMessage implements CustomPacketPayload {
+import static net.blay09.mods.farmingforblockheads.FarmingForBlockheads.id;
 
-    public static final CustomPacketPayload.Type<MarketCategoriesMessage> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(
-            FarmingForBlockheads.MOD_ID,
-            "market_categories"));
+public record MarketCategoriesMessage(List<SimpleHolder<MarketCategory>> categories) implements CustomPacketPayload {
 
-    private final List<SimpleHolder<MarketCategory>> categories;
-
-    public MarketCategoriesMessage(List<SimpleHolder<MarketCategory>> categories) {
-        this.categories = categories;
-    }
+    public static final CustomPacketPayload.Type<MarketCategoriesMessage> TYPE = new CustomPacketPayload.Type<>(id("market_categories"));
+    public static final StreamCodec<RegistryFriendlyByteBuf, MarketCategoriesMessage> STREAM_CODEC = StreamCodec.of(
+            MarketCategoriesMessage::encode,
+            MarketCategoriesMessage::decode
+    );
 
     public static MarketCategoriesMessage decode(RegistryFriendlyByteBuf buf) {
         final var count = buf.readInt();

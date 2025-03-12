@@ -4,9 +4,9 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.container.BalmContainerProvider;
 import net.blay09.mods.balm.api.container.ContainerUtils;
 import net.blay09.mods.balm.api.container.DefaultContainer;
+import net.blay09.mods.balm.api.tag.BalmItemTags;
 import net.blay09.mods.balm.common.BalmBlockEntity;
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheadsConfig;
-import net.blay09.mods.farmingforblockheads.item.ModItems;
 import net.blay09.mods.farmingforblockheads.network.ChickenNestEffectMessage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -71,7 +71,7 @@ public class ChickenNestBlockEntity extends BalmBlockEntity implements BalmConta
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        container.deserialize(tag.getCompound("ItemHandler"), provider);
+        tag.getCompound("ItemHandler").ifPresent(it -> container.deserialize(it, provider));
     }
 
     @Override
@@ -119,7 +119,7 @@ public class ChickenNestBlockEntity extends BalmBlockEntity implements BalmConta
     }
 
     private boolean isEggItem(ItemStack item) {
-        return item.is(ModItems.EGGS_TAG);
+        return item.is(BalmItemTags.EGGS);
     }
 
     public int getEggCount() {

@@ -2,7 +2,6 @@ package net.blay09.mods.farmingforblockheads;
 
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.event.CropGrowEvent;
-import net.blay09.mods.farmingforblockheads.api.Payment;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
 import net.blay09.mods.farmingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.farmingforblockheads.entity.ModEntities;
@@ -14,7 +13,6 @@ import net.blay09.mods.farmingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.farmingforblockheads.registry.MarketCategoryLoader;
 import net.blay09.mods.farmingforblockheads.registry.MarketDefaultsLoader;
 import net.blay09.mods.farmingforblockheads.sound.ModSounds;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,5 +39,9 @@ public class FarmingForBlockheads {
         Balm.addServerReloadListener(ResourceLocation.fromNamespaceAndPath(MOD_ID, "market_defaults_loader"), MarketDefaultsLoader::new);
 
         Balm.getEvents().onEvent(CropGrowEvent.Post.class, FarmlandHandler::onGrowEvent);
+    }
+
+    public static ResourceLocation id(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 }

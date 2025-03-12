@@ -1,1 +1,1 @@
-- Added icon property (`"icon": { "id": "minecraft:redstone" }`) to customize the icon shown for a market listing (defaults to the result item)
+- Updated to Minecraft 1.21.5
