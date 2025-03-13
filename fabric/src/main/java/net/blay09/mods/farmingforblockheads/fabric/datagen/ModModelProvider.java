@@ -10,13 +10,13 @@ import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.*;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
 import static net.minecraft.client.data.models.BlockModelGenerators.createEmptyOrFullDispatch;
+import static net.minecraft.client.data.models.BlockModelGenerators.plainVariant;
 
 public class ModModelProvider extends FabricModelProvider {
     public ModModelProvider(FabricDataOutput output) {
@@ -24,49 +24,49 @@ public class ModModelProvider extends FabricModelProvider {
     }
 
     @Override
-    public void generateBlockStateModels(BlockModelGenerators blockStateModelGenerator) {
-        blockStateModelGenerator.createNonTemplateModelBlock(ModBlocks.feedingTrough);
+    public void generateBlockStateModels(BlockModelGenerators generators) {
+        generators.createNonTemplateModelBlock(ModBlocks.feedingTrough);
 
-        createDoubleBlockMarket(blockStateModelGenerator, ModBlocks.market, ModBlocks.market);
-        blockStateModelGenerator.createNonTemplateHorizontalBlock(ModBlocks.chickenNest);
+        createDoubleBlockMarket(generators, ModBlocks.market, ModBlocks.market);
+        generators.createNonTemplateHorizontalBlock(ModBlocks.chickenNest);
 
-        createFertilizedFarmland(blockStateModelGenerator, ModBlocks.fertilizedFarmlandHealthy);
-        createFertilizedFarmland(blockStateModelGenerator, ModBlocks.fertilizedFarmlandRich);
-        createFertilizedFarmland(blockStateModelGenerator, ModBlocks.fertilizedFarmlandStable);
-        createFertilizedFarmland(blockStateModelGenerator, ModBlocks.fertilizedFarmlandHealthyStable);
-        createFertilizedFarmland(blockStateModelGenerator, ModBlocks.fertilizedFarmlandRichStable);
+        createFertilizedFarmland(generators, ModBlocks.fertilizedFarmlandHealthy);
+        createFertilizedFarmland(generators, ModBlocks.fertilizedFarmlandRich);
+        createFertilizedFarmland(generators, ModBlocks.fertilizedFarmlandStable);
+        createFertilizedFarmland(generators, ModBlocks.fertilizedFarmlandHealthyStable);
+        createFertilizedFarmland(generators, ModBlocks.fertilizedFarmlandRichStable);
     }
 
     @Override
-    public void generateItemModels(ItemModelGenerators itemModelGenerator) {
-        itemModelGenerator.generateFlatItem(ModItems.greenFertilizer, ModelTemplates.FLAT_ITEM);
-        itemModelGenerator.generateFlatItem(ModItems.redFertilizer, ModelTemplates.FLAT_ITEM);
-        itemModelGenerator.generateFlatItem(ModItems.yellowFertilizer, ModelTemplates.FLAT_ITEM);
+    public void generateItemModels(ItemModelGenerators generators) {
+        generators.generateFlatItem(ModItems.greenFertilizer, ModelTemplates.FLAT_ITEM);
+        generators.generateFlatItem(ModItems.redFertilizer, ModelTemplates.FLAT_ITEM);
+        generators.generateFlatItem(ModItems.yellowFertilizer, ModelTemplates.FLAT_ITEM);
     }
 
-    private void createFertilizedFarmland(BlockModelGenerators blockStateModelGenerator, Block farmland) {
+    private void createFertilizedFarmland(BlockModelGenerators generators, Block farmland) {
         final var textureMapping = (new TextureMapping()).put(TextureSlot.DIRT, TextureMapping.getBlockTexture(Blocks.DIRT))
                 .put(TextureSlot.TOP, TextureMapping.getBlockTexture(farmland));
         final var moistTextureMapping = (new TextureMapping()).put(TextureSlot.DIRT, TextureMapping.getBlockTexture(Blocks.DIRT))
                 .put(TextureSlot.TOP, TextureMapping.getBlockTexture(farmland, "_moist"));
-        final var model = ModelTemplates.FARMLAND.create(farmland, textureMapping, blockStateModelGenerator.modelOutput);
-        final var moistModel = ModelTemplates.FARMLAND.create(TextureMapping.getBlockTexture(farmland, "_moist"),
+        final var variant = plainVariant(ModelTemplates.FARMLAND.create(farmland, textureMapping, generators.modelOutput));
+        final var moistVariant = plainVariant(ModelTemplates.FARMLAND.create(TextureMapping.getBlockTexture(farmland, "_moist"),
                 moistTextureMapping,
-                blockStateModelGenerator.modelOutput);
-        blockStateModelGenerator.blockStateOutput.accept(MultiVariantGenerator.multiVariant(farmland)
-                .with(createEmptyOrFullDispatch(BlockStateProperties.MOISTURE, 7, moistModel, model)));
+                generators.modelOutput));
+        generators.blockStateOutput.accept(MultiVariantGenerator.dispatch(farmland)
+                .with(createEmptyOrFullDispatch(BlockStateProperties.MOISTURE, 7, moistVariant, variant)));
     }
 
-    private void createDoubleBlockMarket(BlockModelGenerators blockStateModelGenerator, Block block, Block modelBlock) {
+    private void createDoubleBlockMarket(BlockModelGenerators generators, Block block, Block modelBlock) {
         final var topModelLocation = ModelLocationUtils.getModelLocation(modelBlock, "_top");
         final var bottomModelLocation = ModelLocationUtils.getModelLocation(modelBlock, "_bottom");
-        final var generator = MultiVariantGenerator.multiVariant(block)
-                .with(createHorizontalFacingDispatch())
-                .with(PropertyDispatch.property(MarketBlock.HALF)
-                        .select(DoubleBlockHalf.LOWER, Variant.variant().with(VariantProperties.MODEL, bottomModelLocation))
-                        .select(DoubleBlockHalf.UPPER, Variant.variant().with(VariantProperties.MODEL, topModelLocation)));
-        blockStateModelGenerator.blockStateOutput.accept(generator);
-        Item item = block.asItem();
-        blockStateModelGenerator.registerSimpleItemModel(block.asItem(), ModelLocationUtils.getModelLocation(item));
+        final var generator = MultiVariantGenerator.dispatch(block)
+                .with(PropertyDispatch.initial(MarketBlock.HALF)
+                        .select(DoubleBlockHalf.LOWER, plainVariant(bottomModelLocation))
+                        .select(DoubleBlockHalf.UPPER, plainVariant(topModelLocation)))
+                .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING);
+        generators.blockStateOutput.accept(generator);
+        final var item = block.asItem();
+        generators.registerSimpleItemModel(block.asItem(), ModelLocationUtils.getModelLocation(item));
     }
 }
