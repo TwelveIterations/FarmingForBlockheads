@@ -10,15 +10,24 @@ import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.*;
+import net.minecraft.client.renderer.block.model.VariantMutator;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
-import static net.minecraft.client.data.models.BlockModelGenerators.createEmptyOrFullDispatch;
-import static net.minecraft.client.data.models.BlockModelGenerators.plainVariant;
+import static net.minecraft.client.data.models.BlockModelGenerators.*;
+import static net.minecraft.client.data.models.BlockModelGenerators.NOP;
 
 public class ModModelProvider extends FabricModelProvider {
+
+    private static final PropertyDispatch<VariantMutator> ROTATION_HORIZONTAL_FACING = PropertyDispatch.modify(BlockStateProperties.HORIZONTAL_FACING)
+            .select(Direction.EAST, Y_ROT_90)
+            .select(Direction.SOUTH, Y_ROT_180)
+            .select(Direction.WEST, Y_ROT_270)
+            .select(Direction.NORTH, NOP);
+
     public ModModelProvider(FabricDataOutput output) {
         super(output);
     }
@@ -64,7 +73,7 @@ public class ModModelProvider extends FabricModelProvider {
                 .with(PropertyDispatch.initial(MarketBlock.HALF)
                         .select(DoubleBlockHalf.LOWER, plainVariant(bottomModelLocation))
                         .select(DoubleBlockHalf.UPPER, plainVariant(topModelLocation)))
-                .with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING);
+                .with(ROTATION_HORIZONTAL_FACING);
         generators.blockStateOutput.accept(generator);
         final var item = block.asItem();
         generators.registerSimpleItemModel(block.asItem(), ModelLocationUtils.getModelLocation(item));
