@@ -72,18 +72,6 @@ public class FertilizedFarmlandBlock extends FarmBlock implements CustomFarmBloc
         }
     }
 
-    public void appendHoverText(ItemStack itemStack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
-        if(itemStack.is(ModItemTags.HEALTHY_FARMLAND)) {
-            tooltip.accept(FertilizerItem.FertilizerType.HEALTHY.getTooltip());
-        }
-        if(itemStack.is(ModItemTags.RICH_FARMLAND)) {
-            tooltip.accept(FertilizerItem.FertilizerType.RICH.getTooltip());
-        }
-        if(itemStack.is(ModItemTags.STABLE_FARMLAND)) {
-            tooltip.accept(FertilizerItem.FertilizerType.STABLE.getTooltip());
-        }
-    }
-
     @Override
     public MapCodec<FarmBlock> codec() {
         return CODEC;

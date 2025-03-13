@@ -4,6 +4,7 @@ import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.event.CropGrowEvent;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
 import net.blay09.mods.farmingforblockheads.block.entity.ModBlockEntities;
+import net.blay09.mods.farmingforblockheads.component.ModComponents;
 import net.blay09.mods.farmingforblockheads.entity.ModEntities;
 import net.blay09.mods.farmingforblockheads.menu.ModMenus;
 import net.blay09.mods.farmingforblockheads.item.ModItems;
@@ -34,6 +35,7 @@ public class FarmingForBlockheads {
         ModMenus.initialize(Balm.getMenus());
         ModLootModifiers.initialize(Balm.getLootTables());
         ModRecipes.initialize(Balm.getRecipes());
+        ModComponents.initialize(Balm.getComponents());
 
         Balm.addServerReloadListener(ResourceLocation.fromNamespaceAndPath(MOD_ID, "market_category_loader"), new MarketCategoryLoader());
         Balm.addServerReloadListener(ResourceLocation.fromNamespaceAndPath(MOD_ID, "market_defaults_loader"), MarketDefaultsLoader::new);

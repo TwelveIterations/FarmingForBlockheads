@@ -93,10 +93,6 @@ public class ChickenNestBlock extends BaseEntityBlock {
         return defaultBlockState().setValue(FACING, useContext.getHorizontalDirection().getOpposite());
     }
 
-    public void appendHoverText(ItemStack itemStack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
-        tooltip.accept(Component.translatable("tooltip.farmingforblockheads.chicken_nest").withStyle(ChatFormatting.GRAY));
-    }
-
     @Override
     public RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;

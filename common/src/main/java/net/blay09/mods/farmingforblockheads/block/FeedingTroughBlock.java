@@ -76,10 +76,6 @@ public class FeedingTroughBlock extends BaseEntityBlock {
         return InteractionResult.SUCCESS;
     }
 
-    public void appendHoverText(ItemStack itemStack, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
-        tooltip.accept(Component.translatable("tooltip.farmingforblockheads.feeding_trough").withStyle(ChatFormatting.GRAY));
-    }
-
     @Override
     public RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
