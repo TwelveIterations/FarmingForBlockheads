@@ -26,6 +26,7 @@ public class FarmingForBlockheads {
 
     public static void initialize() {
         FarmingForBlockheadsConfig.initialize();
+        ModComponents.initialize(Balm.getComponents());
         ModNetworking.initialize(Balm.getNetworking());
         ModBlocks.initialize(Balm.getBlocks());
         ModBlockEntities.initialize(Balm.getBlockEntities());
@@ -35,7 +36,6 @@ public class FarmingForBlockheads {
         ModMenus.initialize(Balm.getMenus());
         ModLootModifiers.initialize(Balm.getLootTables());
         ModRecipes.initialize(Balm.getRecipes());
-        ModComponents.initialize(Balm.getComponents());
 
         Balm.addServerReloadListener(ResourceLocation.fromNamespaceAndPath(MOD_ID, "market_category_loader"), new MarketCategoryLoader());
         Balm.addServerReloadListener(ResourceLocation.fromNamespaceAndPath(MOD_ID, "market_defaults_loader"), MarketDefaultsLoader::new);
