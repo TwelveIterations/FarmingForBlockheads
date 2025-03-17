@@ -28,9 +28,6 @@
     "fabric-datagen": [
       "net.blay09.mods.farmingforblockheads.fabric.datagen.ModDataGenerator"
     ],
-    "modmenu": [
-      "net.blay09.mods.farmingforblockheads.fabric.compat.ModMenuIntegration"
-    ],
     "emi": [
       "net.blay09.mods.farmingforblockheads.compat.emi.EmiIntegration"
     ],
