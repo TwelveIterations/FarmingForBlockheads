@@ -45,7 +45,7 @@ public class MarketResultSlot extends Slot {
 
     protected void checkTakeAchievements(ItemStack itemStack) {
         if (removeCount > 0) {
-            itemStack.onCraftedBy(player.level(), player, removeCount);
+            itemStack.onCraftedBy(player, removeCount);
         }
 
         if (container instanceof RecipeCraftingHolder recipeCraftingHolder) {
