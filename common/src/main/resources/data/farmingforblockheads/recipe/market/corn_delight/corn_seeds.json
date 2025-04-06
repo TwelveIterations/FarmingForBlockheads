@@ -1,0 +1,8 @@
+{
+    "type": "farmingforblockheads:market",
+    "category": "farmingforblockheads:seeds",
+    "preset": "corn_delight:seeds",
+    "result": {
+        "item": "corn_delight:corn_seeds"
+    }
+}
