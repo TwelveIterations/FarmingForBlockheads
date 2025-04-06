@@ -1,1 +1,8 @@
-{"type":"farmingforblockheads:market","category":"farmingforblockheads:seeds","preset":"farmersdelight:seeds","result":{"item":"farmersdelight:cabbage_seeds"}}
+{
+    "type": "farmingforblockheads:market",
+    "category": "farmingforblockheads:seeds",
+    "preset": "farmersdelight:seeds",
+    "result": {
+        "item": "farmersdelight:cabbage_seeds"
+    }
+}

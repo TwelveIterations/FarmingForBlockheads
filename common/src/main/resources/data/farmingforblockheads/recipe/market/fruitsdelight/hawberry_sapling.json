@@ -1,0 +1,8 @@
+{
+    "type": "farmingforblockheads:market",
+    "category": "farmingforblockheads:saplings",
+    "preset": "fruitsdelight:saplings",
+    "result": {
+        "item": "fruitsdelight:hawberry_sapling"
+    }
+}

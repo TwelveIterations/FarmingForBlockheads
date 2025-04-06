@@ -1,8 +1,8 @@
 {
     "type": "farmingforblockheads:market",
     "category": "farmingforblockheads:seeds",
-    "preset": "farmersdelight:seeds",
+    "preset": "rusticdelight:seeds",
     "result": {
-        "item": "farmersdelight:rice"
+        "item": "rusticdelight:bell_pepper_seeds"
     }
 }

@@ -1,8 +1,8 @@
 {
     "type": "farmingforblockheads:market",
     "category": "farmingforblockheads:seeds",
-    "preset": "farmersdelight:seeds",
+    "preset": "culturaldelights:seeds",
     "result": {
-        "item": "farmersdelight:rice"
+        "item": "culturaldelights:cucumber_seeds"
     }
 }
