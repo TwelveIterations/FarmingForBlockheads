@@ -1,1 +1,8 @@
-{"type":"farmingforblockheads:market","category":"farmingforblockheads:saplings","preset":"biomesoplenty:saplings","result":{"item":"biomesoplenty:flowering_oak_sapling"}}
+{
+    "type": "farmingforblockheads:market",
+    "category": "farmingforblockheads:saplings",
+    "preset": "biomesoplenty:saplings",
+    "result": {
+        "item": "biomesoplenty:flowering_oak_sapling"
+    }
+}
