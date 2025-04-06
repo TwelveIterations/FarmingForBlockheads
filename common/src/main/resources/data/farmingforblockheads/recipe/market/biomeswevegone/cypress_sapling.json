@@ -1,0 +1,8 @@
+{
+    "type": "farmingforblockheads:market",
+    "category": "farmingforblockheads:saplings",
+    "preset": "biomeswevegone:saplings",
+    "result": {
+        "item": "biomeswevegone:cypress_sapling"
+    }
+}
