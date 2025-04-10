@@ -1,7 +1,7 @@
 {
     "type": "farmingforblockheads:market",
     "category": "farmingforblockheads:seeds",
-    "preset": "farmersdelight:seeds",
+    "preset": "farmersdelight:crops",
     "result": {
         "item": "farmersdelight:rice"
     }
