@@ -1,0 +1,8 @@
+{
+    "type": "farmingforblockheads:market",
+    "category": "farmingforblockheads:saplings",
+    "preset": "biomeswevegone:saplings",
+    "result": {
+        "item": "biomeswevegone:white_sakura_sapling"
+    }
+}

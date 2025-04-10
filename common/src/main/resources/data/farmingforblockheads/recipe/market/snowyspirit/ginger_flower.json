@@ -1,0 +1,8 @@
+{
+    "type": "farmingforblockheads:market",
+    "category": "farmingforblockheads:seeds",
+    "preset": "snowyspirit:seeds",
+    "result": {
+        "item": "snowyspirit:ginger_flower"
+    }
+}

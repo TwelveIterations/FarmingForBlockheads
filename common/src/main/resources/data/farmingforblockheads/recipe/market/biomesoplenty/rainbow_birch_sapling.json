@@ -1,1 +1,8 @@
-{"type":"farmingforblockheads:market","category":"farmingforblockheads:saplings","preset":"biomesoplenty:saplings","result":{"item":"biomesoplenty:rainbow_birch_sapling"}}
+{
+    "type": "farmingforblockheads:market",
+    "category": "farmingforblockheads:saplings",
+    "preset": "biomesoplenty:saplings",
+    "result": {
+        "item": "biomesoplenty:rainbow_birch_sapling"
+    }
+}

@@ -1,0 +1,8 @@
+{
+    "type": "farmingforblockheads:market",
+    "category": "farmingforblockheads:saplings",
+    "preset": "ars_nouveau:saplings",
+    "result": {
+        "item": "ars_nouveau:green_archwood_sapling"
+    }
+}

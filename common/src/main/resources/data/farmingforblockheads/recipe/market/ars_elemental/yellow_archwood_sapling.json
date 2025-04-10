@@ -1,0 +1,8 @@
+{
+    "type": "farmingforblockheads:market",
+    "category": "farmingforblockheads:saplings",
+    "preset": "ars_elemental:saplings",
+    "result": {
+        "item": "ars_elemental:yellow_archwood_sapling"
+    }
+}

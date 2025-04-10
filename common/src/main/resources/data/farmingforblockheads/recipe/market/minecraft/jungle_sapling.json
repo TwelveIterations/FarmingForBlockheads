@@ -1,0 +1,8 @@
+{
+    "type": "farmingforblockheads:market",
+    "category": "farmingforblockheads:saplings",
+    "preset": "minecraft:saplings",
+    "result": {
+        "item": "minecraft:jungle_sapling"
+    }
+}

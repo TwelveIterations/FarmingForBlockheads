@@ -1,0 +1,8 @@
+{
+    "type": "farmingforblockheads:market",
+    "category": "farmingforblockheads:seeds",
+    "preset": "croptopia:seeds",
+    "result": {
+        "item": "croptopia:leek_seed"
+    }
+}

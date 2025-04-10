@@ -1,0 +1,8 @@
+{
+    "type": "farmingforblockheads:market",
+    "category": "farmingforblockheads:saplings",
+    "preset": "extradelight:saplings",
+    "result": {
+        "item": "extradelight:hazelnut_sapling"
+    }
+}

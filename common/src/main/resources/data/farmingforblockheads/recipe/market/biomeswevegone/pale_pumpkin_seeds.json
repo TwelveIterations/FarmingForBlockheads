@@ -1,0 +1,8 @@
+{
+    "type": "farmingforblockheads:market",
+    "category": "farmingforblockheads:seeds",
+    "preset": "biomeswevegone:seeds",
+    "result": {
+        "item": "biomeswevegone:pale_pumpkin_seeds"
+    }
+}

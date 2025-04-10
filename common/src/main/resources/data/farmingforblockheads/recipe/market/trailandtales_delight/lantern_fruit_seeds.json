@@ -1,0 +1,8 @@
+{
+    "type": "farmingforblockheads:market",
+    "category": "farmingforblockheads:seeds",
+    "preset": "trailandtales_delight:seeds",
+    "result": {
+        "item": "trailandtales_delight:lantern_fruit_seeds"
+    }
+}

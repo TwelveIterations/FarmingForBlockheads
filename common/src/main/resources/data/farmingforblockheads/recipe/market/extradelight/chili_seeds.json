@@ -1,0 +1,8 @@
+{
+    "type": "farmingforblockheads:market",
+    "category": "farmingforblockheads:seeds",
+    "preset": "extradelight:seeds",
+    "result": {
+        "item": "extradelight:chili_seeds"
+    }
+}

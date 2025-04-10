@@ -1,0 +1,8 @@
+{
+    "type": "farmingforblockheads:market",
+    "category": "farmingforblockheads:saplings",
+    "preset": "biomesoplenty:saplings",
+    "result": {
+        "item": "biomesoplenty:red_maple_sapling"
+    }
+}

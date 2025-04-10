@@ -1,0 +1,8 @@
+{
+    "type": "farmingforblockheads:market",
+    "category": "farmingforblockheads:saplings",
+    "preset": "croptopia:saplings",
+    "result": {
+        "item": "croptopia:cherry_sapling"
+    }
+}

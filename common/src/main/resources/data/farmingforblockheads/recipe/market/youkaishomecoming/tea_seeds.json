@@ -1,0 +1,8 @@
+{
+    "type": "farmingforblockheads:market",
+    "category": "farmingforblockheads:seeds",
+    "preset": "youkaishomecoming:seeds",
+    "result": {
+        "item": "youkaishomecoming:tea_seeds"
+    }
+}

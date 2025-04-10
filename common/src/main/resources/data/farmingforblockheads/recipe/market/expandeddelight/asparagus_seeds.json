@@ -1,0 +1,8 @@
+{
+    "type": "farmingforblockheads:market",
+    "category": "farmingforblockheads:seeds",
+    "preset": "expandeddelight:seeds",
+    "result": {
+        "item": "expandeddelight:asparagus_seeds"
+    }
+}

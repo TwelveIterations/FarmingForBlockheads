@@ -1,0 +1,8 @@
+{
+    "type": "farmingforblockheads:market",
+    "category": "farmingforblockheads:saplings",
+    "preset": "biomeswevegone:saplings",
+    "result": {
+        "item": "biomeswevegone:yellow_birch_sapling"
+    }
+}

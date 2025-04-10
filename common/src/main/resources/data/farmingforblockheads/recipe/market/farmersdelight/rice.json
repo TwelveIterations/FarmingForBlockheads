@@ -1,1 +1,8 @@
-{"type":"farmingforblockheads:market","category":"farmingforblockheads:seeds","preset":"farmersdelight:crops","result":{"item":"farmersdelight:rice"}}
+{
+    "type": "farmingforblockheads:market",
+    "category": "farmingforblockheads:seeds",
+    "preset": "farmersdelight:crops",
+    "result": {
+        "item": "farmersdelight:rice"
+    }
+}
