@@ -1,1 +1,15 @@
-- Added icon property (`"icon": { "id": "minecraft:redstone" }`) to customize the icon shown for a market listing (defaults to the result item)
+- Added compatibility files provided by ZEROX7:
+  - Ars Elemental
+  - Ars Nouveau
+  - Biomes We've Gone
+  - Corn Delight
+  - Croptopia
+  - Cultural Delights
+  - Expanded Delight
+  - Extra Delight
+  - Farming for Blockheads
+  - Fruits Delight
+  - My Nether's Delight
+  - Rustic Delight
+  - Trail and Tales Delight
+  - Youkai's Homecoming
