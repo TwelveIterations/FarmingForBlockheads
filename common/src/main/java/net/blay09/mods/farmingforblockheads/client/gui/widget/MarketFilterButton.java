@@ -7,7 +7,7 @@ import net.blay09.mods.farmingforblockheads.registry.SimpleHolder;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -35,7 +35,7 @@ public class MarketFilterButton extends Button {
         } else if (isHovered) {
             texY += 20;
         }
-        guiGraphics.blit(RenderType::guiTextured, ICONS, getX(), getY(), 176, texY, width, height, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, ICONS, getX(), getY(), 176, texY, width, height, 256, 256);
 
         guiGraphics.renderItem(category.value().iconStack(), getX() + 2, getY() + 2);
     }

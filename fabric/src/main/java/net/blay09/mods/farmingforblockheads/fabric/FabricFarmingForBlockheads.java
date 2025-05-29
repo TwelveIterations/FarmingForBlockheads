@@ -8,6 +8,6 @@ import net.fabricmc.api.ModInitializer;
 public class FabricFarmingForBlockheads implements ModInitializer {
     @Override
     public void onInitialize() {
-        Balm.initialize(FarmingForBlockheads.MOD_ID, EmptyLoadContext.INSTANCE, FarmingForBlockheads::initialize);
+        Balm.initializeMod(FarmingForBlockheads.MOD_ID, EmptyLoadContext.INSTANCE, FarmingForBlockheads::initialize);
     }
 }

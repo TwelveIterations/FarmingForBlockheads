@@ -10,6 +10,6 @@ public class FabricFarmingForBlockheadsClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        BalmClient.initialize(FarmingForBlockheads.MOD_ID, EmptyLoadContext.INSTANCE, FarmingForBlockheadsClient::initialize);
+        BalmClient.initializeMod(FarmingForBlockheads.MOD_ID, EmptyLoadContext.INSTANCE, FarmingForBlockheadsClient::initialize);
     }
 }

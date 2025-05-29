@@ -37,6 +37,8 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -92,30 +94,30 @@ public class MerchantEntity extends PathfinderMob {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
+    public void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
         if (marketPos != null) {
-            compound.putLong("MarketPos", marketPos.asLong());
+            output.putLong("MarketPos", marketPos.asLong());
         }
         if (facing != null) {
-            compound.putByte("Facing", (byte) facing.get3DDataValue());
+            output.putByte("Facing", (byte) facing.get3DDataValue());
         }
-        compound.putBoolean("SpawnDone", spawnDone);
-        compound.putByte("SpawnAnimation", (byte) spawnAnimation.ordinal());
+        output.putBoolean("SpawnDone", spawnDone);
+        output.putByte("SpawnAnimation", (byte) spawnAnimation.ordinal());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
+    public void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
         if (!hasCustomName()) {
             String merchantName = FarmingForBlockheadsConfig.getActive().getRandomMerchantName(rand);
             setCustomName(Component.literal(merchantName));
         }
-        compound.getLong("MarketPos").map(BlockPos::of).ifPresent(marketPos -> {
-            setMarket(marketPos, Direction.from3DDataValue(compound.getByteOr("Facing", (byte) 0)));
+        input.getLong("MarketPos").map(BlockPos::of).ifPresent(marketPos -> {
+            setMarket(marketPos, Direction.from3DDataValue(input.getByteOr("Facing", (byte) 0)));
         });
-        spawnDone = compound.getBooleanOr("SpawnDone", false);
-        spawnAnimation = SpawnAnimationType.values()[compound.getByteOr("SpawnAnimation", (byte) 0)];
+        spawnDone = input.getBooleanOr("SpawnDone", false);
+        spawnAnimation = SpawnAnimationType.values()[input.getByteOr("SpawnAnimation", (byte) 0)];
     }
 
     @Override

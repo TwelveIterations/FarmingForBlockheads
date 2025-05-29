@@ -45,7 +45,7 @@ public record MarketPlaceRecipeMessage(int containerId, RecipeDisplayId recipe, 
                             final var postPlaceAction = marketMenu.handlePlacement(message.useMaxItems(),
                                     player.isCreative(),
                                     recipeHolder,
-                                    player.serverLevel(),
+                                    player.level(),
                                     player.getInventory());
                             if (postPlaceAction == RecipeBookMenu.PostPlaceAction.PLACE_GHOST_RECIPE) {
                                 player.connection.send(new ClientboundPlaceGhostRecipePacket(player.containerMenu.containerId,
