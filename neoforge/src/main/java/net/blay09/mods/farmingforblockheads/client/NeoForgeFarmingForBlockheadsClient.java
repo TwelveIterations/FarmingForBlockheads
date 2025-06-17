@@ -11,6 +11,6 @@ import net.neoforged.fml.common.Mod;
 public class NeoForgeFarmingForBlockheadsClient {
     public NeoForgeFarmingForBlockheadsClient(IEventBus modEventBus) {
         final var context = new NeoForgeLoadContext(modEventBus);
-        BalmClient.initialize(FarmingForBlockheads.MOD_ID, context, FarmingForBlockheadsClient::initialize);
+        BalmClient.initializeMod(FarmingForBlockheads.MOD_ID, context, FarmingForBlockheadsClient::initialize);
     }
 }

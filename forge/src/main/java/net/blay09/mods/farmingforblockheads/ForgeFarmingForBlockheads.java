@@ -14,7 +14,7 @@ public class ForgeFarmingForBlockheads {
         final var loadContext = new ForgeLoadContext(context.getModEventBus());
         Balm.initializeMod(FarmingForBlockheads.MOD_ID, loadContext, FarmingForBlockheads::initialize);
         if (FMLEnvironment.dist.isClient()) {
-            BalmClient.initialize(FarmingForBlockheads.MOD_ID, loadContext, FarmingForBlockheadsClient::initialize);
+            BalmClient.initializeMod(FarmingForBlockheads.MOD_ID, loadContext, FarmingForBlockheadsClient::initialize);
         }
     }
 }
