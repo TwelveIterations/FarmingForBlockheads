@@ -13,7 +13,7 @@ import net.neoforged.neoforge.items.wrapper.InvWrapper;
 public class NeoForgeFarmingForBlockheads {
     public NeoForgeFarmingForBlockheads(IEventBus modEventBus) {
         final var context = new NeoForgeLoadContext(modEventBus);
-        Balm.initialize(FarmingForBlockheads.MOD_ID, context, FarmingForBlockheads::initialize);
+        Balm.initializeMod(FarmingForBlockheads.MOD_ID, context, FarmingForBlockheads::initialize);
 
         modEventBus.addListener(this::registerCapabilities);
     }

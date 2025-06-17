@@ -12,7 +12,7 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 public class ForgeFarmingForBlockheads {
     public ForgeFarmingForBlockheads(FMLJavaModLoadingContext context) {
         final var loadContext = new ForgeLoadContext(context.getModEventBus());
-        Balm.initialize(FarmingForBlockheads.MOD_ID, loadContext, FarmingForBlockheads::initialize);
+        Balm.initializeMod(FarmingForBlockheads.MOD_ID, loadContext, FarmingForBlockheads::initialize);
         if (FMLEnvironment.dist.isClient()) {
             BalmClient.initialize(FarmingForBlockheads.MOD_ID, loadContext, FarmingForBlockheadsClient::initialize);
         }
