@@ -1,9 +1,9 @@
 {
   "type": "farmingforblockheads:market",
   "result": {
-    "item": "biomesoplenty:maple_sapling"
+    "item": "biomesoplenty:purple_wildflowers"
   },
-  "defaults": "selling.saplings.biomesoplenty.maple_sapling",
+  "defaults": "selling.flowers.biomesoplenty.purple_wildflowers",
   "conditions": [
     {
       "type": "forge:mod_loaded",
