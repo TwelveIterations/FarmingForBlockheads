@@ -1,1 +1,1 @@
-- Updated market recipes for Biomes O' Plenty
+- Updated to Minecraft 1.21.9
