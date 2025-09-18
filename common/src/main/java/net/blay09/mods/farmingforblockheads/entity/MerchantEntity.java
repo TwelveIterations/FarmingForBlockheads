@@ -150,7 +150,7 @@ public class MerchantEntity extends PathfinderMob {
     public void tick() {
         super.tick();
         var level = level();
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             if (tickCount % 20 == 0) {
                 if (!isMarketValid()) {
                     level.broadcastEntityEvent(this, (byte) 12);

@@ -53,7 +53,7 @@ public class FeedingTroughBlock extends BaseEntityBlock {
 
     @Override
     protected InteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             ItemStack heldItem = player.getItemInHand(hand);
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof FeedingTroughBlockEntity feedingTrough) {
@@ -94,7 +94,7 @@ public class FeedingTroughBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide ? null : createTickerHelper(type, ModBlockEntities.feedingTrough.get(), FeedingTroughBlockEntity::serverTick);
+        return level.isClientSide() ? null : createTickerHelper(type, ModBlockEntities.feedingTrough.get(), FeedingTroughBlockEntity::serverTick);
     }
 
     @Override

@@ -103,7 +103,7 @@ public class MarketBlock extends BaseEntityBlock {
             spawnAnimationType = MerchantEntity.SpawnAnimationType.DIGGING;
         }
 
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             MerchantEntity merchant = new MerchantEntity(ModEntities.merchant.get(), level);
             merchant.setMarket(pos, facing);
             merchant.setToFacingAngle();
@@ -137,7 +137,7 @@ public class MarketBlock extends BaseEntityBlock {
     }
 
     private void use(BlockState state, Level level, BlockPos pos, Player player) {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             if (level.getBlockEntity(pos) instanceof MarketBlockEntity market) {
                 market.openMenu(player);
             }

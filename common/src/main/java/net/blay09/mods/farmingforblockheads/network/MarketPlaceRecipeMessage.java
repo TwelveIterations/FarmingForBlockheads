@@ -32,7 +32,7 @@ public record MarketPlaceRecipeMessage(int containerId, RecipeDisplayId recipe, 
             if (!player.containerMenu.stillValid(player)) {
                 FarmingForBlockheads.logger.debug("Player {} interacted with invalid menu {}", player, player.containerMenu);
             } else {
-                final var serverDisplayInfo = player.getServer().getRecipeManager().getRecipeFromDisplay(message.recipe());
+                final var serverDisplayInfo = player.level().getServer().getRecipeManager().getRecipeFromDisplay(message.recipe());
                 if (serverDisplayInfo != null) {
                     final var recipeHolder = serverDisplayInfo.parent();
                     if (player.containerMenu instanceof MarketMenu marketMenu) {

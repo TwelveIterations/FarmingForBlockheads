@@ -75,7 +75,7 @@ public class ChickenNestBlock extends BaseEntityBlock {
     }
 
     private void use(BlockState state, Level level, BlockPos pos, Player player) {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof ChickenNestBlockEntity chickenNest) {
                 Container container = chickenNest.getContainer();
@@ -106,7 +106,7 @@ public class ChickenNestBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide ? null : createTickerHelper(type, ModBlockEntities.chickenNest.get(), ChickenNestBlockEntity::serverTick);
+        return level.isClientSide() ? null : createTickerHelper(type, ModBlockEntities.chickenNest.get(), ChickenNestBlockEntity::serverTick);
     }
 
     @Override

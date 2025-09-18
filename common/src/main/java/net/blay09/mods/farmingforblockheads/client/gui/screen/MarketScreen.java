@@ -8,6 +8,7 @@ import net.blay09.mods.farmingforblockheads.menu.MarketListingSlot;
 import net.blay09.mods.farmingforblockheads.menu.MarketMenu;
 import net.blay09.mods.farmingforblockheads.mixin.GhostSlotsAccessor;
 import net.blay09.mods.farmingforblockheads.recipe.MarketRecipeDisplay;
+import net.blay09.mods.kuma.api.Kuma;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -16,6 +17,9 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.recipebook.GhostSlots;
 import net.minecraft.client.gui.screens.recipebook.RecipeUpdateListener;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.language.I18n;
@@ -124,36 +128,36 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> implements
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        if (button != -1 && mouseClickY != -1) {
+    public boolean mouseReleased(MouseButtonEvent event) {
+        if (event.button() != -1 && mouseClickY != -1) {
             mouseClickY = -1;
             indexWhenClicked = 0;
             lastNumberOfMoves = 0;
         }
 
-        return super.mouseReleased(mouseX, mouseY, button);
+        return super.mouseReleased(event);
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (button == 1 && mouseX >= searchBar.getX() && mouseX < searchBar.getX() + searchBar.getWidth() && mouseY >= searchBar.getY() && mouseY < searchBar.getY() + searchBar.getHeight()) {
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        if (event.button() == 1 && event.x() >= searchBar.getX() && event.y() < searchBar.getX() + searchBar.getWidth() && event.y() >= searchBar.getY() && event.y() < searchBar.getY() + searchBar.getHeight()) {
             searchBar.setValue("");
             menu.setSearch(null);
             menu.updateListingSlots();
             setCurrentOffset(currentOffset);
             return true;
-        } else if (mouseX >= scrollBarXPos && mouseX <= scrollBarXPos + SCROLLBAR_WIDTH && mouseY >= scrollBarYPos && mouseY <= scrollBarYPos + scrollBarScaledHeight) {
-            mouseClickY = (int) mouseY;
+        } else if (event.x() >= scrollBarXPos && event.x() <= scrollBarXPos + SCROLLBAR_WIDTH && event.y() >= scrollBarYPos && event.y() <= scrollBarYPos + scrollBarScaledHeight) {
+            mouseClickY = (int) event.y();
             indexWhenClicked = currentOffset;
             return true;
         }
 
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(event, doubleClick);
     }
 
     @Override
-    public boolean charTyped(char c, int keyCode) {
-        boolean result = super.charTyped(c, keyCode);
+    public boolean charTyped(CharacterEvent event) {
+        boolean result = super.charTyped(event);
 
         menu.setSearch(searchBar.getValue());
         menu.updateListingSlots();
@@ -163,9 +167,9 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> implements
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (searchBar.keyPressed(keyCode, scanCode, modifiers) || searchBar.isFocused()) {
-            if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+    public boolean keyPressed(KeyEvent event) {
+        if (searchBar.keyPressed(event) || searchBar.isFocused()) {
+            if (event.isEscape()) {
                 minecraft.player.closeContainer();
             } else {
                 menu.setSearch(searchBar.getValue());
@@ -176,12 +180,12 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> implements
             return true;
         }
 
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return super.keyPressed(event);
     }
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        if (!Screen.hasControlDown()) {
+        if (!Kuma.hasControlDown()) {
             time += partialTicks;
         }
         super.render(guiGraphics, mouseX, mouseY, partialTicks);

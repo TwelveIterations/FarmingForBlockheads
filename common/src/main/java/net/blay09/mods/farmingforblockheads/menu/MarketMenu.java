@@ -258,7 +258,7 @@ public class MarketMenu extends AbstractContainerMenu {
     public void clicked(int slotNumber, int dragType, ClickType clickType, Player player) {
         if (slotNumber >= 0 && slotNumber < slots.size()) {
             final var slot = slots.get(slotNumber);
-            if (player.level().isClientSide && clickType != ClickType.PICKUP_ALL) {
+            if (player.level().isClientSide() && clickType != ClickType.PICKUP_ALL) {
                 if (slot instanceof MarketListingSlot listingSlot) {
                     final var recipe = listingSlot.getRecipeDisplayEntry();
                     if (recipe != null) {

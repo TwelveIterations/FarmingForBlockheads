@@ -7,10 +7,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.VillagerModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
 import net.minecraft.client.renderer.entity.state.VillagerRenderState;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;
@@ -23,7 +25,7 @@ public class MerchantRenderer extends MobRenderer<MerchantEntity, VillagerRender
 
     public MerchantRenderer(EntityRendererProvider.Context context) {
         super(context, new VillagerModel(context.bakeLayer(ModelLayers.VILLAGER)), 0.5f);
-        this.addLayer(new CustomHeadLayer<>(this, context.getModelSet()));
+        this.addLayer(new CustomHeadLayer<>(this, context.getModelSet(), context.getPlayerSkinRenderCache()));
     }
 
     @Override
@@ -42,12 +44,14 @@ public class MerchantRenderer extends MobRenderer<MerchantEntity, VillagerRender
     }
 
     @Override
-    public void render(VillagerRenderState state, PoseStack poseStack, MultiBufferSource multiBufferSource, int i) {
-        final var diggingAnimation = state instanceof MerchantRenderState merchantRenderState ? merchantRenderState.diggingAnimation : 0;
+    public void submit(VillagerRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
+        poseStack.pushPose();
+        final var diggingAnimation = renderState instanceof MerchantRenderState merchantRenderState ? merchantRenderState.diggingAnimation : 0;
         if (diggingAnimation > 0) {
             poseStack.translate(0.0, -diggingAnimation * 0.05, 0.0);
         }
-        super.render(state, poseStack, multiBufferSource, i);
+        super.submit(renderState, poseStack, submitNodeCollector, cameraRenderState);
+        poseStack.popPose();
     }
 
     @Override
