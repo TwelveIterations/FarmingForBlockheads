@@ -65,6 +65,7 @@ public class FeedingTroughBlockEntity extends BalmBlockEntity implements BalmCon
 
     @Override
     protected void loadAdditional(ValueInput input) {
+        container.clearContent();
         input.child("ItemHandler").ifPresent(it -> ContainerHelper.loadAllItems(it, container.getItems()));
     }
 

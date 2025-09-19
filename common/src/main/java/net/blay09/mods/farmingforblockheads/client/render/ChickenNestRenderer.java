@@ -23,8 +23,8 @@ import org.jetbrains.annotations.Nullable;
 public class ChickenNestRenderer implements BlockEntityRenderer<ChickenNestBlockEntity, ChickenNestRenderer.ChickenNestRenderState> {
 
     public static class ChickenNestRenderState extends BlockEntityRenderState {
-        public Direction facing;
-        public ItemStackRenderState item;
+        public Direction facing = Direction.NORTH;
+        public final ItemStackRenderState item = new ItemStackRenderState();
         public int count;
     }
 
@@ -61,8 +61,11 @@ public class ChickenNestRenderer implements BlockEntityRenderer<ChickenNestBlock
         poseStack.mulPose(Axis.YP.rotationDegrees(renderState.facing.toYRot()));
         for (int i = 0; i < Math.min(EGG_POSITIONS.length / 3, renderState.count); i++) {
             poseStack.pushPose();
-            poseStack.translate(EGG_POSITIONS[i * 3], 0.1f + EGG_POSITIONS[i * 3 + 1], -0.1f + EGG_POSITIONS[i * 3 + 2]);
+            poseStack.translate(0f, 0.2f, 0f);
+            poseStack.translate(EGG_POSITIONS[i * 3], EGG_POSITIONS[i * 3 + 1], EGG_POSITIONS[i * 3 + 2]);
             poseStack.mulPose(Axis.XP.rotationDegrees(45f));
+            final var scale = 0.5f;
+            poseStack.scale(scale, scale, scale);
             renderState.item.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
             poseStack.popPose();
         }
