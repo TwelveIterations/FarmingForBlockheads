@@ -2,7 +2,6 @@ package net.blay09.mods.farmingforblockheads.menu;
 
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.container.DefaultContainer;
-import net.blay09.mods.farmingforblockheads.FarmingForBlockheadsConfig;
 import net.blay09.mods.farmingforblockheads.api.MarketCategory;
 import net.blay09.mods.farmingforblockheads.api.Payment;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
@@ -15,14 +14,16 @@ import net.blay09.mods.farmingforblockheads.registry.PaymentImpl;
 import net.blay09.mods.farmingforblockheads.registry.SimpleHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.*;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.TransientCraftingContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -226,8 +227,7 @@ public class MarketMenu extends AbstractContainerMenu {
     }
 
     public void selectMarketEntry(ResourceLocation recipeId, boolean stack) {
-        final var recipeManager = player.getServer().getRecipeManager();
-        selectedRecipe = (RecipeHolder<MarketRecipe>) recipeManager.byKey(recipeId).orElse(null);
+        selectedRecipe = recipes.stream().filter(it -> it.id().equals(recipeId)).findFirst().orElse(null);
         if (selectedRecipe != null) {
             final var payment = selectedRecipe.value().getPaymentOrDefault();
             final var currentInput = marketInputBuffer.getItem(0);
