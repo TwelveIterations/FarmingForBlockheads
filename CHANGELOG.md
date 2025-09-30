@@ -1,15 +1,1 @@
-- Added compatibility files provided by ZEROX7:
-  - Ars Elemental
-  - Ars Nouveau
-  - Biomes We've Gone
-  - Corn Delight
-  - Croptopia
-  - Cultural Delights
-  - Expanded Delight
-  - Extra Delight
-  - Farming for Blockheads
-  - Fruits Delight
-  - My Nether's Delight
-  - Rustic Delight
-  - Trail and Tales Delight
-  - Youkai's Homecoming
+- Fixed being able to buy market items that aren't enabled
