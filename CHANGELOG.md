@@ -1,2 +1,2 @@
-- Updated Biomes O' Plenty compatibility
-- Updated Quark compatibility
+- Updated Biomes We've Gone compatibility
+- Updated Abyss 2 compatibility
