@@ -3,25 +3,25 @@
   "result": {
     "item": "biomeswevegone:hydrangea_hedge"
   },
-  "defaults": "selling.flowers.byg.hydrangea_hedge",
+  "defaults": "selling.flowers.biomeswevegone.hydrangea_hedge",
   "conditions": [
     {
       "type": "forge:mod_loaded",
-      "mod": "byg"
+      "mod": "biomeswevegone"
     }
   ],
   "fabric:load_conditions": [
     {
       "condition": "fabric:all_mods_loaded",
       "values": [
-        "byg"
+        "biomeswevegone"
       ]
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
-      "modid": "byg"
+      "mod": "biomeswevegone"
     }
   ]
 }

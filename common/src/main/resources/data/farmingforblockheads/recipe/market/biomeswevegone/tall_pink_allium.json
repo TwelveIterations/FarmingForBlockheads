@@ -3,25 +3,25 @@
   "result": {
     "item": "biomeswevegone:tall_pink_allium"
   },
-  "defaults": "selling.flowers.byg.tall_pink_allium",
+  "defaults": "selling.flowers.biomeswevegone.tall_pink_allium",
   "conditions": [
     {
       "type": "forge:mod_loaded",
-      "mod": "byg"
+      "mod": "biomeswevegone"
     }
   ],
   "fabric:load_conditions": [
     {
       "condition": "fabric:all_mods_loaded",
       "values": [
-        "byg"
+        "biomeswevegone"
       ]
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
-      "modid": "byg"
+      "mod": "biomeswevegone"
     }
   ]
 }
