@@ -1,0 +1,29 @@
+{
+  "modId": "biomeswevegone",
+  "silent": true,
+  "group": {
+    "name": "Biomes We've Gone Mushrooms",
+    "enabledByDefault": false,
+    "defaultPayment": {
+      "item": "minecraft:emerald"
+    },
+    "defaultCategory": "farmingforblockheads:other"
+  },
+  "customEntries": [
+    {
+      "output": {
+        "item": "biomeswevegone:green_mushroom"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:weeping_milkcap"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:wood_blewit"
+      }
+    }
+  ]
+}

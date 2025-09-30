@@ -1,0 +1,204 @@
+{
+  "modId": "biomeswevegone",
+  "silent": true,
+  "group": {
+    "name": "Biomes We've Gone Saplings",
+    "enabledByDefault": true,
+    "defaultPayment": {
+      "item": "minecraft:emerald"
+    },
+    "defaultCategory": "farmingforblockheads:saplings"
+  },
+  "customEntries": [
+    {
+      "output": {
+        "item": "biomeswevegone:aspen_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:baobab_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:blue_enchanted_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:cika_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:cypress_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:ebony_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:fir_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:green_enchanted_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:holly_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:indigo_jacaranda_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:jacaranda_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:white_mangrove_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:red_maple_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:silver_maple_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:maple_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:palm_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:palo_verde_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:pine_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:rainbow_eucalyptus_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:redwood_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:skyris_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:willow_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:witch_hazel_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:zelkova_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:araucaria_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:blue_spruce_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:brown_birch_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:brown_oak_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:brown_zelkova_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:orange_birch_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:orange_oak_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:orange_spruce_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:orchard_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:red_birch_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:red_oak_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:red_spruce_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:yellow_birch_sapling"
+      }
+    },
+    {
+      "output": {
+        "item": "biomeswevegone:yellow_spruce_sapling"
+      }
+    }
+  ]
+}
