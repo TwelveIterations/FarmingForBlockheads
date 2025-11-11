@@ -12,10 +12,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 
 import java.io.BufferedReader;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class MarketPresetRegistry {
 
@@ -30,6 +27,10 @@ public class MarketPresetRegistry {
 
     public void register(ResourceLocation id, MarketPreset preset) {
         presets.put(id, preset);
+    }
+
+    public Set<Map.Entry<ResourceLocation, MarketPreset>> getEntries() {
+        return INSTANCE.presets.entrySet();
     }
 
     public Collection<MarketPreset> getAll() {
@@ -52,14 +53,19 @@ public class MarketPresetRegistry {
     }
 
     public static boolean isRecipeEnabled(MarketRecipe recipe) {
+        return isRecipeEnabled(recipe, Collections.emptySet());
+    }
+
+    public static boolean isRecipeEnabled(MarketRecipe recipe, Set<ResourceLocation> serverEnabledPresets) {
         final var disabledDefaultPresets = FarmingForBlockheadsConfig.getActive().disabledDefaultPresets;
         if (disabledDefaultPresets.contains(recipe.getPreset())) {
             return false;
         }
 
+        final var enabledByServer = serverEnabledPresets.contains(recipe.getPreset());
         final var enabledByDefault = MarketPresetRegistry.INSTANCE.get(recipe.getPreset()).map(MarketPreset::enabledByDefault).orElse(false);
         final var enabledOptionalPresets = FarmingForBlockheadsConfig.getActive().enabledOptionalPresets;
-        if (!enabledByDefault && !enabledOptionalPresets.contains(recipe.getPreset())) {
+        if (!enabledByServer && !enabledByDefault && !enabledOptionalPresets.contains(recipe.getPreset())) {
             return false;
         }
 

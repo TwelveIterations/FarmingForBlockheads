@@ -92,7 +92,7 @@ public class MarketMenu extends AbstractContainerMenu {
     private final List<RecipeHolder<MarketRecipe>> filteredRecipes = new ArrayList<>();
     private RecipeHolder<MarketRecipe> selectedRecipe;
 
-    public MarketMenu(int windowId, Inventory playerInventory, BlockPos pos, Set<ResourceLocation> includeOnlyPresets, Set<ResourceLocation> includeOnlyCategories) {
+    public MarketMenu(int windowId, Inventory playerInventory, BlockPos pos, Set<ResourceLocation> alwaysIncludedPresets, Set<ResourceLocation> includeOnlyCategories) {
         super(ModMenus.market.get(), windowId);
         this.player = playerInventory.player;
         this.pos = pos;
@@ -101,8 +101,7 @@ public class MarketMenu extends AbstractContainerMenu {
                 .getRecipeManager()
                 .getAllRecipesFor(ModRecipes.marketRecipeType)
                 .stream()
-                .filter(recipe -> includeOnlyPresets.isEmpty() || includeOnlyPresets.contains(recipe.value().getPreset()))
-                .filter(recipe -> MarketPresetRegistry.isRecipeEnabled(recipe.value()))
+                .filter(recipe -> MarketPresetRegistry.isRecipeEnabled(recipe.value(), alwaysIncludedPresets))
                 .toList();
 
         categories = MarketCategoryRegistry.INSTANCE.getAll().entrySet()
