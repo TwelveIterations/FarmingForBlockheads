@@ -57,9 +57,9 @@ public class MarketPresetRegistry {
             return false;
         }
 
+        final var enabledByDefault = MarketPresetRegistry.INSTANCE.get(recipe.getPreset()).map(MarketPreset::enabledByDefault).orElse(false);
         final var enabledOptionalPresets = FarmingForBlockheadsConfig.getActive().enabledOptionalPresets;
-        final var preset = MarketPresetRegistry.INSTANCE.get(recipe.getPreset());
-        if (preset.map(it -> !it.enabledByDefault() && !enabledOptionalPresets.contains(recipe.getPreset())).orElse(false)) {
+        if (!enabledByDefault && !enabledOptionalPresets.contains(recipe.getPreset())) {
             return false;
         }
 
