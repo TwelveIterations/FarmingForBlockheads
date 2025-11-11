@@ -1,1 +1,1 @@
-- Fixed being able to buy market items that aren't enabled
+- Fixed unbuyable items (disabled presets) still showing up in multiplayer
