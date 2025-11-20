@@ -5,12 +5,9 @@ import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.event.PlayerLoginEvent;
 import net.blay09.mods.farmingforblockheads.api.*;
-import net.blay09.mods.farmingforblockheads.network.MarketCategoriesMessage;
 import net.minecraft.network.chat.ComponentSerialization;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
 
@@ -27,17 +24,17 @@ public class MarketCategoryRegistry {
 
     public static final MarketCategoryRegistry INSTANCE = new MarketCategoryRegistry();
 
-    private final Map<ResourceLocation, MarketCategory> categories = new HashMap<>();
+    private final Map<Identifier, MarketCategory> categories = new HashMap<>();
 
-    public void register(ResourceLocation id, MarketCategory category) {
+    public void register(Identifier id, MarketCategory category) {
         categories.put(id, category);
     }
 
-    public Map<ResourceLocation, MarketCategory> getAll() {
+    public Map<Identifier, MarketCategory> getAll() {
         return INSTANCE.categories;
     }
 
-    public Optional<MarketCategory> get(ResourceLocation id) {
+    public Optional<MarketCategory> get(Identifier id) {
         return Optional.ofNullable(INSTANCE.categories.get(id));
     }
 
@@ -45,14 +42,14 @@ public class MarketCategoryRegistry {
         categories.clear();
     }
 
-    public void loadAdditionally(ResourceLocation id, BufferedReader reader) {
+    public void loadAdditionally(Identifier id, BufferedReader reader) {
         final var gson = new Gson();
         final var json = gson.fromJson(reader, JsonElement.class);
         final var category = CODEC.parse(JsonOps.INSTANCE, json).getOrThrow();
         register(id, category);
     }
 
-    public void load(Map<ResourceLocation, MarketCategory> categories) {
+    public void load(Map<Identifier, MarketCategory> categories) {
         this.categories.clear();
         categories.forEach(this::register);
     }

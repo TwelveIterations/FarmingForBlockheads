@@ -1,6 +1,6 @@
 package net.blay09.mods.farmingforblockheads.fabric;
 
-import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.api.EmptyLoadContext;
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheads;
 import net.fabricmc.api.ModInitializer;

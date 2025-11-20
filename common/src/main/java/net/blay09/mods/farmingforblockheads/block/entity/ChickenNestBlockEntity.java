@@ -1,11 +1,11 @@
 package net.blay09.mods.farmingforblockheads.block.entity;
 
-import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.container.BalmContainerProvider;
-import net.blay09.mods.balm.api.container.ContainerUtils;
-import net.blay09.mods.balm.api.container.DefaultContainer;
-import net.blay09.mods.balm.api.tag.BalmItemTags;
-import net.blay09.mods.balm.common.BalmBlockEntity;
+import net.blay09.mods.balm.Balm;
+import net.blay09.mods.balm.tags.BalmItemTags;
+import net.blay09.mods.balm.world.BalmContainerProvider;
+import net.blay09.mods.balm.world.ContainerUtils;
+import net.blay09.mods.balm.world.DefaultContainer;
+import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheadsConfig;
 import net.blay09.mods.farmingforblockheads.network.ChickenNestEffectMessage;
 import net.minecraft.core.BlockPos;
@@ -18,6 +18,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -25,7 +26,7 @@ import net.minecraft.world.phys.AABB;
 
 import java.util.List;
 
-public class ChickenNestBlockEntity extends BalmBlockEntity implements BalmContainerProvider {
+public class ChickenNestBlockEntity extends BlockEntity implements BalmContainerProvider {
 
     private static final int TICK_INTERVAL = 20;
 
@@ -52,7 +53,7 @@ public class ChickenNestBlockEntity extends BalmBlockEntity implements BalmConta
     private boolean isDirty;
 
     public ChickenNestBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.chickenNest.get(), pos, state);
+        super(ModBlockEntities.chickenNest.value(), pos, state);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ChickenNestBlockEntity blockEntity) {
@@ -67,7 +68,7 @@ public class ChickenNestBlockEntity extends BalmBlockEntity implements BalmConta
         }
 
         if (isDirty) {
-            sync();
+            BalmBlockEntityUtils.sync(this);
             isDirty = false;
         }
     }
@@ -83,8 +84,8 @@ public class ChickenNestBlockEntity extends BalmBlockEntity implements BalmConta
     }
 
     @Override
-    public void writeUpdateTag(ValueOutput output) {
-        saveAdditional(output);
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return BalmBlockEntityUtils.createUpdateTag(registries, this::saveAdditional);
     }
 
     private void stealEgg() {
@@ -115,7 +116,7 @@ public class ChickenNestBlockEntity extends BalmBlockEntity implements BalmConta
         }
 
         if (restStack.isEmpty() || restStack.getCount() != originalStack.getCount()) {
-            Balm.getNetworking().sendToTracking(((ServerLevel) level), worldPosition, new ChickenNestEffectMessage(worldPosition));
+            Balm.networking().sendToTracking(((ServerLevel) level), worldPosition, new ChickenNestEffectMessage(worldPosition));
         }
 
         setChanged();

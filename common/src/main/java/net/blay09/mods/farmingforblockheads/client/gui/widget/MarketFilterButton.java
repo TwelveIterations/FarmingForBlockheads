@@ -9,11 +9,11 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class MarketFilterButton extends Button {
 
-    private static final ResourceLocation ICONS = ResourceLocation.fromNamespaceAndPath(FarmingForBlockheads.MOD_ID, "textures/gui/market.png");
+    private static final Identifier ICONS = Identifier.fromNamespaceAndPath(FarmingForBlockheads.MOD_ID, "textures/gui/market.png");
 
     private final MarketMenu menu;
     private final SimpleHolder<MarketCategory> category;
@@ -26,7 +26,7 @@ public class MarketFilterButton extends Button {
     }
 
     @Override
-    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
         this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
 
         int texY = 14;

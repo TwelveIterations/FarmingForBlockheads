@@ -1,14 +1,13 @@
 package net.blay09.mods.farmingforblockheads.loot;
 
-import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.loot.BalmLootTables;
+import net.blay09.mods.balm.world.level.storage.loot.BalmLootTables;
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheads;
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheadsConfig;
 import net.blay09.mods.farmingforblockheads.FarmlandHandler;
 import net.blay09.mods.farmingforblockheads.tag.ModBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -20,7 +19,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class ModLootModifiers {
     public static void initialize(BalmLootTables lootTables) {
-        lootTables.registerLootModifier(ResourceLocation.fromNamespaceAndPath(FarmingForBlockheads.MOD_ID, "rich_farmland"), (context, loot) -> {
+        lootTables.registerLootModifier(Identifier.fromNamespaceAndPath(FarmingForBlockheads.MOD_ID, "rich_farmland"), (context, loot) -> {
             Level level = context.getLevel();
             Vec3 origin = context.getOptionalParameter(LootContextParams.ORIGIN);
             BlockState plant = context.getOptionalParameter(LootContextParams.BLOCK_STATE);

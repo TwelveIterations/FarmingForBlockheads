@@ -1,5 +1,6 @@
 package net.blay09.mods.farmingforblockheads.item;
 
+import net.blay09.mods.balm.world.level.block.DeferredBlock;
 import net.blay09.mods.farmingforblockheads.block.FertilizedFarmlandBlock;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
 import net.blay09.mods.farmingforblockheads.tag.ModBlockTags;
@@ -66,7 +67,7 @@ public class FertilizerItem extends Item {
                 traits.add(STABLE);
             }
 
-            Block targetBlock = getBlockForTraits(traits);
+            final var targetBlock = getBlockForTraits(traits);
             if (targetBlock == null) {
                 return state;
             }
@@ -76,7 +77,7 @@ public class FertilizerItem extends Item {
         }
 
         @Nullable
-        private static Block getBlockForTraits(Set<FertilizerType> traits) {
+        private static DeferredBlock getBlockForTraits(Set<FertilizerType> traits) {
             boolean hasStableTrait = traits.contains(STABLE);
             boolean hasHealthyTrait = traits.contains(HEALTHY);
             boolean hasRichTrait = traits.contains(RICH);

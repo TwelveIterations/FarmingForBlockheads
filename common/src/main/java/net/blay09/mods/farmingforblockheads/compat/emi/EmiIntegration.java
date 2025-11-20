@@ -10,20 +10,20 @@ import dev.emi.emi.api.widget.Bounds;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
 import net.blay09.mods.farmingforblockheads.client.gui.screen.MarketScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import static net.blay09.mods.farmingforblockheads.FarmingForBlockheads.MOD_ID;
 
 @EmiEntrypoint
 public class EmiIntegration implements EmiPlugin {
-    public static final EmiTexture TRADE_ICON = new EmiTexture(ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/market.png"),
+    public static final EmiTexture TRADE_ICON = new EmiTexture(Identifier.fromNamespaceAndPath(MOD_ID, "textures/gui/market.png"),
             240, 240, 16, 16);
-    public static final EmiTexture BACKGROUND = new EmiTexture(ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/market.png"),
+    public static final EmiTexture BACKGROUND = new EmiTexture(Identifier.fromNamespaceAndPath(MOD_ID, "textures/gui/market.png"),
             154, 208, 86, 48);
 
     public static final EmiStack MARKET = EmiStack.of(ModBlocks.market);
     public static final EmiRecipeCategory MARKET_CATEGORY =
-            new EmiRecipeCategory(ResourceLocation.fromNamespaceAndPath("farmingforblockheads", "market"), MARKET, TRADE_ICON) {
+            new EmiRecipeCategory(Identifier.fromNamespaceAndPath("farmingforblockheads", "market"), MARKET, TRADE_ICON) {
                 @Override
                 public Component getName() {
                     return Component.translatable("jei.farmingforblockheads.market");

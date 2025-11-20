@@ -1,6 +1,6 @@
 package net.blay09.mods.farmingforblockheads.network;
 
-import net.blay09.mods.balm.api.network.BalmNetworking;
+import net.blay09.mods.balm.network.BalmNetworking;
 
 public class ModNetworking {
     public static void initialize(BalmNetworking networking) {

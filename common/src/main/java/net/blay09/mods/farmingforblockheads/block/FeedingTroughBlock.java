@@ -1,21 +1,15 @@
 package net.blay09.mods.farmingforblockheads.block;
 
 import com.mojang.serialization.MapCodec;
-import net.blay09.mods.balm.api.container.ContainerUtils;
+import net.blay09.mods.balm.world.ContainerUtils;
 import net.blay09.mods.farmingforblockheads.block.entity.FeedingTroughBlockEntity;
 import net.blay09.mods.farmingforblockheads.block.entity.ModBlockEntities;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -94,7 +88,7 @@ public class FeedingTroughBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide() ? null : createTickerHelper(type, ModBlockEntities.feedingTrough.get(), FeedingTroughBlockEntity::serverTick);
+        return level.isClientSide() ? null : createTickerHelper(type, ModBlockEntities.feedingTrough.value(), FeedingTroughBlockEntity::serverTick);
     }
 
     @Override

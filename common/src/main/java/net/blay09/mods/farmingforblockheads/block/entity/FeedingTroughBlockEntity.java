@@ -1,33 +1,37 @@
 package net.blay09.mods.farmingforblockheads.block.entity;
 
 import com.google.common.collect.ArrayListMultimap;
-import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.container.BalmContainerProvider;
-import net.blay09.mods.balm.api.container.ContainerUtils;
-import net.blay09.mods.balm.api.container.DefaultContainer;
-import net.blay09.mods.balm.common.BalmBlockEntity;
+import net.blay09.mods.balm.Balm;
+import net.blay09.mods.balm.world.BalmContainerProvider;
+import net.blay09.mods.balm.world.ContainerUtils;
+import net.blay09.mods.balm.world.DefaultContainer;
+import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheadsConfig;
 import net.blay09.mods.farmingforblockheads.api.FeedingTroughEvent;
 import net.blay09.mods.farmingforblockheads.network.ChickenNestEffectMessage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class FeedingTroughBlockEntity extends BalmBlockEntity implements BalmContainerProvider {
+public class FeedingTroughBlockEntity extends BlockEntity implements BalmContainerProvider {
 
     private static final int TICK_INTERVAL = 20 * 5;
 
@@ -43,7 +47,7 @@ public class FeedingTroughBlockEntity extends BalmBlockEntity implements BalmCon
     private boolean isDirty;
 
     public FeedingTroughBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.feedingTrough.get(), pos, state);
+        super(ModBlockEntities.feedingTrough.value(), pos, state);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, FeedingTroughBlockEntity blockEntity) {
@@ -58,7 +62,7 @@ public class FeedingTroughBlockEntity extends BalmBlockEntity implements BalmCon
         }
 
         if (isDirty) {
-            sync();
+            BalmBlockEntityUtils.sync(this);
             isDirty = false;
         }
     }
@@ -75,8 +79,13 @@ public class FeedingTroughBlockEntity extends BalmBlockEntity implements BalmCon
     }
 
     @Override
-    public void writeUpdateTag(ValueOutput output) {
-        saveAdditional(output);
+    public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
+        return BalmBlockEntityUtils.createUpdatePacket(this);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return BalmBlockEntityUtils.createUpdateTag(registries, this::saveAdditional);
     }
 
     private void teehee() {
@@ -128,14 +137,14 @@ public class FeedingTroughBlockEntity extends BalmBlockEntity implements BalmCon
 
     private void feed(Animal animal, ItemStack itemStack) {
         FeedingTroughEvent event = new FeedingTroughEvent(this, animal, itemStack);
-        Balm.getEvents().fireEvent(event);
+        FeedingTroughEvent.EVENT.invoker().accept(new FeedingTroughEvent(this, animal, itemStack));
         if (!event.isCanceled()) {
             animal.setInLove(null);
             ContainerUtils.extractItem(container, 0, 1, false);
             setChanged();
         }
         if (event.shouldPlayEffect()) {
-            Balm.getNetworking().sendToTracking(((ServerLevel) level), worldPosition, new ChickenNestEffectMessage(worldPosition));
+            Balm.networking().sendToTracking(((ServerLevel) level), worldPosition, new ChickenNestEffectMessage(worldPosition));
         }
     }
 

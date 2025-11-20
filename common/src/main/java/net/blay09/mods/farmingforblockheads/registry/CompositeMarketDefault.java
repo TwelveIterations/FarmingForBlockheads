@@ -2,7 +2,7 @@ package net.blay09.mods.farmingforblockheads.registry;
 
 import net.blay09.mods.farmingforblockheads.api.MarketDefault;
 import net.blay09.mods.farmingforblockheads.api.Payment;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +16,7 @@ public class CompositeMarketDefault implements MarketDefault {
     }
 
     @Override
-    public Optional<ResourceLocation> category() {
+    public Optional<Identifier> category() {
         for (int i = marketDefaults.size() - 1; i >= 0; i--) {
             final var category = marketDefaults.get(i).category();
             if (category.isPresent()) {

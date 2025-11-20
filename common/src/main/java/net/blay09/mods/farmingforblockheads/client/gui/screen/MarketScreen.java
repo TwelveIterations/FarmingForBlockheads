@@ -21,16 +21,14 @@ import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.crafting.display.*;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,7 +42,7 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> implements
     private static final int SCROLLBAR_HEIGHT = 77;
     private static final int VISIBLE_ROWS = 4;
 
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(FarmingForBlockheads.MOD_ID, "textures/gui/market.png");
+    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(FarmingForBlockheads.MOD_ID, "textures/gui/market.png");
 
     private final List<MarketFilterButton> filterButtons = new ArrayList<>();
 
@@ -86,9 +84,9 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> implements
 
     private void updateCategoryFilters() {
         for (MarketFilterButton filterButton : filterButtons) {
-            ((ScreenAccessor) this).balm_getChildren().remove(filterButton);
-            ((ScreenAccessor) this).balm_getRenderables().remove(filterButton);
-            ((ScreenAccessor) this).balm_getNarratables().remove(filterButton);
+            ((ScreenAccessor) this).balm$getChildren().remove(filterButton);
+            ((ScreenAccessor) this).balm$getRenderables().remove(filterButton);
+            ((ScreenAccessor) this).balm$getNarratables().remove(filterButton);
         }
         filterButtons.clear();
 
@@ -226,8 +224,8 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> implements
     }
 
     @Override
-    protected void renderSlots(GuiGraphics guiGraphics) {
-        super.renderSlots(guiGraphics);
+    protected void renderSlots(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        super.renderSlots(guiGraphics, mouseX, mouseY);
         ghostSlots.render(guiGraphics, minecraft, false);
     }
 

@@ -8,7 +8,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 
@@ -21,17 +21,17 @@ public class ModBlockTagProvider extends IntrinsicHolderTagsProvider<Block> {
 
     @Override
     protected void addTags(HolderLookup.Provider arg) {
-        final var dirtTag = TagKey.create(Registries.BLOCK, ResourceLocation.withDefaultNamespace("dirt"));
+        final var dirtTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("dirt"));
         tag(dirtTag).add(ModBlocks.fertilizedFarmlandHealthy,
                 ModBlocks.fertilizedFarmlandRich,
                 ModBlocks.fertilizedFarmlandStable,
                 ModBlocks.fertilizedFarmlandHealthyStable,
                 ModBlocks.fertilizedFarmlandRichStable);
 
-        final var mineableAxeTag = TagKey.create(Registries.BLOCK, ResourceLocation.withDefaultNamespace("mineable/axe"));
+        final var mineableAxeTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("mineable/axe"));
         tag(mineableAxeTag).add(ModBlocks.market, ModBlocks.chickenNest, ModBlocks.feedingTrough);
 
-        final var mineableShovelTag = TagKey.create(Registries.BLOCK, ResourceLocation.withDefaultNamespace("mineable/shovel"));
+        final var mineableShovelTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("mineable/shovel"));
         tag(mineableShovelTag).add(ModBlocks.fertilizedFarmlandHealthyStable,
                 ModBlocks.fertilizedFarmlandRichStable,
                 ModBlocks.fertilizedFarmlandStable,

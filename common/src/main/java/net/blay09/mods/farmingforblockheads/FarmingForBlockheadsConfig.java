@@ -1,9 +1,9 @@
 package net.blay09.mods.farmingforblockheads;
 
-import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.config.reflection.Comment;
-import net.blay09.mods.balm.api.config.reflection.Config;
-import net.blay09.mods.balm.api.config.reflection.NestedType;
+import net.blay09.mods.balm.Balm;
+import net.blay09.mods.balm.platform.config.reflection.Comment;
+import net.blay09.mods.balm.platform.config.reflection.Config;
+import net.blay09.mods.balm.platform.config.reflection.NestedType;
 
 import java.util.List;
 import java.util.Random;
@@ -63,10 +63,10 @@ public class FarmingForBlockheadsConfig {
     }
 
     public static FarmingForBlockheadsConfig getActive() {
-        return Balm.getConfig().getActiveConfig(FarmingForBlockheadsConfig.class);
+        return Balm.config().getActiveConfig(FarmingForBlockheadsConfig.class);
     }
 
     public static void initialize() {
-        Balm.getConfig().registerConfig(FarmingForBlockheadsConfig.class);
+        Balm.config().registerConfig(FarmingForBlockheadsConfig.class);
     }
 }

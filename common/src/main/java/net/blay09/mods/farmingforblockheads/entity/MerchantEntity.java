@@ -1,7 +1,5 @@
 package net.blay09.mods.farmingforblockheads.entity;
 
-import com.mojang.serialization.Codec;
-import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheads;
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheadsConfig;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
@@ -11,14 +9,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -28,7 +24,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -65,7 +61,7 @@ public class MerchantEntity extends PathfinderMob {
     private int diggingAnimation;
     private BlockState diggingBlockState;
 
-    private ResourceLocation textureLocation;
+    private Identifier textureLocation;
 
     public MerchantEntity(EntityType<MerchantEntity> type, Level level) {
         super(type, level);
@@ -209,7 +205,7 @@ public class MerchantEntity extends PathfinderMob {
             diggingAnimation = 60;
         } else if (id == 14) {
             BlockPos pos = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, blockPosition());
-            level.playLocalSound(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, ModSounds.falling.get(), SoundSource.NEUTRAL, 0.2f, 1f, false);
+            level.playLocalSound(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f, ModSounds.falling.value(), SoundSource.NEUTRAL, 0.2f, 1f, false);
         } else if (id == 15) {
             double posX = getX();
             double posY = getY();
@@ -342,13 +338,13 @@ public class MerchantEntity extends PathfinderMob {
     }
 
     @Nullable
-    public ResourceLocation getTextureLocation() {
+    public Identifier getTextureLocation() {
         Component customName = getCustomName();
         if (textureLocation == null && customName != null) {
             String normalizedName = customName.getString();
             normalizedName = normalizedName.replaceAll("[^A-Za-z0-9]", "_");
             normalizedName = normalizedName.toLowerCase(Locale.ENGLISH);
-            textureLocation = ResourceLocation.fromNamespaceAndPath(FarmingForBlockheads.MOD_ID, "textures/entity/merchant_" + normalizedName + ".png");
+            textureLocation = Identifier.fromNamespaceAndPath(FarmingForBlockheads.MOD_ID, "textures/entity/merchant_" + normalizedName + ".png");
         } else if (textureLocation != null && customName == null) {
             textureLocation = null;
         }

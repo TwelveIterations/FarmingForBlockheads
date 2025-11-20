@@ -19,7 +19,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
@@ -27,7 +27,7 @@ public class JeiMarketRecipeCategory implements IRecipeCategory<RecipeHolder<Mar
 
     public static final RecipeType<RecipeHolder<MarketRecipe>> TYPE = RecipeType.createFromVanilla(ModRecipes.marketRecipeType);
 
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(FarmingForBlockheads.MOD_ID, "textures/gui/jei_market.png");
+    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(FarmingForBlockheads.MOD_ID, "textures/gui/jei_market.png");
 
     private final IDrawable icon;
     private final IDrawableStatic background;

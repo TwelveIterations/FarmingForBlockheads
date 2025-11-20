@@ -6,12 +6,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
 
-public record MarketRecipeDisplay(SlotDisplay payment, SlotDisplay result, SlotDisplay craftingStation, ResourceLocation category,
+public record MarketRecipeDisplay(SlotDisplay payment, SlotDisplay result, SlotDisplay craftingStation, Identifier category,
                                   int sortIndex,
                                   boolean enabled,
                                   SlotDisplay icon) implements RecipeDisplay {
@@ -19,7 +19,7 @@ public record MarketRecipeDisplay(SlotDisplay payment, SlotDisplay result, SlotD
             SlotDisplay.CODEC.fieldOf("payment").forGetter(MarketRecipeDisplay::payment),
             SlotDisplay.CODEC.fieldOf("result").forGetter(MarketRecipeDisplay::result),
             SlotDisplay.CODEC.fieldOf("crafting_station").forGetter(MarketRecipeDisplay::craftingStation),
-            ResourceLocation.CODEC.fieldOf("category").forGetter(MarketRecipeDisplay::category),
+            Identifier.CODEC.fieldOf("category").forGetter(MarketRecipeDisplay::category),
             Codec.INT.fieldOf("sort_index").forGetter(MarketRecipeDisplay::sortIndex),
             Codec.BOOL.fieldOf("enabled").forGetter(MarketRecipeDisplay::enabled),
             SlotDisplay.CODEC.fieldOf("icon").forGetter(MarketRecipeDisplay::result)
@@ -30,7 +30,7 @@ public record MarketRecipeDisplay(SlotDisplay payment, SlotDisplay result, SlotD
             MarketRecipeDisplay::result,
             SlotDisplay.STREAM_CODEC,
             MarketRecipeDisplay::craftingStation,
-            ResourceLocation.STREAM_CODEC,
+            Identifier.STREAM_CODEC,
             MarketRecipeDisplay::category,
             ByteBufCodecs.INT,
             MarketRecipeDisplay::sortIndex,

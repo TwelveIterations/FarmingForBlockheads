@@ -1,17 +1,14 @@
 package net.blay09.mods.farmingforblockheads.component;
 
-import net.blay09.mods.balm.api.DeferredObject;
-import net.blay09.mods.balm.api.component.BalmComponents;
+import net.blay09.mods.balm.core.component.BalmDataComponentTypeRegistrar;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentType;
 
-import static net.blay09.mods.farmingforblockheads.FarmingForBlockheads.id;
-
 public class ModComponents {
-    public static DeferredObject<DataComponentType<DescriptionComponent>> description;
+    public static Holder<DataComponentType<DescriptionComponent>> description;
 
-    public static void initialize(BalmComponents components) {
-        description = components.registerComponent(() -> DataComponentType.<DescriptionComponent>builder().persistent(DescriptionComponent.CODEC).build(),
-                id("description"));
+    public static void initialize(BalmDataComponentTypeRegistrar components) {
+        description = components.register("description", DescriptionComponent.CODEC).asHolder();
     }
 }
 

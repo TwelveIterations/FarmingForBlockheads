@@ -1,8 +1,7 @@
 package net.blay09.mods.farmingforblockheads.block.entity;
 
-import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.menu.BalmMenuProvider;
-import net.blay09.mods.balm.common.BalmBlockEntity;
+import net.blay09.mods.balm.Balm;
+import net.blay09.mods.balm.world.BalmMenuProvider;
 import net.blay09.mods.farmingforblockheads.api.FarmingForBlockheadsAPI;
 import net.blay09.mods.farmingforblockheads.api.MarketCategory;
 import net.blay09.mods.farmingforblockheads.menu.MarketMenu;
@@ -22,15 +21,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.crafting.display.RecipeDisplayEntry;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class MarketBlockEntity extends BalmBlockEntity implements BalmMenuProvider<BlockPos> {
+public class MarketBlockEntity extends BlockEntity implements BalmMenuProvider<BlockPos> {
     public MarketBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.market.get(), pos, state);
+        super(ModBlockEntities.market.value(), pos, state);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class MarketBlockEntity extends BalmBlockEntity implements BalmMenuProvid
         final var recipeManager = level.getServer().getRecipeManager();
         final var result = new ArrayList<RecipeDisplayEntry>();
         if (recipeManager instanceof RecipeManagerAccessor accessor) {
-            final var recipes = accessor.getRecipes().byType(ModRecipes.marketRecipeType);
+            final var recipes = accessor.getRecipes().byType(ModRecipes.marketRecipe.type());
             for (final var recipeHolder : recipes) {
                 recipeManager.listDisplaysForRecipe(recipeHolder.id(), result::add);
             }
@@ -78,11 +78,11 @@ public class MarketBlockEntity extends BalmBlockEntity implements BalmMenuProvid
     }
 
     public void openMenu(Player player) {
-        Balm.getNetworking().openMenu(player, this);
+        Balm.networking().openMenu(player, this);
 
         final var displays = getRecipeDisplays();
         final var categories = getCategories(displays);
-        Balm.getNetworking().sendTo(player, new MarketCategoriesMessage(categories));
-        Balm.getNetworking().sendTo(player, new MarketRecipesMessage(displays));
+        Balm.networking().sendTo(player, new MarketCategoriesMessage(categories));
+        Balm.networking().sendTo(player, new MarketRecipesMessage(displays));
     }
 }

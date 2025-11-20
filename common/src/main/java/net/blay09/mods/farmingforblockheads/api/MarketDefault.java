@@ -1,10 +1,10 @@
 package net.blay09.mods.farmingforblockheads.api;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.Optional;
 
 public interface MarketDefault {
-	Optional<ResourceLocation> category();
+	Optional<Identifier> category();
 	Optional<Payment> payment();
 }

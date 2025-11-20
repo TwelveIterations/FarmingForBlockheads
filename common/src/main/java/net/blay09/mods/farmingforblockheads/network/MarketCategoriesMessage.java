@@ -28,7 +28,7 @@ public record MarketCategoriesMessage(List<SimpleHolder<MarketCategory>> categor
         final var count = buf.readInt();
         final var categories = new ArrayList<SimpleHolder<MarketCategory>>();
         for (int i = 0; i < count; i++) {
-            final var id = buf.readResourceLocation();
+            final var id = buf.readIdentifier();
             final var iconStack = ItemStack.STREAM_CODEC.decode(buf);
             final var sortIndex = buf.readInt();
             final var tooltip = ComponentSerialization.TRUSTED_STREAM_CODEC.decode(buf);
@@ -41,7 +41,7 @@ public record MarketCategoriesMessage(List<SimpleHolder<MarketCategory>> categor
     public static void encode(RegistryFriendlyByteBuf buf, MarketCategoriesMessage message) {
         buf.writeInt(message.categories.size());
         message.categories.forEach(holder -> {
-            buf.writeResourceLocation(holder.id());
+            buf.writeIdentifier(holder.id());
             final var category = holder.value();
             ItemStack.STREAM_CODEC.encode(buf, category.iconStack());
             buf.writeInt(category.sortIndex());

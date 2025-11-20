@@ -1,6 +1,6 @@
 package net.blay09.mods.farmingforblockheads.api;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.RecipeType;
 
 import java.lang.reflect.InvocationTargetException;
@@ -20,7 +20,7 @@ public class FarmingForBlockheadsAPI {
         }
     }
 
-    public static Optional<MarketCategory> getMarketCategory(ResourceLocation registryName) {
+    public static Optional<MarketCategory> getMarketCategory(Identifier registryName) {
         return internalMethods.getMarketCategory(registryName);
     }
 
@@ -32,7 +32,7 @@ public class FarmingForBlockheadsAPI {
         return internalMethods.getMarketRecipeType();
     }
 
-    public static Map<ResourceLocation, MarketCategory> getMarketCategories() {
+    public static Map<Identifier, MarketCategory> getMarketCategories() {
         return internalMethods.getMarketCategories();
     }
 }

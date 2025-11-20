@@ -1,10 +1,10 @@
 package net.blay09.mods.farmingforblockheads.api;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class MarketCategories {
-    public static final ResourceLocation SEEDS = ResourceLocation.fromNamespaceAndPath("farmingforblockheads", "seeds");
-    public static final ResourceLocation SAPLINGS = ResourceLocation.fromNamespaceAndPath("farmingforblockheads", "saplings");
-    public static final ResourceLocation FLOWERS = ResourceLocation.fromNamespaceAndPath("farmingforblockheads", "flowers");
-    public static final ResourceLocation OTHER = ResourceLocation.fromNamespaceAndPath("farmingforblockheads", "other");
+    public static final Identifier SEEDS = Identifier.fromNamespaceAndPath("farmingforblockheads", "seeds");
+    public static final Identifier SAPLINGS = Identifier.fromNamespaceAndPath("farmingforblockheads", "saplings");
+    public static final Identifier FLOWERS = Identifier.fromNamespaceAndPath("farmingforblockheads", "flowers");
+    public static final Identifier OTHER = Identifier.fromNamespaceAndPath("farmingforblockheads", "other");
 }

@@ -38,7 +38,7 @@ public record MarketPlaceRecipeMessage(int containerId, RecipeDisplayId recipe, 
                     if (player.containerMenu instanceof MarketMenu marketMenu) {
                         if (marketMenu.containsRecipeDisplayId(message.recipe())) {
                             if (recipeHolder.value().placementInfo().isImpossibleToPlace()) {
-                                FarmingForBlockheads.logger.debug("Player {} tried to place impossible recipe {}", player, recipeHolder.id().location());
+                                FarmingForBlockheads.logger.debug("Player {} tried to place impossible recipe {}", player, recipeHolder.id().identifier());
                                 return;
                             }
 

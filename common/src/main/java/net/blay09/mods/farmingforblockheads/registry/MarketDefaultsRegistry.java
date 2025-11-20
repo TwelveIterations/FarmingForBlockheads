@@ -12,7 +12,7 @@ import net.blay09.mods.farmingforblockheads.api.Payment;
 import net.blay09.mods.farmingforblockheads.recipe.MarketRecipe;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.RegistryOps;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 
@@ -22,7 +22,7 @@ import java.util.*;
 public class MarketDefaultsRegistry {
 
     private static final Codec<MarketDefault> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-            ResourceLocation.CODEC.optionalFieldOf("category").forGetter(MarketDefault::category),
+            Identifier.CODEC.optionalFieldOf("category").forGetter(MarketDefault::category),
             PaymentImpl.CODEC.optionalFieldOf("payment").forGetter(MarketDefault::payment)
     ).apply(instance, MarketDefaultImpl::new));
 
@@ -75,7 +75,7 @@ public class MarketDefaultsRegistry {
         return new CompositeMarketDefault(result);
     }
 
-    public static ResourceLocation resolveCategory(MarketRecipe recipe) {
+    public static Identifier resolveCategory(MarketRecipe recipe) {
         final var defaults = resolveDefaults(recipe);
         return recipe.getCategory().orElse(defaults.category().orElseGet(MarketDefaultsRegistry::defaultCategory));
     }
@@ -106,8 +106,8 @@ public class MarketDefaultsRegistry {
         return enabled;
     }
 
-    private static ResourceLocation defaultCategory() {
-        return ResourceLocation.fromNamespaceAndPath(FarmingForBlockheads.MOD_ID, "other");
+    private static Identifier defaultCategory() {
+        return Identifier.fromNamespaceAndPath(FarmingForBlockheads.MOD_ID, "other");
     }
 
     private static Payment defaultPayment() {

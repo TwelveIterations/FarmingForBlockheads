@@ -1,6 +1,6 @@
 package net.blay09.mods.farmingforblockheads.menu;
 
-import net.blay09.mods.balm.api.container.DefaultContainer;
+import net.blay09.mods.balm.world.DefaultContainer;
 import net.blay09.mods.farmingforblockheads.api.Payment;
 import net.minecraft.world.entity.player.StackedItemContents;
 import net.minecraft.world.inventory.StackedContentsCompatible;

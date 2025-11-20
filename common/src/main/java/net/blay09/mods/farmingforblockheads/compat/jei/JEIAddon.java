@@ -12,7 +12,7 @@ import net.blay09.mods.farmingforblockheads.block.ModBlocks;
 import net.blay09.mods.farmingforblockheads.client.gui.screen.MarketScreen;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
@@ -56,7 +56,7 @@ public class JEIAddon implements IModPlugin {
     }
 
     @Override
-    public ResourceLocation getPluginUid() {
-        return ResourceLocation.fromNamespaceAndPath(FarmingForBlockheads.MOD_ID, "jei");
+    public Identifier getPluginUid() {
+        return Identifier.fromNamespaceAndPath(FarmingForBlockheads.MOD_ID, "jei");
     }
 }

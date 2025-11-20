@@ -1,7 +1,6 @@
 dependencies {
-    implementation("net.blay09.mods:kuma-api-forge:${kuma_version}")
-    implementation("net.blay09.mods:balm-forge:${balm_version}") {
-        changing = balm_version.contains("SNAPSHOT")
+    implementation(libs.balmForge) {
+        changing = libs.versions.balm.get().endsWith("SNAPSHOT")
     }
     compileOnly("mezz.jei:jei-$jei_minecraft_version-common-api:$jei_version")
     compileOnly("mezz.jei:jei-$jei_minecraft_version-forge-api:$jei_version")

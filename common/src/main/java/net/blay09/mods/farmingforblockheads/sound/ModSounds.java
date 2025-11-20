@@ -1,16 +1,14 @@
 package net.blay09.mods.farmingforblockheads.sound;
 
-import net.blay09.mods.balm.api.DeferredObject;
-import net.blay09.mods.balm.api.sound.BalmSounds;
-import net.blay09.mods.farmingforblockheads.FarmingForBlockheads;
-import net.minecraft.resources.ResourceLocation;
+import net.blay09.mods.balm.core.BalmRegistrar;
+import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvent;
 
 public class ModSounds {
-    public static DeferredObject<SoundEvent> falling;
+    public static Holder<SoundEvent> falling;
 
-    public static void initialize(BalmSounds sounds) {
-        falling = sounds.register(ResourceLocation.fromNamespaceAndPath(FarmingForBlockheads.MOD_ID, "falling"));
+    public static void initialize(BalmRegistrar.Scoped<SoundEvent> sounds) {
+        falling = sounds.register("falling", SoundEvent::createVariableRangeEvent);
     }
 
 }

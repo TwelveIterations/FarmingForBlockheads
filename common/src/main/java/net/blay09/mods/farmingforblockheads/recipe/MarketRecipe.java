@@ -12,7 +12,7 @@ import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -28,13 +28,13 @@ import java.util.Optional;
 public class MarketRecipe implements Recipe<RecipeInput> {
 
     private final String defaults;
-    private final ResourceLocation category;
+    private final Identifier category;
     private final ItemStack result;
     private final ItemStack icon;
     private final Payment payment;
     private final int sortIndex;
 
-    public MarketRecipe(ItemStack result, String defaults, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<ResourceLocation> category, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<Payment> payment, int sortIndex, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<ItemStack> icon) {
+    public MarketRecipe(ItemStack result, String defaults, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<Identifier> category, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<Payment> payment, int sortIndex, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<ItemStack> icon) {
         this.defaults = defaults;
         this.category = category.orElse(null);
         this.result = result;
@@ -95,12 +95,12 @@ public class MarketRecipe implements Recipe<RecipeInput> {
 
     @Override
     public RecipeSerializer<? extends Recipe<RecipeInput>> getSerializer() {
-        return ModRecipes.marketRecipeSerializer;
+        return ModRecipes.marketRecipe.serializer();
     }
 
     @Override
     public RecipeType<? extends Recipe<RecipeInput>> getType() {
-        return ModRecipes.marketRecipeType;
+        return ModRecipes.marketRecipe.type();
     }
 
     @Override
@@ -115,14 +115,14 @@ public class MarketRecipe implements Recipe<RecipeInput> {
 
     @Override
     public RecipeBookCategory recipeBookCategory() {
-        return ModRecipes.marketRecipeBookCategory;
+        return ModRecipes.marketRecipe.bookCategory();
     }
 
     public Optional<Payment> getPayment() {
         return Optional.ofNullable(payment);
     }
 
-    public Optional<ResourceLocation> getCategory() {
+    public Optional<Identifier> getCategory() {
         return Optional.ofNullable(category);
     }
 
@@ -141,7 +141,7 @@ public class MarketRecipe implements Recipe<RecipeInput> {
         private static final MapCodec<MarketRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 RESULT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
                 ExtraCodecs.NON_EMPTY_STRING.fieldOf("defaults").forGetter(recipe -> recipe.defaults),
-                ResourceLocation.CODEC.optionalFieldOf("category").forGetter(MarketRecipe::getCategory),
+                Identifier.CODEC.optionalFieldOf("category").forGetter(MarketRecipe::getCategory),
                 PaymentImpl.CODEC.optionalFieldOf("payment").forGetter(MarketRecipe::getPayment),
                 Codec.INT.fieldOf("sortIndex").orElse(0).forGetter(MarketRecipe::getSortIndex),
                 ItemStack.CODEC.optionalFieldOf("icon").forGetter(recipe -> Optional.ofNullable(recipe.icon))
@@ -162,7 +162,7 @@ public class MarketRecipe implements Recipe<RecipeInput> {
         public static MarketRecipe fromNetwork(RegistryFriendlyByteBuf buf) {
             final var resultItem = ItemStack.OPTIONAL_STREAM_CODEC.decode(buf);
             final var defaults = buf.readUtf();
-            final var category = buf.readResourceLocation();
+            final var category = buf.readIdentifier();
             final var payment = PaymentImpl.fromNetwork(buf);
             final var sortIndex = buf.readVarInt();
             final var icon = ItemStack.OPTIONAL_STREAM_CODEC.decode(buf);
@@ -172,7 +172,7 @@ public class MarketRecipe implements Recipe<RecipeInput> {
         public static void toNetwork(RegistryFriendlyByteBuf buf, MarketRecipe recipe) {
             ItemStack.OPTIONAL_STREAM_CODEC.encode(buf, recipe.result);
             buf.writeUtf(recipe.defaults);
-            buf.writeResourceLocation(recipe.category);
+            buf.writeIdentifier(recipe.category);
             PaymentImpl.toNetwork(buf, recipe.payment);
             buf.writeVarInt(recipe.sortIndex);
             ItemStack.OPTIONAL_STREAM_CODEC.encode(buf, recipe.icon);

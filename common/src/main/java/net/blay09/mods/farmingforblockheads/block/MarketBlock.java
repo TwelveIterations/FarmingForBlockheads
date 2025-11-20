@@ -1,7 +1,7 @@
 package net.blay09.mods.farmingforblockheads.block;
 
 import com.mojang.serialization.MapCodec;
-import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.balm.Balm;
 import net.blay09.mods.farmingforblockheads.block.entity.MarketBlockEntity;
 import net.blay09.mods.farmingforblockheads.entity.MerchantEntity;
 import net.blay09.mods.farmingforblockheads.entity.ModEntities;
@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -104,7 +105,7 @@ public class MarketBlock extends BaseEntityBlock {
         }
 
         if (!level.isClientSide()) {
-            MerchantEntity merchant = new MerchantEntity(ModEntities.merchant.get(), level);
+            MerchantEntity merchant = new MerchantEntity(ModEntities.merchant.value(), level);
             merchant.setMarket(pos, facing);
             merchant.setToFacingAngle();
             merchant.setSpawnAnimation(spawnAnimationType);
@@ -118,7 +119,7 @@ public class MarketBlock extends BaseEntityBlock {
             }
 
             level.addFreshEntity(merchant);
-            merchant.finalizeSpawn(((ServerLevel) level), level.getCurrentDifficultyAt(pos), EntitySpawnReason.STRUCTURE, null);
+            merchant.finalizeSpawn(((ServerLevel) level), ((ServerLevel) level).getCurrentDifficultyAt(pos), EntitySpawnReason.STRUCTURE, null);
         }
 
         level.setBlock(pos.above(), state.setValue(HALF, DoubleBlockHalf.UPPER), 3);

@@ -1,10 +1,10 @@
 package net.blay09.mods.farmingforblockheads.registry;
 
-import net.blay09.mods.balm.api.Balm;
+import net.blay09.mods.balm.Balm;
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheads;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.FileToIdConverter;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 
@@ -35,7 +35,7 @@ public class MarketDefaultsLoader implements ResourceManagerReloadListener {
             }
         }
 
-        final var configFile = new File(Balm.getConfig().getConfigDir(), "farmingforblockheads/defaults.json");
+        final var configFile = new File(Balm.config().getConfigDir(), "farmingforblockheads/defaults.json");
         if (configFile.exists()) {
             try (final var reader = Files.newBufferedReader(configFile.toPath())) {
                 registry.loadAdditionally(registries, reader);

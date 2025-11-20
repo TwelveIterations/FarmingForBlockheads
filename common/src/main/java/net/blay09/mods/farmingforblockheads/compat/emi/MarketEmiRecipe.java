@@ -7,7 +7,7 @@ import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.blay09.mods.farmingforblockheads.recipe.MarketRecipe;
 import net.blay09.mods.farmingforblockheads.registry.MarketDefaultsRegistry;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -16,11 +16,11 @@ import static net.blay09.mods.farmingforblockheads.compat.emi.EmiIntegration.BAC
 import static net.blay09.mods.farmingforblockheads.compat.emi.EmiIntegration.TRADE_ICON;
 
 public class MarketEmiRecipe implements EmiRecipe {
-    private final ResourceLocation id;
+    private final Identifier id;
     private final List<EmiIngredient> input;
     private final List<EmiStack> output;
 
-    public MarketEmiRecipe(ResourceLocation id, MarketRecipe recipe) {
+    public MarketEmiRecipe(Identifier id, MarketRecipe recipe) {
         this.id = id;
         final var payment = MarketDefaultsRegistry.resolvePayment(recipe);
         this.input = List.of(EmiIngredient.of(payment.ingredient(), payment.count()));
@@ -33,7 +33,7 @@ public class MarketEmiRecipe implements EmiRecipe {
     }
 
     @Override
-    public @Nullable ResourceLocation getId() {
+    public @Nullable Identifier getId() {
         return id;
     }
 

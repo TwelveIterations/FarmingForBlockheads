@@ -4,24 +4,23 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheads;
 import net.blay09.mods.farmingforblockheads.entity.MerchantEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.VillagerModel;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.model.npc.VillagerModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.CustomHeadLayer;
 import net.minecraft.client.renderer.entity.state.VillagerRenderState;
 import net.minecraft.client.renderer.state.CameraRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class MerchantRenderer extends MobRenderer<MerchantEntity, VillagerRenderState, VillagerModel> {
 
-    private static final ResourceLocation MERCHANT_TEXTURE = ResourceLocation.fromNamespaceAndPath(FarmingForBlockheads.MOD_ID, "textures/entity/merchant.png");
-    private static final Map<ResourceLocation, ResourceLocation> verifiedTextures = new HashMap<>();
+    private static final Identifier MERCHANT_TEXTURE = Identifier.fromNamespaceAndPath(FarmingForBlockheads.MOD_ID, "textures/entity/merchant.png");
+    private static final Map<Identifier, Identifier> verifiedTextures = new HashMap<>();
 
     public MerchantRenderer(EntityRendererProvider.Context context) {
         super(context, new VillagerModel(context.bakeLayer(ModelLayers.VILLAGER)), 0.5f);
@@ -29,8 +28,8 @@ public class MerchantRenderer extends MobRenderer<MerchantEntity, VillagerRender
     }
 
     @Override
-    public ResourceLocation getTextureLocation(VillagerRenderState state) {
-        ResourceLocation textureLocation = state instanceof MerchantRenderState merchantRenderState ? merchantRenderState.textureLocation : null;
+    public Identifier getTextureLocation(VillagerRenderState state) {
+        Identifier textureLocation = state instanceof MerchantRenderState merchantRenderState ? merchantRenderState.textureLocation : null;
         if (textureLocation == null) {
             return MERCHANT_TEXTURE;
         }

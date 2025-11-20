@@ -1,7 +1,7 @@
 package net.blay09.mods.farmingforblockheads.menu;
 
-import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.container.DefaultContainer;
+import net.blay09.mods.balm.Balm;
+import net.blay09.mods.balm.world.DefaultContainer;
 import net.blay09.mods.farmingforblockheads.api.MarketCategory;
 import net.blay09.mods.farmingforblockheads.api.Payment;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
@@ -14,7 +14,7 @@ import net.blay09.mods.farmingforblockheads.registry.PaymentImpl;
 import net.blay09.mods.farmingforblockheads.registry.SimpleHolder;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.recipebook.ServerPlaceRecipe;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
@@ -67,7 +67,7 @@ public class MarketMenu extends AbstractContainerMenu {
     private RecipeHolder<MarketRecipe> serverSelectedRecipe;
 
     public MarketMenu(int windowId, Inventory playerInventory, ContainerLevelAccess access) {
-        super(ModMenus.market.get(), windowId);
+        super(ModMenus.market.value(), windowId);
         this.access = access;
         this.player = playerInventory.player;
 
@@ -90,7 +90,7 @@ public class MarketMenu extends AbstractContainerMenu {
         final var recipeInput = container.asRecipeInput();
         final var serverPlayer = (ServerPlayer) player;
         var resultItem = ItemStack.EMPTY;
-        final var foundRecipe = level.getServer().getRecipeManager().getRecipeFor(ModRecipes.marketRecipeType, recipeInput, level, recipeHolder);
+        final var foundRecipe = level.getServer().getRecipeManager().getRecipeFor(ModRecipes.marketRecipe.type(), recipeInput, level, recipeHolder);
         if (foundRecipe.isPresent()) {
             final var foundRecipeHolder = foundRecipe.get();
             final var recipe = foundRecipeHolder.value();
@@ -173,7 +173,7 @@ public class MarketMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(access, player, ModBlocks.market);
+        return stillValid(access, player, ModBlocks.market.asBlock());
     }
 
     @Override
@@ -263,7 +263,7 @@ public class MarketMenu extends AbstractContainerMenu {
                     final var recipe = listingSlot.getRecipeDisplayEntry();
                     if (recipe != null) {
                         selectedRecipeDisplayEntry = recipe;
-                        Balm.getNetworking().sendToServer(new MarketPlaceRecipeMessage(containerId, recipe.id(), clickType == ClickType.QUICK_MOVE));
+                        Balm.networking().sendToServer(new MarketPlaceRecipeMessage(containerId, recipe.id(), clickType == ClickType.QUICK_MOVE));
                     }
                 }
             }
@@ -376,7 +376,7 @@ public class MarketMenu extends AbstractContainerMenu {
         setScrollOffsetDirty(true);
     }
 
-    private Optional<MarketCategory> resolveMarketCategory(ResourceLocation identifier) {
+    private Optional<MarketCategory> resolveMarketCategory(Identifier identifier) {
         return categories.stream().filter(it -> it.id().equals(identifier)).findFirst().map(SimpleHolder::value);
     }
 
