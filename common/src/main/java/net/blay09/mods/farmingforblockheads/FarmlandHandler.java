@@ -1,6 +1,6 @@
 package net.blay09.mods.farmingforblockheads;
 
-import net.blay09.mods.balm.platform.event.EventHandling;
+import net.blay09.mods.balm.platform.event.callback.CropCallback;
 import net.blay09.mods.farmingforblockheads.block.FertilizedFarmlandBlock;
 import net.blay09.mods.farmingforblockheads.tag.ModBlockTags;
 import net.minecraft.core.BlockPos;
@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class FarmlandHandler {
 
-    public static EventHandling onGrowEvent(LevelAccessor levelAccessor, BlockPos pos, BlockState state) {
+    public static void onGrowEvent(LevelAccessor levelAccessor, BlockPos pos, BlockState state) {
         BlockState plant = levelAccessor.getBlockState(pos);
         if (plant.getBlock() instanceof BonemealableBlock growable && levelAccessor instanceof Level level) {
             BlockState farmland = levelAccessor.getBlockState(pos.below());
@@ -29,8 +29,6 @@ public class FarmlandHandler {
                 }
             }
         }
-
-        return EventHandling.RESUME;
     }
 
     public static void rollRegression(Level level, BlockPos pos, BlockState farmland) {

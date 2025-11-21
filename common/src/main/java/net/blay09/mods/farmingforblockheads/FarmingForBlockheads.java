@@ -1,7 +1,6 @@
 package net.blay09.mods.farmingforblockheads;
 
 import net.blay09.mods.balm.Balm;
-import net.blay09.mods.balm.core.BalmRegistrar;
 import net.blay09.mods.balm.core.BalmRegistrars;
 import net.blay09.mods.balm.platform.event.callback.CropCallback;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
@@ -45,7 +44,7 @@ public class FarmingForBlockheads {
             registrar.register("market_defaults_loader", MarketDefaultsLoader::new);
         });
 
-        CropCallback.Grow.AFTER.register(FarmlandHandler::onGrowEvent);
+        CropCallback.Grow.After.EVENT.register(FarmlandHandler::onGrowEvent);
     }
 
     public static Identifier id(String path) {
