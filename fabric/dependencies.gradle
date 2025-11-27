@@ -7,5 +7,4 @@ dependencies {
     if (jei_minecraft_version == minecraft_version) {
         modRuntimeOnly "mezz.jei:jei-$jei_minecraft_version-fabric:$jei_version"
     }
-    modCompileOnly "dev.emi:emi-fabric:$emi_version:api"
 }

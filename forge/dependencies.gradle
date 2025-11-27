@@ -4,9 +4,4 @@ dependencies {
     }
     compileOnly("mezz.jei:jei-$jei_minecraft_version-common-api:$jei_version")
     compileOnly("mezz.jei:jei-$jei_minecraft_version-forge-api:$jei_version")
-    compileOnly("dev.emi:emi-forge:$emi_version:api")
-}
-
-configurations {
-    testCompileOnly.extendsFrom compileOnly // for some reason needed for EMI
 }
