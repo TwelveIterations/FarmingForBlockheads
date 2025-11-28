@@ -1,6 +1,6 @@
 package net.blay09.mods.farmingforblockheads.fabric.datagen;
 
-import net.blay09.mods.balm.api.tag.BalmItemTags;
+import net.blay09.mods.balm.tags.BalmItemTags;
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheads;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
 import net.blay09.mods.farmingforblockheads.item.ModItems;

@@ -34,23 +34,23 @@ public class ModModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockModelGenerators generators) {
-        generators.createNonTemplateModelBlock(ModBlocks.feedingTrough);
+        generators.createNonTemplateModelBlock(ModBlocks.feedingTrough.asBlock());
 
-        createDoubleBlockMarket(generators, ModBlocks.market, ModBlocks.market);
-        generators.createNonTemplateHorizontalBlock(ModBlocks.chickenNest);
+        createDoubleBlockMarket(generators, ModBlocks.market.asBlock(), ModBlocks.market.asBlock());
+        generators.createNonTemplateHorizontalBlock(ModBlocks.chickenNest.asBlock());
 
-        createFertilizedFarmland(generators, ModBlocks.fertilizedFarmlandHealthy);
-        createFertilizedFarmland(generators, ModBlocks.fertilizedFarmlandRich);
-        createFertilizedFarmland(generators, ModBlocks.fertilizedFarmlandStable);
-        createFertilizedFarmland(generators, ModBlocks.fertilizedFarmlandHealthyStable);
-        createFertilizedFarmland(generators, ModBlocks.fertilizedFarmlandRichStable);
+        createFertilizedFarmland(generators, ModBlocks.fertilizedFarmlandHealthy.asBlock());
+        createFertilizedFarmland(generators, ModBlocks.fertilizedFarmlandRich.asBlock());
+        createFertilizedFarmland(generators, ModBlocks.fertilizedFarmlandStable.asBlock());
+        createFertilizedFarmland(generators, ModBlocks.fertilizedFarmlandHealthyStable.asBlock());
+        createFertilizedFarmland(generators, ModBlocks.fertilizedFarmlandRichStable.asBlock());
     }
 
     @Override
     public void generateItemModels(ItemModelGenerators generators) {
-        generators.generateFlatItem(ModItems.greenFertilizer, ModelTemplates.FLAT_ITEM);
-        generators.generateFlatItem(ModItems.redFertilizer, ModelTemplates.FLAT_ITEM);
-        generators.generateFlatItem(ModItems.yellowFertilizer, ModelTemplates.FLAT_ITEM);
+        generators.generateFlatItem(ModItems.greenFertilizer.asItem(), ModelTemplates.FLAT_ITEM);
+        generators.generateFlatItem(ModItems.redFertilizer.asItem(), ModelTemplates.FLAT_ITEM);
+        generators.generateFlatItem(ModItems.yellowFertilizer.asItem(), ModelTemplates.FLAT_ITEM);
     }
 
     private void createFertilizedFarmland(BlockModelGenerators generators, Block farmland) {

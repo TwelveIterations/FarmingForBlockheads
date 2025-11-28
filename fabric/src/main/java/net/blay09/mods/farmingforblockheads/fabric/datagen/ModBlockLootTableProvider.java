@@ -17,13 +17,13 @@ public class ModBlockLootTableProvider extends FabricBlockLootTableProvider {
 
     @Override
     public void generate() {
-        add(ModBlocks.market, createSinglePropConditionTable(ModBlocks.market, MarketBlock.HALF, DoubleBlockHalf.LOWER));
-        dropSelf(ModBlocks.chickenNest);
-        dropSelf(ModBlocks.feedingTrough);
-        dropOther(ModBlocks.fertilizedFarmlandHealthy, Blocks.DIRT);
-        dropOther(ModBlocks.fertilizedFarmlandRich, Blocks.DIRT);
-        dropOther(ModBlocks.fertilizedFarmlandStable, Blocks.DIRT);
-        dropOther(ModBlocks.fertilizedFarmlandHealthyStable, Blocks.DIRT);
-        dropOther(ModBlocks.fertilizedFarmlandRichStable, Blocks.DIRT);
+        add(ModBlocks.market.asBlock(), createSinglePropConditionTable(ModBlocks.market.asBlock(), MarketBlock.HALF, DoubleBlockHalf.LOWER));
+        dropSelf(ModBlocks.chickenNest.asBlock());
+        dropSelf(ModBlocks.feedingTrough.asBlock());
+        dropOther(ModBlocks.fertilizedFarmlandHealthy.asBlock(), Blocks.DIRT);
+        dropOther(ModBlocks.fertilizedFarmlandRich.asBlock(), Blocks.DIRT);
+        dropOther(ModBlocks.fertilizedFarmlandStable.asBlock(), Blocks.DIRT);
+        dropOther(ModBlocks.fertilizedFarmlandHealthyStable.asBlock(), Blocks.DIRT);
+        dropOther(ModBlocks.fertilizedFarmlandRichStable.asBlock(), Blocks.DIRT);
     }
 }

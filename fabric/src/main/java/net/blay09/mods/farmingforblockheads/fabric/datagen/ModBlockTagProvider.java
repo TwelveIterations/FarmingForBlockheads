@@ -2,8 +2,6 @@ package net.blay09.mods.farmingforblockheads.fabric.datagen;
 
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
 import net.blay09.mods.farmingforblockheads.tag.ModBlockTags;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -22,30 +20,30 @@ public class ModBlockTagProvider extends IntrinsicHolderTagsProvider<Block> {
     @Override
     protected void addTags(HolderLookup.Provider arg) {
         final var dirtTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("dirt"));
-        tag(dirtTag).add(ModBlocks.fertilizedFarmlandHealthy,
-                ModBlocks.fertilizedFarmlandRich,
-                ModBlocks.fertilizedFarmlandStable,
-                ModBlocks.fertilizedFarmlandHealthyStable,
-                ModBlocks.fertilizedFarmlandRichStable);
+        tag(dirtTag).add(ModBlocks.fertilizedFarmlandHealthy.asBlock(),
+                ModBlocks.fertilizedFarmlandRich.asBlock(),
+                ModBlocks.fertilizedFarmlandStable.asBlock(),
+                ModBlocks.fertilizedFarmlandHealthyStable.asBlock(),
+                ModBlocks.fertilizedFarmlandRichStable.asBlock());
 
         final var mineableAxeTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("mineable/axe"));
-        tag(mineableAxeTag).add(ModBlocks.market, ModBlocks.chickenNest, ModBlocks.feedingTrough);
+        tag(mineableAxeTag).add(ModBlocks.market.asBlock(), ModBlocks.chickenNest.asBlock(), ModBlocks.feedingTrough.asBlock());
 
         final var mineableShovelTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("mineable/shovel"));
-        tag(mineableShovelTag).add(ModBlocks.fertilizedFarmlandHealthyStable,
-                ModBlocks.fertilizedFarmlandRichStable,
-                ModBlocks.fertilizedFarmlandStable,
-                ModBlocks.fertilizedFarmlandHealthy,
-                ModBlocks.fertilizedFarmlandRich);
+        tag(mineableShovelTag).add(ModBlocks.fertilizedFarmlandHealthyStable.asBlock(),
+                ModBlocks.fertilizedFarmlandRichStable.asBlock(),
+                ModBlocks.fertilizedFarmlandStable.asBlock(),
+                ModBlocks.fertilizedFarmlandHealthy.asBlock(),
+                ModBlocks.fertilizedFarmlandRich.asBlock());
 
-        tag(ModBlockTags.RICH_FARMLAND).add(ModBlocks.fertilizedFarmlandRichStable, ModBlocks.fertilizedFarmlandRich);
-        tag(ModBlockTags.HEALTHY_FARMLAND).add(ModBlocks.fertilizedFarmlandHealthyStable, ModBlocks.fertilizedFarmlandHealthy);
-        tag(ModBlockTags.STABLE_FARMLAND).add(ModBlocks.fertilizedFarmlandHealthyStable,
-                ModBlocks.fertilizedFarmlandRichStable,
-                ModBlocks.fertilizedFarmlandStable);
+        tag(ModBlockTags.RICH_FARMLAND).add(ModBlocks.fertilizedFarmlandRichStable.asBlock(), ModBlocks.fertilizedFarmlandRich.asBlock());
+        tag(ModBlockTags.HEALTHY_FARMLAND).add(ModBlocks.fertilizedFarmlandHealthyStable.asBlock(), ModBlocks.fertilizedFarmlandHealthy.asBlock());
+        tag(ModBlockTags.STABLE_FARMLAND).add(ModBlocks.fertilizedFarmlandHealthyStable.asBlock(),
+                ModBlocks.fertilizedFarmlandRichStable.asBlock(),
+                ModBlocks.fertilizedFarmlandStable.asBlock());
 
-        tag(ModBlockTags.FERTILIZED_FARMLAND).add(ModBlocks.fertilizedFarmlandHealthyStable, ModBlocks.fertilizedFarmlandRichStable,
-                ModBlocks.fertilizedFarmlandStable, ModBlocks.fertilizedFarmlandHealthy, ModBlocks.fertilizedFarmlandRich);
+        tag(ModBlockTags.FERTILIZED_FARMLAND).add(ModBlocks.fertilizedFarmlandHealthyStable.asBlock(), ModBlocks.fertilizedFarmlandRichStable.asBlock(),
+                ModBlocks.fertilizedFarmlandStable.asBlock(), ModBlocks.fertilizedFarmlandHealthy.asBlock(), ModBlocks.fertilizedFarmlandRich.asBlock());
     }
 
 }
