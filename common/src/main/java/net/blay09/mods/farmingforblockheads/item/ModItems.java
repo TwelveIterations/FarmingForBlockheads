@@ -17,8 +17,6 @@ public class ModItems {
         greenFertilizer = items.register("green_fertilizer", (properties) -> new FertilizerItem(properties, FertilizerItem.FertilizerType.RICH)).asDeferredItem();
         redFertilizer = items.register("red_fertilizer", (properties) -> new FertilizerItem(properties, FertilizerItem.FertilizerType.HEALTHY)).asDeferredItem();
         yellowFertilizer = items.register("yellow_fertilizer", (properties) -> new FertilizerItem(properties, FertilizerItem.FertilizerType.STABLE)).asDeferredItem();
-
-
     }
 
     public static void initialize(BalmCreativeModeTabRegistrar creativeModeTabs) {

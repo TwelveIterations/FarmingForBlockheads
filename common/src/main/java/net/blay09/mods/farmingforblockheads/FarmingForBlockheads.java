@@ -34,6 +34,7 @@ public class FarmingForBlockheads {
         registrars.blockEntityTypes(ModBlockEntities::initialize);
         registrars.entityTypes(ModEntities::initialize);
         registrars.items(ModItems::initialize);
+        registrars.creativeModeTabs(ModItems::initialize);
         registrars.registrar(Registries.SOUND_EVENT, ModSounds::initialize);
         registrars.menuTypes(ModMenus::initialize);
         registrars.recipeTypes(ModRecipes::initialize);
