@@ -24,6 +24,9 @@ public class ModItems {
                 builder.title(Component.translatable(id.toLanguageKey("itemGroup")))
                         .icon(() -> ModBlocks.market.createStack())
                         .displayItems((parameters, output) -> {
+                            output.accept(ModBlocks.market);
+                            output.accept(ModBlocks.chickenNest);
+                            output.accept(ModBlocks.feedingTrough);
                             output.accept(greenFertilizer);
                             output.accept(redFertilizer);
                             output.accept(yellowFertilizer);
