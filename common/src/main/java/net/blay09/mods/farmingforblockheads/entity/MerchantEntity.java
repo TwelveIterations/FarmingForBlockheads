@@ -293,7 +293,7 @@ public class MerchantEntity extends PathfinderMob {
     }
 
     private boolean isMarketValid() {
-        return marketPos != null && level().getBlockState(marketPos).getBlock() == ModBlocks.market;
+        return marketPos != null && level().getBlockState(marketPos).is(ModBlocks.market);
     }
 
     public void setToFacingAngle() {
