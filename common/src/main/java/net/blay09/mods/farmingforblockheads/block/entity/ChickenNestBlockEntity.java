@@ -11,6 +11,8 @@ import net.blay09.mods.farmingforblockheads.network.ChickenNestEffectMessage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
@@ -23,6 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
@@ -75,6 +78,7 @@ public class ChickenNestBlockEntity extends BlockEntity implements BalmContainer
 
     @Override
     protected void loadAdditional(ValueInput input) {
+        container.clearContent();
         input.child("ItemHandler").ifPresent(it -> ContainerHelper.loadAllItems(it, container.getItems()));
     }
 
@@ -86,6 +90,11 @@ public class ChickenNestBlockEntity extends BlockEntity implements BalmContainer
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         return BalmBlockEntityUtils.createUpdateTag(registries, this::saveAdditional);
+    }
+
+    @Override
+    public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
+        return BalmBlockEntityUtils.createUpdatePacket(this);
     }
 
     private void stealEgg() {
