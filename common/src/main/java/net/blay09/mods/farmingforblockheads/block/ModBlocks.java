@@ -28,8 +28,8 @@ public class ModBlocks {
     public static DeferredBlock fertilizedFarmlandStable;
 
     public static void initialize(BalmBlockRegistrar blocks) {
-        blocks.register("market", MarketBlock::new, it -> it).withDefaultItem().asDeferredBlock();
-        blocks.register("chicken_nest", ChickenNestBlock::new, it -> it)
+        market = blocks.register("market", MarketBlock::new, it -> it).withDefaultItem().asDeferredBlock();
+        chickenNest = blocks.register("chicken_nest", ChickenNestBlock::new, it -> it)
                 .withDefaultItem(it -> it.component(ModComponents.description.value(),
                         new DescriptionComponent(Component.translatable("tooltip.farmingforblockheads.chicken_nest"))))
                 .asDeferredBlock();
