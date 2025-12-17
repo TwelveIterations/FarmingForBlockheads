@@ -3,6 +3,7 @@ package net.blay09.mods.farmingforblockheads;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.balm.api.event.CropGrowEvent;
 import net.blay09.mods.balm.api.event.PlayerLoginEvent;
+import net.blay09.mods.balm.common.config.ConfigLocalization;
 import net.blay09.mods.farmingforblockheads.api.Payment;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
 import net.blay09.mods.farmingforblockheads.block.entity.ModBlockEntities;
@@ -28,6 +29,7 @@ public class FarmingForBlockheads {
     public static Logger logger = LogManager.getLogger();
 
     public static void initialize() {
+        ConfigLocalization.enableModernTranslationKeys(MOD_ID);
         FarmingForBlockheadsConfig.initialize();
         ModNetworking.initialize(Balm.getNetworking());
         ModBlocks.initialize(Balm.getBlocks());
