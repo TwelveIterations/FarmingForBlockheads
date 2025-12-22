@@ -45,5 +45,9 @@
   "farmingforblockheads.configuration.fertilizerRegressionChance": "Fertilizer Regression Chance",
   "farmingforblockheads.configuration.fertilizerRegressionChance.tooltip": "The chance for Fertilized Farmland to turn back into regular Farmland (per provided bonus).",
   "farmingforblockheads.configuration.treatMerchantsLikeBabies": "Treat Merchants like Babies",
-  "farmingforblockheads.configuration.treatMerchantsLikeBabies.tooltip": "If true, merchants will be considered babies (on a technical level only), which may resolve exploits based on merchant death loot (like blood)"
+  "farmingforblockheads.configuration.treatMerchantsLikeBabies.tooltip": "If true, merchants will be considered babies (on a technical level only), which may resolve exploits based on merchant death loot (like blood)",
+  "farmingforblockheads.configuration.excludedGroups": "Excluded Groups",
+  "farmingforblockheads.configuration.excludedGroups.tooltip": "List of groups to disable. Has precedence over includedGroups. 'selling.seeds' for example would disable all seeds from the market.",
+  "farmingforblockheads.configuration.includedGroups": "Included Groups",
+  "farmingforblockheads.configuration.includedGroups.tooltip": "List of groups to enable. 'default' is an alias for the inbuilt defaults (selling.seeds, selling.saplings and selling.fertilizers.minecraft)."
 }
