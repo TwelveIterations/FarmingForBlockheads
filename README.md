@@ -17,7 +17,7 @@ Minecraft Mod. Adds farming utilities, such as a seed market, fertilizer and fee
 ## Contributing
 
 If you're interested in contributing to the mod, you can check
-out [issues labelled as "help wanted"](https://github.com/TwelveIterationMods/FarmingForBlockheads/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22).
+out [issues labelled as "help wanted"](https://github.com/TwelveIterations/FarmingForBlockheads/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22).
 
 When it comes to new features, it's best to confer with me first to ensure we share the same vision. You can join us on [Discord](https://discord.gg/VAfZ2Nau6j) if you'd like to talk.
 
@@ -61,7 +61,7 @@ Enabled by Default:
     * Tropicraft Saplings
 
 Optional Groups (many of
-these [provided by seanimusprime](https://github.com/TwelveIterationMods/FarmingForBlockheads/issues/125)):
+these [provided by seanimusprime](https://github.com/TwelveIterations/FarmingForBlockheads/issues/125)):
 
 * Vanilla
     * Vanilla Flowers
