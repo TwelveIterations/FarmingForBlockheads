@@ -1,1 +1,1 @@
-- Fixed unbuyable items (disabled presets) still showing up in multiplayer
+- Fixed translations in config screens
