@@ -1,1 +1,1 @@
-- Updated to Minecraft 1.21.11
+- Fixed translations in config screen
