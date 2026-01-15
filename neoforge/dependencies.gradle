@@ -2,5 +2,4 @@ dependencies {
     implementation(libs.balmNeoForge) {
         changing = libs.versions.balm.get().endsWith("SNAPSHOT")
     }
-    compileOnly "mezz.jei:jei-$jei_minecraft_version-common-api:$jei_version"
 }
