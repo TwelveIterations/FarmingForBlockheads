@@ -331,7 +331,7 @@ public class MarketMenu extends AbstractContainerMenu {
         if (itemStack.getDisplayName().getString().toLowerCase(Locale.ENGLISH).contains(lowerCaseSearch)) {
             return true;
         } else {
-            final var tooltips = itemStack.getTooltipLines(Item.TooltipContext.EMPTY, player, TooltipFlag.Default.NORMAL);
+            final var tooltips = itemStack.getTooltipLines(Item.TooltipContext.of(player.level()), player, TooltipFlag.Default.NORMAL);
             for (final var tooltip : tooltips) {
                 if (tooltip.getString().toLowerCase(Locale.ENGLISH).contains(lowerCaseSearch)) {
                     return true;
