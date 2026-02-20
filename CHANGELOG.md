@@ -1,1 +1,1 @@
-- Fixed translations in config screens
+- Fixed crash with mods (e.g. Quark) when they modify tooltips without supporting TooltipContext.Empty
