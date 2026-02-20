@@ -1,1 +1,2 @@
-- Fixed translations in config screen
+- Fixed crash with mods (e.g. Quark) when they modify tooltips without supporting TooltipContext.Empty
+- Changed default of `treatMerchantsLikeBabies` to false, as it may have other unwanted effects with shaders 
