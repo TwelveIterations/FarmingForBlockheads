@@ -1,2 +1,1 @@
-- Fixed crash with mods (e.g. Quark) when they modify tooltips without supporting TooltipContext.Empty
-- Changed default of `treatMerchantsLikeBabies` to false, as it may have other unwanted effects with shaders 
+- Added `enabledByDefault` field to market defaults, allowing to have the group included in the "default" preset so custom defaults don't need to always be explicitly registered in the config file
