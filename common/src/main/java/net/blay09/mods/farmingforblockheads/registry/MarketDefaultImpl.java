@@ -6,5 +6,5 @@ import net.minecraft.resources.Identifier;
 
 import java.util.Optional;
 
-public record MarketDefaultImpl(Optional<Identifier> category, Optional<Payment> payment) implements MarketDefault {
+public record MarketDefaultImpl(Optional<Boolean> enabledByDefault, Optional<Identifier> category, Optional<Payment> payment) implements MarketDefault {
 }

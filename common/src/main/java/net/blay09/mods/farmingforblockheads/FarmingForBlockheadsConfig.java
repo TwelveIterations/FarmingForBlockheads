@@ -12,8 +12,6 @@ import java.util.Set;
 @Config(FarmingForBlockheads.MOD_ID)
 public class FarmingForBlockheadsConfig {
 
-    public static final Set<String> DEFAULT_INCLUDED_GROUPS = Set.of("selling.seeds", "selling.saplings", "selling.fertilizers.minecraft");
-
     public static final List<String> DEFAULT_MERCHANT_NAMES = List.of(
             "Swap-O-Matic",
             "Emerald Muncher",

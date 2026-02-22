@@ -22,12 +22,13 @@ import java.util.*;
 public class MarketDefaultsRegistry {
 
     private static final Codec<MarketDefault> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
+            Codec.BOOL.optionalFieldOf("enabledByDefault").forGetter(MarketDefault::enabledByDefault),
             Identifier.CODEC.optionalFieldOf("category").forGetter(MarketDefault::category),
             PaymentImpl.CODEC.optionalFieldOf("payment").forGetter(MarketDefault::payment)
     ).apply(instance, MarketDefaultImpl::new));
 
     public static final MarketDefaultsRegistry INSTANCE = new MarketDefaultsRegistry();
-    private static final MarketDefault EMPTY_DEFAULT = new MarketDefaultImpl(Optional.empty(), Optional.empty());
+    private static final MarketDefault EMPTY_DEFAULT = new MarketDefaultImpl(Optional.empty(), Optional.empty(), Optional.empty());
 
     private final Map<String, MarketDefault> defaultsByGroup = new HashMap<>();
 
@@ -77,6 +78,10 @@ public class MarketDefaultsRegistry {
 
     public static Identifier resolveCategory(MarketRecipe recipe) {
         final var defaults = resolveDefaults(recipe);
+
+
+
+
         return recipe.getCategory().orElse(defaults.category().orElseGet(MarketDefaultsRegistry::defaultCategory));
     }
 
@@ -86,6 +91,7 @@ public class MarketDefaultsRegistry {
     }
 
     public static boolean isEnabled(MarketRecipe recipe) {
+        final var defaults = resolveDefaults(recipe);
         final var recipeGroups = flattenDefaults(recipe.getDefaults());
         final var includedGroups = FarmingForBlockheadsConfig.getActive().includedGroups;
         final var excludedGroups = FarmingForBlockheadsConfig.getActive().excludedGroups;
@@ -97,7 +103,7 @@ public class MarketDefaultsRegistry {
             } else if (includedGroups.contains(group)) {
                 enabled = true;
                 break;
-            } else if (useDefaultIncludedGroups && FarmingForBlockheadsConfig.DEFAULT_INCLUDED_GROUPS.contains(group)) {
+            } else if (useDefaultIncludedGroups && defaults.enabledByDefault().orElse(false)) {
                 enabled = true;
                 break;
             }

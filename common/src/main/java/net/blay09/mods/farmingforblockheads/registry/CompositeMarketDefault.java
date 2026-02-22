@@ -16,6 +16,17 @@ public class CompositeMarketDefault implements MarketDefault {
     }
 
     @Override
+    public Optional<Boolean> enabledByDefault() {
+        for (int i = marketDefaults.size() - 1; i >= 0; i--) {
+            final var enabledByDefault = marketDefaults.get(i).enabledByDefault();
+            if (enabledByDefault.isPresent()) {
+                return enabledByDefault;
+            }
+        }
+        return Optional.empty();
+    }
+
+    @Override
     public Optional<Identifier> category() {
         for (int i = marketDefaults.size() - 1; i >= 0; i--) {
             final var category = marketDefaults.get(i).category();

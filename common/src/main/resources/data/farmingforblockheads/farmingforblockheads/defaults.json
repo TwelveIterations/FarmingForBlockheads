@@ -12,9 +12,11 @@
     "category": "farmingforblockheads:flowers"
   },
   "selling.saplings": {
+    "enabledByDefault": true,
     "category": "farmingforblockheads:saplings"
   },
   "selling.seeds": {
+    "enabledByDefault": true,
     "category": "farmingforblockheads:seeds"
   },
   "selling.soils": {
@@ -24,6 +26,9 @@
   "selling.berries": {
   },
   "selling.fertilizers": {
+  },
+  "selling.fertilizers.minecraft": {
+    "enabledByDefault": true
   },
   "selling.eggs": {
   },
