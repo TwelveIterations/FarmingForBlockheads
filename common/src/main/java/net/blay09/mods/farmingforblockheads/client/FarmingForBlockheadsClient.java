@@ -36,7 +36,7 @@ public class FarmingForBlockheadsClient {
                                 .slots((recipe, slots) -> {
                                     final var payment = MarketDefaultsRegistry.resolvePayment(recipe);
                                     slots.inputSlot(16, 13).add(payment.ingredient());
-                                    slots.outputSlot(54, 13).add(recipe.result().create()); // TODO change to use ItemStackTemplate once supported
+                                    slots.outputSlot(54, 13).add(recipe.result());
                                 }));
 
                 registrar.registerScreenOcclusion(MarketScreen.class, marketScreen -> marketScreen.getFilterButtons().stream()
