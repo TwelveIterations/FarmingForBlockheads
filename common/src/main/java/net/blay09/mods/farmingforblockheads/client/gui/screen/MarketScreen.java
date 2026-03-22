@@ -186,7 +186,6 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> implements
             time += partialTicks;
         }
         super.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
-        extractTooltip(guiGraphics, mouseX, mouseY);
     }
 
     @Override
