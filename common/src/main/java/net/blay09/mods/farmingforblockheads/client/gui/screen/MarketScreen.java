@@ -11,7 +11,7 @@ import net.blay09.mods.farmingforblockheads.recipe.MarketRecipeDisplay;
 import net.blay09.mods.kuma.api.Kuma;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -182,7 +182,7 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> implements
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
         if (!Kuma.hasControlDown()) {
             time += partialTicks;
         }
@@ -191,7 +191,7 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> implements
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
+    protected void renderBg(GuiGraphicsExtractor guiGraphics, float partialTicks, int mouseX, int mouseY) {
         if (menu.isScrollOffsetDirty()) {
             updateCategoryFilters();
             recalculateScrollBar();
@@ -220,17 +220,17 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> implements
     }
 
     @Override
-    protected void renderLabels(GuiGraphics guiGraphics, int x, int y) {
+    protected void renderLabels(GuiGraphicsExtractor guiGraphics, int x, int y) {
     }
 
     @Override
-    protected void renderSlots(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+    protected void renderSlots(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
         super.renderSlots(guiGraphics, mouseX, mouseY);
         ghostSlots.render(guiGraphics, minecraft, false);
     }
 
     @Override
-    protected void renderTooltip(GuiGraphics guiGraphics, int x, int y) {
+    protected void renderTooltip(GuiGraphicsExtractor guiGraphics, int x, int y) {
         super.renderTooltip(guiGraphics, x, y);
         ghostSlots.renderTooltip(guiGraphics, minecraft, x, y, hoveredSlot);
     }
