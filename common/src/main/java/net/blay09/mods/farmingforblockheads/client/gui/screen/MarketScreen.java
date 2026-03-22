@@ -191,6 +191,7 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> implements
 
     @Override
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        super.extractBackground(graphics, mouseX, mouseY, a);
         if (menu.isScrollOffsetDirty()) {
             updateCategoryFilters();
             recalculateScrollBar();
