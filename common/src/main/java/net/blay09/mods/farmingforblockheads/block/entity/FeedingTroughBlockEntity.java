@@ -1,16 +1,15 @@
 package net.blay09.mods.farmingforblockheads.block.entity;
 
 import com.google.common.collect.ArrayListMultimap;
-import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.world.BalmContainerProvider;
 import net.blay09.mods.balm.world.ContainerUtils;
 import net.blay09.mods.balm.world.DefaultContainer;
 import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheadsConfig;
 import net.blay09.mods.farmingforblockheads.api.FeedingTroughEvent;
-import net.blay09.mods.farmingforblockheads.network.ChickenNestEffectMessage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -143,8 +142,8 @@ public class FeedingTroughBlockEntity extends BlockEntity implements BalmContain
             ContainerUtils.extractItem(container, 0, 1, false);
             setChanged();
         }
-        if (event.shouldPlayEffect()) {
-            Balm.networking().sendToTracking(((ServerLevel) level), worldPosition, new ChickenNestEffectMessage(worldPosition));
+        if (event.shouldPlayEffect() && level instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(ParticleTypes.EXPLOSION, worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5, 1, 0, 0, 0, 0);
         }
     }
 
