@@ -59,7 +59,7 @@ public class ModModelProvider extends FabricModelProvider {
         final var moistTextureMapping = (new TextureMapping()).put(TextureSlot.DIRT, TextureMapping.getBlockTexture(Blocks.DIRT))
                 .put(TextureSlot.TOP, TextureMapping.getBlockTexture(farmland, "_moist"));
         final var variant = plainVariant(ModelTemplates.FARMLAND.create(farmland, textureMapping, generators.modelOutput));
-        final var moistVariant = plainVariant(ModelTemplates.FARMLAND.create(TextureMapping.getBlockTexture(farmland, "_moist"),
+        final var moistVariant = plainVariant(ModelTemplates.FARMLAND.create(ModelLocationUtils.getModelLocation(farmland, "_moist"),
                 moistTextureMapping,
                 generators.modelOutput));
         generators.blockStateOutput.accept(MultiVariantGenerator.dispatch(farmland)
