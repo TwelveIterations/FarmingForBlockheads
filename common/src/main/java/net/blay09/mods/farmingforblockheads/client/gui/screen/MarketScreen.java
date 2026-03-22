@@ -26,7 +26,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.crafting.display.*;
 
@@ -61,14 +61,13 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> implements
     private EditBox searchBar;
 
     public MarketScreen(MarketMenu container, Inventory playerInventory, Component displayName) {
-        super(container, playerInventory, displayName);
+        super(container, playerInventory, displayName, 176, 174);
 
         ghostSlots = new GhostSlots(() -> Mth.floor(this.time / 30f));
     }
 
     @Override
     public void init() {
-        imageHeight = 174;
         super.init();
 
         Font font = Minecraft.getInstance().font;
@@ -182,16 +181,16 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> implements
     }
 
     @Override
-    public void render(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
         if (!Kuma.hasControlDown()) {
             time += partialTicks;
         }
-        super.render(guiGraphics, mouseX, mouseY, partialTicks);
-        renderTooltip(guiGraphics, mouseX, mouseY);
+        super.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
+        extractTooltip(guiGraphics, mouseX, mouseY);
     }
 
     @Override
-    protected void renderBg(GuiGraphicsExtractor guiGraphics, float partialTicks, int mouseX, int mouseY) {
+    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         if (menu.isScrollOffsetDirty()) {
             updateCategoryFilters();
             recalculateScrollBar();
@@ -200,7 +199,7 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> implements
 
         Font font = minecraft.font;
 
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, leftPos, topPos - 10, 0, 0, imageWidth, imageHeight + 10, 256, 256);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, leftPos, topPos - 10, 0, 0, imageWidth, imageHeight + 10, 256, 256);
 
         if (mouseClickY != -1) {
             float pixelsPerFilter = (SCROLLBAR_HEIGHT - scrollBarScaledHeight) / (float) Math.max(1,
@@ -214,29 +213,29 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> implements
             }
         }
 
-        guiGraphics.drawString(font, I18n.get("container.farmingforblockheads.market"), leftPos + 10, topPos + 10, 0xFFFFFF, true);
+        graphics.text(font, I18n.get("container.farmingforblockheads.market"), leftPos + 10, topPos + 10, 0xFFFFFF, true);
 
-        guiGraphics.fill(scrollBarXPos, scrollBarYPos, scrollBarXPos + SCROLLBAR_WIDTH, scrollBarYPos + scrollBarScaledHeight, SCROLLBAR_COLOR);
+        graphics.fill(scrollBarXPos, scrollBarYPos, scrollBarXPos + SCROLLBAR_WIDTH, scrollBarYPos + scrollBarScaledHeight, SCROLLBAR_COLOR);
     }
 
     @Override
-    protected void renderLabels(GuiGraphicsExtractor guiGraphics, int x, int y) {
+    protected void extractLabels(GuiGraphicsExtractor graphics, int xm, int ym) {
     }
 
     @Override
-    protected void renderSlots(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
-        super.renderSlots(guiGraphics, mouseX, mouseY);
-        ghostSlots.render(guiGraphics, minecraft, false);
+    protected void extractSlots(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+        super.extractSlots(graphics, mouseX, mouseY);
+        ghostSlots.extractRenderState(graphics, minecraft, false);
     }
 
     @Override
-    protected void renderTooltip(GuiGraphicsExtractor guiGraphics, int x, int y) {
-        super.renderTooltip(guiGraphics, x, y);
-        ghostSlots.renderTooltip(guiGraphics, minecraft, x, y, hoveredSlot);
+    protected void extractTooltip(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+        super.extractTooltip(graphics, mouseX, mouseY);
+        ghostSlots.extractTooltip(graphics, minecraft, mouseX, mouseY, hoveredSlot);
     }
 
     @Override
-    protected void slotClicked(Slot slot, int pSlotId, int pMouseButton, ClickType pType) {
+    protected void slotClicked(Slot slot, int pSlotId, int pMouseButton, ContainerInput pType) {
         super.slotClicked(slot, pSlotId, pMouseButton, pType);
         if (slot == menu.getResultSlot() || slot == menu.getPaymentSlot() || slot instanceof MarketListingSlot) {
             ghostSlots.clear();

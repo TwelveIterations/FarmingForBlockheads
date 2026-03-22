@@ -10,6 +10,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ public record MarketCategoriesMessage(List<SimpleHolder<MarketCategory>> categor
         final var categories = new ArrayList<SimpleHolder<MarketCategory>>();
         for (int i = 0; i < count; i++) {
             final var id = buf.readIdentifier();
-            final var iconStack = ItemStack.STREAM_CODEC.decode(buf);
+            final var iconStack = ItemStackTemplate.STREAM_CODEC.decode(buf);
             final var sortIndex = buf.readInt();
             final var tooltip = ComponentSerialization.TRUSTED_STREAM_CODEC.decode(buf);
             final var category = new MarketCategoryImpl(iconStack, sortIndex, tooltip);
@@ -43,7 +44,7 @@ public record MarketCategoriesMessage(List<SimpleHolder<MarketCategory>> categor
         message.categories.forEach(holder -> {
             buf.writeIdentifier(holder.id());
             final var category = holder.value();
-            ItemStack.STREAM_CODEC.encode(buf, category.iconStack());
+            ItemStackTemplate.STREAM_CODEC.encode(buf, category.iconStack());
             buf.writeInt(category.sortIndex());
             ComponentSerialization.TRUSTED_STREAM_CODEC.encode(buf, category.tooltip());
         });

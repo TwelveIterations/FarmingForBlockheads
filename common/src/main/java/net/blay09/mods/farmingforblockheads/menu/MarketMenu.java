@@ -95,7 +95,7 @@ public class MarketMenu extends AbstractContainerMenu {
             final var foundRecipeHolder = foundRecipe.get();
             final var recipe = foundRecipeHolder.value();
             if (resultContainer.setRecipeUsed(serverPlayer, foundRecipeHolder)) {
-                final var assembledStack = recipe.assemble(recipeInput, level.registryAccess());
+                final var assembledStack = recipe.assemble(recipeInput);
                 if (assembledStack.isItemEnabled(level.enabledFeatures())) {
                     resultItem = assembledStack;
                 }
@@ -255,15 +255,15 @@ public class MarketMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public void clicked(int slotNumber, int dragType, ClickType clickType, Player player) {
+    public void clicked(int slotNumber, int dragType, ContainerInput clickType, Player player) {
         if (slotNumber >= 0 && slotNumber < slots.size()) {
             final var slot = slots.get(slotNumber);
-            if (player.level().isClientSide() && clickType != ClickType.PICKUP_ALL) {
+            if (player.level().isClientSide() && clickType != ContainerInput.PICKUP_ALL) {
                 if (slot instanceof MarketListingSlot listingSlot) {
                     final var recipe = listingSlot.getRecipeDisplayEntry();
                     if (recipe != null) {
                         selectedRecipeDisplayEntry = recipe;
-                        Balm.networking().sendToServer(new MarketPlaceRecipeMessage(containerId, recipe.id(), clickType == ClickType.QUICK_MOVE));
+                        Balm.networking().sendToServer(new MarketPlaceRecipeMessage(containerId, recipe.id(), clickType == ContainerInput.QUICK_MOVE));
                     }
                 }
             }

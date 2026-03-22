@@ -1,6 +1,5 @@
 package net.blay09.mods.farmingforblockheads;
 
-import net.blay09.mods.balm.platform.event.callback.CropCallback;
 import net.blay09.mods.farmingforblockheads.block.FertilizedFarmlandBlock;
 import net.blay09.mods.farmingforblockheads.tag.ModBlockTags;
 import net.minecraft.core.BlockPos;
@@ -9,7 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.FarmBlock;
+import net.minecraft.world.level.block.FarmlandBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class FarmlandHandler {
@@ -34,7 +33,7 @@ public class FarmlandHandler {
     public static void rollRegression(Level level, BlockPos pos, BlockState farmland) {
         if (farmland.getBlock() instanceof FertilizedFarmlandBlock) {
             if (Math.random() <= ((FertilizedFarmlandBlock) farmland.getBlock()).getRegressionChance()) {
-                level.setBlockAndUpdate(pos, Blocks.FARMLAND.defaultBlockState().setValue(FarmBlock.MOISTURE, farmland.getValue(FarmBlock.MOISTURE)));
+                level.setBlockAndUpdate(pos, Blocks.FARMLAND.defaultBlockState().setValue(FarmlandBlock.MOISTURE, farmland.getValue(FarmlandBlock.MOISTURE)));
             }
         }
     }

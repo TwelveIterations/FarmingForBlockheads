@@ -3,7 +3,7 @@ package net.blay09.mods.farmingforblockheads.block;
 import com.mojang.serialization.MapCodec;
 import net.blay09.mods.balm.world.level.block.CustomFarmBlock;
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheadsConfig;
-import net.blay09.mods.farmingforblockheads.mixin.FarmBlockAccessor;
+import net.blay09.mods.farmingforblockheads.mixin.FarmlandBlockAccessor;
 import net.blay09.mods.farmingforblockheads.tag.ModBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -13,13 +13,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.FarmBlock;
+import net.minecraft.world.level.block.FarmlandBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class FertilizedFarmlandBlock extends FarmBlock implements CustomFarmBlock {
+public class FertilizedFarmlandBlock extends FarmlandBlock implements CustomFarmBlock {
 
-    public static final MapCodec<FarmBlock> CODEC = simpleCodec(FertilizedFarmlandBlock::new);
+    public static final MapCodec<FarmlandBlock> CODEC = simpleCodec(FertilizedFarmlandBlock::new);
 
     public FertilizedFarmlandBlock(Properties properties) {
         super(properties.sound(SoundType.GRAVEL).strength(0.6f).randomTicks());
@@ -50,10 +50,10 @@ public class FertilizedFarmlandBlock extends FarmBlock implements CustomFarmBloc
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         int moisture = state.getValue(MOISTURE);
 
-        if (!FarmBlockAccessor.callIsNearWater(level, pos) && !level.isRainingAt(pos.above())) {
+        if (!FarmlandBlockAccessor.callIsNearWater(level, pos) && !level.isRainingAt(pos.above())) {
             if (moisture > 0) {
                 level.setBlock(pos, state.setValue(MOISTURE, moisture - 1), 2);
-            } else if (!FarmBlockAccessor.callShouldMaintainFarmland(level, pos) && state.is(ModBlockTags.STABLE_FARMLAND)) {
+            } else if (!FarmlandBlockAccessor.callShouldMaintainFarmland(level, pos) && state.is(ModBlockTags.STABLE_FARMLAND)) {
                 turnToDirt(null, state, level, pos);
             }
         } else if (moisture < 7) {
@@ -62,7 +62,7 @@ public class FertilizedFarmlandBlock extends FarmBlock implements CustomFarmBloc
     }
 
     @Override
-    public MapCodec<FarmBlock> codec() {
+    public MapCodec<FarmlandBlock> codec() {
         return CODEC;
     }
 }

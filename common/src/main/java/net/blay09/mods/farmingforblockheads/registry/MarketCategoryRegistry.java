@@ -10,6 +10,7 @@ import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 
 import java.io.BufferedReader;
 import java.util.*;
@@ -17,7 +18,7 @@ import java.util.*;
 public class MarketCategoryRegistry {
 
     private static final Codec<MarketCategory> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-            ItemStack.STRICT_CODEC.fieldOf("icon").forGetter(MarketCategory::iconStack),
+            ItemStackTemplate.CODEC.fieldOf("icon").forGetter(MarketCategory::iconStack),
             ExtraCodecs.POSITIVE_INT.fieldOf("sortIndex").orElse(0).forGetter(MarketCategory::sortIndex),
             ComponentSerialization.CODEC.fieldOf("tooltip").forGetter(MarketCategory::tooltip)
     ).apply(instance, MarketCategoryImpl::new));

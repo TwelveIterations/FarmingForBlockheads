@@ -30,8 +30,8 @@ public class ModLootModifiers {
             BlockPos pos = BlockPos.containing(origin);
             // Other mods might trigger loot tables during world gen, which results in a deadlock when reading the
             // block state below as the world in the context is the server world, not the world gen region
-            ChunkPos chunkPos = new ChunkPos(pos);
-            if (!level.getChunkSource().hasChunk(chunkPos.x, chunkPos.z)) {
+            ChunkPos chunkPos = ChunkPos.containing(pos);
+            if (!level.getChunkSource().hasChunk(chunkPos.x(), chunkPos.z())) {
                 return;
             }
 

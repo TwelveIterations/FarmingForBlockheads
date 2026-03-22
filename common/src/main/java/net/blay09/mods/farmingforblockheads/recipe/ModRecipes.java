@@ -10,7 +10,7 @@ public class ModRecipes {
 
     public static void initialize(BalmRecipeTypeRegistrar registry) {
         marketRecipe = registry.register("market", MarketRecipe.class)
-                .withSerializer(MarketRecipe.Serializer::new)
+                .withSerializer(MarketRecipe::serializer)
                 .withRecipeBookCategory()
                 .asDeferredRecipeType();
         registry.registerDisplayType("market", (id) -> MarketRecipeDisplay.TYPE);

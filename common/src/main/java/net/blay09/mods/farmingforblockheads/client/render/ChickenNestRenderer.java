@@ -28,7 +28,7 @@ public class ChickenNestRenderer implements BlockEntityRenderer<ChickenNestBlock
         public int count;
     }
 
-    private final ItemStack EGG_STACK = new ItemStack(Items.EGG);
+    private @Nullable ItemStack EGG_STACK;
     private final float[] EGG_POSITIONS = new float[]{
             0.2f, 0, 0,
             -0.2f, 0, 0,
@@ -50,8 +50,11 @@ public class ChickenNestRenderer implements BlockEntityRenderer<ChickenNestBlock
     @Override
     public void extractRenderState(ChickenNestBlockEntity blockEntity, ChickenNestRenderState renderState, float delta, Vec3 vec, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderState.extractBase(blockEntity, renderState, crumblingOverlay);
-        renderState.facing = renderState.blockState.getValue(ChickenNestBlock.FACING);
+        renderState.facing = blockEntity.getBlockState().getValue(ChickenNestBlock.FACING);
         renderState.count = blockEntity.getEggCount();
+        if (EGG_STACK == null) {
+            EGG_STACK = new ItemStack(Items.EGG);
+        }
         itemModelResolver.updateForTopItem(renderState.item, EGG_STACK, ItemDisplayContext.FIXED, blockEntity.getLevel(), null, (int) renderState.blockPos.asLong());
     }
 

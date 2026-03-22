@@ -2,17 +2,10 @@ package net.blay09.mods.farmingforblockheads.block;
 
 import net.blay09.mods.balm.world.level.block.BalmBlockRegistrar;
 import net.blay09.mods.balm.world.level.block.DeferredBlock;
-import net.blay09.mods.farmingforblockheads.FarmingForBlockheads;
 import net.blay09.mods.farmingforblockheads.component.DescriptionComponent;
 import net.blay09.mods.farmingforblockheads.component.ModComponents;
 import net.blay09.mods.farmingforblockheads.item.FertilizerItem;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import java.util.List;
 

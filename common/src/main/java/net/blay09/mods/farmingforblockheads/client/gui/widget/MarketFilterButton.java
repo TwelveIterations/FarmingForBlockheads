@@ -26,7 +26,7 @@ public class MarketFilterButton extends Button {
     }
 
     @Override
-    public void renderContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    public void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
         this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
 
         int texY = 14;
@@ -37,7 +37,7 @@ public class MarketFilterButton extends Button {
         }
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, ICONS, getX(), getY(), 176, texY, width, height, 256, 256);
 
-        guiGraphics.renderItem(category.value().iconStack(), getX() + 2, getY() + 2);
+        guiGraphics.item(category.value().iconStack().create(), getX() + 2, getY() + 2);
     }
 
     public SimpleHolder<MarketCategory> getCategory() {
