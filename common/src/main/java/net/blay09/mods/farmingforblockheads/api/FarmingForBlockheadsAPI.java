@@ -1,7 +1,6 @@
 package net.blay09.mods.farmingforblockheads.api;
 
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.crafting.RecipeType;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
@@ -22,14 +21,6 @@ public class FarmingForBlockheadsAPI {
 
     public static Optional<MarketCategory> getMarketCategory(Identifier registryName) {
         return internalMethods.getMarketCategory(registryName);
-    }
-
-    /**
-     * @deprecated You can look up the recipe type from the registry instead as `farmingforblockheads:market`.
-     */
-    @Deprecated
-    public static RecipeType<?> getMarketRecipeType() {
-        return internalMethods.getMarketRecipeType();
     }
 
     public static Map<Identifier, MarketCategory> getMarketCategories() {
