@@ -1,1 +1,1 @@
-- Added `enabledByDefault` field to market defaults, allowing to have the group included in the "default" preset so custom defaults don't need to always be explicitly registered in the config file
+- Updated to Minecraft 26.1
