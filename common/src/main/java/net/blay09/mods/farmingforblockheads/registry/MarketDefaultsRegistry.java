@@ -9,7 +9,7 @@ import net.blay09.mods.farmingforblockheads.FarmingForBlockheads;
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheadsConfig;
 import net.blay09.mods.farmingforblockheads.api.MarketDefault;
 import net.blay09.mods.farmingforblockheads.api.Payment;
-import net.blay09.mods.farmingforblockheads.recipe.MarketRecipe;
+import net.blay09.mods.farmingforblockheads.recipe.MarketRecipeImpl;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.Identifier;
@@ -71,12 +71,12 @@ public class MarketDefaultsRegistry {
         return result;
     }
 
-    public static MarketDefault resolveDefaults(MarketRecipe recipe) {
+    public static MarketDefault resolveDefaults(MarketRecipeImpl recipe) {
         final var result = flattenDefaults(recipe.getDefaults()).stream().map(MarketDefaultsRegistry::resolveExactDefault).toList();
         return new CompositeMarketDefault(result);
     }
 
-    public static Identifier resolveCategory(MarketRecipe recipe) {
+    public static Identifier resolveCategory(MarketRecipeImpl recipe) {
         final var defaults = resolveDefaults(recipe);
 
 
@@ -85,12 +85,12 @@ public class MarketDefaultsRegistry {
         return recipe.getCategory().orElse(defaults.category().orElseGet(MarketDefaultsRegistry::defaultCategory));
     }
 
-    public static Payment resolvePayment(MarketRecipe recipe) {
+    public static Payment resolvePayment(MarketRecipeImpl recipe) {
         final var defaults = resolveDefaults(recipe);
         return recipe.getPayment().orElse(defaults.payment().orElseGet(MarketDefaultsRegistry::defaultPayment));
     }
 
-    public static boolean isEnabled(MarketRecipe recipe) {
+    public static boolean isEnabled(MarketRecipeImpl recipe) {
         final var defaults = resolveDefaults(recipe);
         final var recipeGroups = flattenDefaults(recipe.getDefaults());
         final var includedGroups = FarmingForBlockheadsConfig.getActive().includedGroups;

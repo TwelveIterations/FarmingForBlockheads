@@ -4,7 +4,7 @@ import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.client.BalmClientRegistrars;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
 import net.blay09.mods.farmingforblockheads.client.gui.screen.MarketScreen;
-import net.blay09.mods.farmingforblockheads.recipe.MarketRecipe;
+import net.blay09.mods.farmingforblockheads.recipe.MarketRecipeImpl;
 import net.blay09.mods.farmingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.farmingforblockheads.registry.MarketDefaultsRegistry;
 import net.minecraft.client.renderer.Rect2i;
@@ -21,7 +21,7 @@ public class FarmingForBlockheadsClient {
 
 
         Balm.modSupport().recipeViewers().register(id("recipes"), registrar -> {
-            registrar.registerRecipeType(id("market"), MarketRecipe.class)
+            registrar.registerRecipeType(id("market"), MarketRecipeImpl.class)
                     .withSyncedRecipes(ModRecipes.marketRecipe)
                     .withCraftingStation(ModBlocks.market)
                     .buildDisplay(display -> display

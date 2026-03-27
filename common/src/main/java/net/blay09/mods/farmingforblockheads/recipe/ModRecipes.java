@@ -6,11 +6,11 @@ import net.minecraft.world.item.crafting.RecipeInput;
 
 public class ModRecipes {
 
-    public static DeferredRecipeType<RecipeInput, MarketRecipe> marketRecipe;
+    public static DeferredRecipeType<RecipeInput, MarketRecipeImpl> marketRecipe;
 
     public static void initialize(BalmRecipeTypeRegistrar registry) {
-        marketRecipe = registry.register("market", MarketRecipe.class)
-                .withSerializer(MarketRecipe::serializer)
+        marketRecipe = registry.register("market", MarketRecipeImpl.class)
+                .withSerializer(MarketRecipeImpl::serializer)
                 .withRecipeBookCategory()
                 .asDeferredRecipeType();
         registry.registerDisplayType("market", (id) -> MarketRecipeDisplay.TYPE);

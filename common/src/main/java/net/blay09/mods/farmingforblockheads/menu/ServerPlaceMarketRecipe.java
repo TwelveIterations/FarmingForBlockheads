@@ -1,6 +1,6 @@
 package net.blay09.mods.farmingforblockheads.menu;
 
-import net.blay09.mods.farmingforblockheads.recipe.MarketRecipe;
+import net.blay09.mods.farmingforblockheads.recipe.MarketRecipeImpl;
 import net.blay09.mods.farmingforblockheads.registry.MarketDefaultsRegistry;
 import net.minecraft.core.Holder;
 import net.minecraft.recipebook.ServerPlaceRecipe;
@@ -15,14 +15,14 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import java.util.ArrayList;
 
 public class ServerPlaceMarketRecipe {
-    private final ServerPlaceRecipe.CraftingMenuAccess<MarketRecipe> menuAccess;
+    private final ServerPlaceRecipe.CraftingMenuAccess<MarketRecipeImpl> menuAccess;
     private final Slot paymentSlot;
     private final Inventory inventory;
-    private final RecipeHolder<MarketRecipe> recipeHolder;
+    private final RecipeHolder<MarketRecipeImpl> recipeHolder;
     private final boolean useMaxItems;
     private final boolean creative;
 
-    public ServerPlaceMarketRecipe(ServerPlaceRecipe.CraftingMenuAccess<MarketRecipe> menuAccess, Slot paymentSlot, Inventory inventory, RecipeHolder<MarketRecipe> recipeHolder, boolean useMaxItems, boolean creative) {
+    public ServerPlaceMarketRecipe(ServerPlaceRecipe.CraftingMenuAccess<MarketRecipeImpl> menuAccess, Slot paymentSlot, Inventory inventory, RecipeHolder<MarketRecipeImpl> recipeHolder, boolean useMaxItems, boolean creative) {
         this.menuAccess = menuAccess;
         this.paymentSlot = paymentSlot;
         this.recipeHolder = recipeHolder;
@@ -32,7 +32,7 @@ public class ServerPlaceMarketRecipe {
     }
 
     public static RecipeBookMenu.PostPlaceAction placeRecipe(
-            ServerPlaceRecipe.CraftingMenuAccess<MarketRecipe> access, Slot paymentSlot, Inventory inventory, RecipeHolder<MarketRecipe> recipeHolder, boolean useMaxItems, boolean creative) {
+            ServerPlaceRecipe.CraftingMenuAccess<MarketRecipeImpl> access, Slot paymentSlot, Inventory inventory, RecipeHolder<MarketRecipeImpl> recipeHolder, boolean useMaxItems, boolean creative) {
         final var serverPlaceMarketRecipe = new ServerPlaceMarketRecipe(access, paymentSlot, inventory, recipeHolder, useMaxItems, creative);
         if (!creative && !serverPlaceMarketRecipe.testClearPayment()) {
             return RecipeBookMenu.PostPlaceAction.NOTHING;
@@ -44,7 +44,7 @@ public class ServerPlaceMarketRecipe {
         }
     }
 
-    private RecipeBookMenu.PostPlaceAction tryPlaceRecipe(RecipeHolder<MarketRecipe> recipeHolder, StackedItemContents stackedItemContents) {
+    private RecipeBookMenu.PostPlaceAction tryPlaceRecipe(RecipeHolder<MarketRecipeImpl> recipeHolder, StackedItemContents stackedItemContents) {
         if (stackedItemContents.canCraft(recipeHolder.value(), null)) {
             placeRecipe(recipeHolder, stackedItemContents);
             inventory.setChanged();
@@ -56,7 +56,7 @@ public class ServerPlaceMarketRecipe {
         }
     }
 
-    private void placeRecipe(RecipeHolder<MarketRecipe> recipeHolder, StackedItemContents stackedItemContents) {
+    private void placeRecipe(RecipeHolder<MarketRecipeImpl> recipeHolder, StackedItemContents stackedItemContents) {
         if (!menuAccess.recipeMatches(recipeHolder)) {
             clearPayment();
         }

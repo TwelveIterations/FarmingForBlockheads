@@ -3,10 +3,12 @@ package net.blay09.mods.farmingforblockheads.menu;
 import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.world.DefaultContainer;
 import net.blay09.mods.farmingforblockheads.api.MarketCategory;
+import net.blay09.mods.farmingforblockheads.api.MarketClearRecipeEvent;
+import net.blay09.mods.farmingforblockheads.api.MarketPlaceRecipeEvent;
 import net.blay09.mods.farmingforblockheads.api.Payment;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
 import net.blay09.mods.farmingforblockheads.network.MarketPlaceRecipeMessage;
-import net.blay09.mods.farmingforblockheads.recipe.MarketRecipe;
+import net.blay09.mods.farmingforblockheads.recipe.MarketRecipeImpl;
 import net.blay09.mods.farmingforblockheads.recipe.MarketRecipeDisplay;
 import net.blay09.mods.farmingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.farmingforblockheads.registry.MarketDefaultsRegistry;
@@ -25,7 +27,8 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.display.RecipeDisplayEntry;
 import net.minecraft.world.item.crafting.display.RecipeDisplayId;
 import net.minecraft.world.item.crafting.display.SlotDisplayContext;
@@ -64,7 +67,7 @@ public class MarketMenu extends AbstractContainerMenu {
     private final List<RecipeDisplayEntry> filteredRecipes = new ArrayList<>();
 
     private @Nullable RecipeDisplayEntry selectedRecipeDisplayEntry;
-    private @Nullable RecipeHolder<MarketRecipe> serverSelectedRecipe;
+    private @Nullable RecipeHolder<MarketRecipeImpl> serverSelectedRecipe;
 
     public MarketMenu(int windowId, Inventory playerInventory, ContainerLevelAccess access) {
         super(ModMenus.market.value(), windowId);
@@ -86,7 +89,7 @@ public class MarketMenu extends AbstractContainerMenu {
         addStandardInventorySlots(playerInventory, 8, 92);
     }
 
-    protected static void slotChangedMarket(AbstractContainerMenu menu, ServerLevel level, Player player, MarketPaymentContainer container, ResultContainer resultContainer, @Nullable RecipeHolder<MarketRecipe> recipeHolder) {
+    protected static void slotChangedMarket(AbstractContainerMenu menu, ServerLevel level, Player player, MarketPaymentContainer container, ResultContainer resultContainer, @Nullable RecipeHolder<MarketRecipeImpl> recipeHolder) {
         final var recipeInput = container.asRecipeInput();
         final var serverPlayer = (ServerPlayer) player;
         var resultItem = ItemStack.EMPTY;
@@ -119,10 +122,21 @@ public class MarketMenu extends AbstractContainerMenu {
     }
 
     public RecipeBookMenu.PostPlaceAction handlePlacement(boolean useMaxItems, boolean creative, RecipeHolder<?> genericRecipeHolder, ServerLevel level, Inventory inventory) {
-        final var recipeHolder = ((RecipeHolder<MarketRecipe>) genericRecipeHolder);
+        final var recipeHolder = ((RecipeHolder<MarketRecipeImpl>) genericRecipeHolder);
         beginPlacingRecipe();
         if (serverSelectedRecipe != recipeHolder) {
-            clearContainer(player, paymentSlots);
+            final var event = new MarketClearRecipeEvent(player, paymentSlots);
+            MarketClearRecipeEvent.EVENT.invoker().accept(event);
+            if (!event.skipsDefault()) {
+                clearContainer(player, paymentSlots);
+            }
+        }
+
+        final var event = new MarketPlaceRecipeEvent(useMaxItems, creative, recipeHolder.id(), recipeHolder.value(), level, inventory, paymentSlots, resultSlots);
+        MarketPlaceRecipeEvent.EVENT.invoker().accept(event);
+        final var postPlaceActionOverride = event.postPlaceActionOverride();
+        if (postPlaceActionOverride != null) {
+            return postPlaceActionOverride;
         }
 
         RecipeBookMenu.PostPlaceAction postPlaceAction;
@@ -140,7 +154,7 @@ public class MarketMenu extends AbstractContainerMenu {
                 }
 
                 @Override
-                public boolean recipeMatches(RecipeHolder<MarketRecipe> recipe) {
+                public boolean recipeMatches(RecipeHolder<MarketRecipeImpl> recipe) {
                     return recipe.value().matches(MarketMenu.this.paymentSlots.asRecipeInput(), MarketMenu.this.owner().level());
                 }
             }, getPaymentSlot(), inventory, recipeHolder, useMaxItems, creative);
@@ -159,7 +173,7 @@ public class MarketMenu extends AbstractContainerMenu {
         this.placingRecipe = true;
     }
 
-    public void finishPlacingRecipe(ServerLevel level, RecipeHolder<MarketRecipe> recipeHolder) {
+    public void finishPlacingRecipe(ServerLevel level, RecipeHolder<MarketRecipeImpl> recipeHolder) {
         this.placingRecipe = false;
         serverSelectedRecipe = recipeHolder;
         slotChangedMarket(this, level, player, paymentSlots, resultSlots, recipeHolder);
@@ -383,11 +397,11 @@ public class MarketMenu extends AbstractContainerMenu {
         final var contextMap = SlotDisplayContext.fromLevel(player.level());
         return Comparator.comparingInt(
                         (RecipeDisplayEntry recipe) -> recipe.display() instanceof MarketRecipeDisplay marketRecipeDisplay ? resolveMarketCategory(marketRecipeDisplay.category())
-                                .map(MarketCategory::sortIndex)
-                                .orElse(0) : 0)
+                                                                                                                             .map(MarketCategory::sortIndex)
+                                                                                                                             .orElse(0) : 0)
                 .thenComparing(recipe -> recipe.display() instanceof MarketRecipeDisplay marketRecipeDisplay ? marketRecipeDisplay.sortIndex() : 0)
                 .thenComparing(recipe -> (recipe.display() instanceof MarketRecipeDisplay marketRecipeDisplay ? marketRecipeDisplay.icon()
-                        .resolveForFirstStack(contextMap) : recipe.display().result().resolveForFirstStack(contextMap))
+                                                                                                                .resolveForFirstStack(contextMap) : recipe.display().result().resolveForFirstStack(contextMap))
                         .getDisplayName()
                         .getString());
     }

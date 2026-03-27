@@ -3,6 +3,7 @@ package net.blay09.mods.farmingforblockheads.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.blay09.mods.farmingforblockheads.api.MarketRecipe;
 import net.blay09.mods.farmingforblockheads.api.Payment;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
 import net.blay09.mods.farmingforblockheads.registry.MarketDefaultsRegistry;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class MarketRecipe implements Recipe<RecipeInput> {
+public class MarketRecipeImpl implements Recipe<RecipeInput>, MarketRecipe {
 
     private final String defaults;
     private final @Nullable Identifier category;
@@ -35,7 +36,7 @@ public class MarketRecipe implements Recipe<RecipeInput> {
     private final @Nullable Payment payment;
     private final int sortIndex;
 
-    public MarketRecipe(ItemStackTemplate result, String defaults, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<Identifier> category, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<Payment> payment, int sortIndex, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<ItemStackTemplate> icon) {
+    public MarketRecipeImpl(ItemStackTemplate result, String defaults, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<Identifier> category, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<Payment> payment, int sortIndex, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<ItemStackTemplate> icon) {
         this.defaults = defaults;
         this.category = category.orElse(null);
         this.result = result;
@@ -67,6 +68,7 @@ public class MarketRecipe implements Recipe<RecipeInput> {
         return "";
     }
 
+    @Override
     public ItemStackTemplate result() {
         return result;
     }
@@ -133,6 +135,11 @@ public class MarketRecipe implements Recipe<RecipeInput> {
         return Optional.ofNullable(payment);
     }
 
+    @Override
+    public Payment payment() {
+        return MarketDefaultsRegistry.resolvePayment(this);
+    }
+
     public Optional<Identifier> getCategory() {
         return Optional.ofNullable(category);
     }
@@ -141,7 +148,7 @@ public class MarketRecipe implements Recipe<RecipeInput> {
         return sortIndex;
     }
 
-    public static RecipeSerializer<MarketRecipe> serializer() {
+    public static RecipeSerializer<MarketRecipeImpl> serializer() {
         return new RecipeSerializer<>(CODEC, STREAM_CODEC);
     }
 
@@ -151,28 +158,28 @@ public class MarketRecipe implements Recipe<RecipeInput> {
             DataComponentPatch.CODEC.optionalFieldOf("components", DataComponentPatch.EMPTY).forGetter(ItemStackTemplate::components)
     ).apply(instance, ItemStackTemplate::new));
 
-    private static final MapCodec<MarketRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    private static final MapCodec<MarketRecipeImpl> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             RESULT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
             ExtraCodecs.NON_EMPTY_STRING.fieldOf("defaults").forGetter(recipe -> recipe.defaults),
-            Identifier.CODEC.optionalFieldOf("category").forGetter(MarketRecipe::getCategory),
-            PaymentImpl.CODEC.optionalFieldOf("payment").forGetter(MarketRecipe::getPayment),
-            Codec.INT.fieldOf("sortIndex").orElse(0).forGetter(MarketRecipe::getSortIndex),
+            Identifier.CODEC.optionalFieldOf("category").forGetter(MarketRecipeImpl::getCategory),
+            PaymentImpl.CODEC.optionalFieldOf("payment").forGetter(MarketRecipeImpl::getPayment),
+            Codec.INT.fieldOf("sortIndex").orElse(0).forGetter(MarketRecipeImpl::getSortIndex),
             ItemStackTemplate.CODEC.optionalFieldOf("icon").forGetter(recipe -> Optional.of(recipe.icon))
-    ).apply(instance, MarketRecipe::new));
+    ).apply(instance, MarketRecipeImpl::new));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, MarketRecipe> STREAM_CODEC = StreamCodec.of(MarketRecipe::toNetwork, MarketRecipe::fromNetwork);
+    public static final StreamCodec<RegistryFriendlyByteBuf, MarketRecipeImpl> STREAM_CODEC = StreamCodec.of(MarketRecipeImpl::toNetwork, MarketRecipeImpl::fromNetwork);
 
-    public static MarketRecipe fromNetwork(RegistryFriendlyByteBuf buf) {
+    public static MarketRecipeImpl fromNetwork(RegistryFriendlyByteBuf buf) {
         final var resultItem = ItemStackTemplate.STREAM_CODEC.decode(buf);
         final var defaults = buf.readUtf();
         final var category = buf.readNullable(FriendlyByteBuf::readIdentifier);
         final var payment = buf.readNullable(buffer -> PaymentImpl.fromNetwork((RegistryFriendlyByteBuf) buffer));
         final var sortIndex = buf.readVarInt();
         final var icon = ItemStackTemplate.STREAM_CODEC.decode(buf);
-        return new MarketRecipe(resultItem, defaults, Optional.ofNullable(category), Optional.ofNullable(payment), sortIndex, Optional.of(icon));
+        return new MarketRecipeImpl(resultItem, defaults, Optional.ofNullable(category), Optional.ofNullable(payment), sortIndex, Optional.of(icon));
     }
 
-    public static void toNetwork(RegistryFriendlyByteBuf buf, MarketRecipe recipe) {
+    public static void toNetwork(RegistryFriendlyByteBuf buf, MarketRecipeImpl recipe) {
         ItemStackTemplate.STREAM_CODEC.encode(buf, recipe.result);
         buf.writeUtf(recipe.defaults);
         buf.writeNullable(recipe.category, FriendlyByteBuf::writeIdentifier);
