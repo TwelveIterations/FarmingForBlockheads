@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class FeedingTroughRenderer implements BlockEntityRenderer<FeedingTroughBlockEntity, FeedingTroughRenderer.FeedingTroughRenderState> {
 

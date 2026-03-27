@@ -18,7 +18,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class ChickenNestRenderer implements BlockEntityRenderer<ChickenNestBlockEntity, ChickenNestRenderer.ChickenNestRenderState> {
 
