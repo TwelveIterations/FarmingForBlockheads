@@ -6,6 +6,7 @@ import net.blay09.mods.balm.platform.config.reflection.Config;
 import net.blay09.mods.balm.platform.config.reflection.NestedType;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
@@ -61,7 +62,7 @@ public class FarmingForBlockheadsConfig {
     }
 
     public static FarmingForBlockheadsConfig getActive() {
-        return Balm.config().getActiveConfig(FarmingForBlockheadsConfig.class);
+        return Objects.requireNonNull(Balm.config().getActiveConfig(FarmingForBlockheadsConfig.class));
     }
 
     public static void initialize() {

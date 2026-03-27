@@ -10,10 +10,7 @@ public record SimpleHolder<T>(Identifier id, T value) {
         this(entry.getKey(), entry.getValue());
     }
 
-    public static <T> SimpleHolder<T> of(Identifier id, @Nullable T marketCategory) {
-        if (marketCategory == null) {
-            return null;
-        }
-        return new SimpleHolder<>(id, marketCategory);
+    public static <T> @Nullable SimpleHolder<T> of(Identifier id, @Nullable T marketCategory) {
+        return marketCategory != null ? new SimpleHolder<>(id, marketCategory) : null;
     }
 }

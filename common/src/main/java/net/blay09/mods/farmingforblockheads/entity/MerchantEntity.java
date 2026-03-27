@@ -51,17 +51,17 @@ public class MerchantEntity extends PathfinderMob {
 
     private static final Random rand = new Random();
 
-    private BlockPos marketPos;
-    private Direction facing;
+    private @Nullable BlockPos marketPos;
+    private Direction facing = Direction.NORTH;
     private boolean spawnAnimationStarted;
     private boolean spawnDone;
     private SpawnAnimationType spawnAnimation = SpawnAnimationType.MAGIC;
 
-    private BlockPos marketEntityPos;
+    private @Nullable BlockPos marketEntityPos;
     private int diggingAnimation;
-    private BlockState diggingBlockState;
+    private @Nullable BlockState diggingBlockState;
 
-    private Identifier textureLocation;
+    private @Nullable Identifier textureLocation;
 
     public MerchantEntity(EntityType<MerchantEntity> type, Level level) {
         super(type, level);
@@ -95,9 +95,7 @@ public class MerchantEntity extends PathfinderMob {
         if (marketPos != null) {
             output.putLong("MarketPos", marketPos.asLong());
         }
-        if (facing != null) {
-            output.putByte("Facing", (byte) facing.get3DDataValue());
-        }
+        output.putByte("Facing", (byte) facing.get3DDataValue());
         output.putBoolean("SpawnDone", spawnDone);
         output.putByte("SpawnAnimation", (byte) spawnAnimation.ordinal());
     }
@@ -109,9 +107,7 @@ public class MerchantEntity extends PathfinderMob {
             String merchantName = FarmingForBlockheadsConfig.getActive().getRandomMerchantName(rand);
             setCustomName(Component.literal(merchantName));
         }
-        input.getLong("MarketPos").map(BlockPos::of).ifPresent(marketPos -> {
-            setMarket(marketPos, Direction.from3DDataValue(input.getByteOr("Facing", (byte) 0)));
-        });
+        input.getLong("MarketPos").map(BlockPos::of).ifPresent(marketPos -> setMarket(marketPos, Direction.from3DDataValue(input.getByteOr("Facing", (byte) 0))));
         spawnDone = input.getBooleanOr("SpawnDone", false);
         spawnAnimation = SpawnAnimationType.values()[input.getByteOr("SpawnAnimation", (byte) 0)];
     }
@@ -127,11 +123,10 @@ public class MerchantEntity extends PathfinderMob {
     }
 
     @Override
-    protected SoundEvent getAmbientSound() {
+    protected @Nullable SoundEvent getAmbientSound() {
         return null;
     }
 
-    @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
         return SoundEvents.VILLAGER_HURT;

@@ -42,7 +42,7 @@ public class FeedingTroughRenderer implements BlockEntityRenderer<FeedingTroughB
     }
 
     @Override
-    public void extractRenderState(FeedingTroughBlockEntity blockEntity, FeedingTroughRenderState renderState, float delta, Vec3 vec, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+    public void extractRenderState(FeedingTroughBlockEntity blockEntity, FeedingTroughRenderState renderState, float delta, Vec3 vec, ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderState.extractBase(blockEntity, renderState, crumblingOverlay);
 
         final var level = blockEntity.getLevel();
@@ -56,7 +56,7 @@ public class FeedingTroughRenderer implements BlockEntityRenderer<FeedingTroughB
         float x = 0;
         float y = 0;
         float z = 0;
-        for (int i = 0; i < Math.max(1, Math.min(CONTENT_POSITIONS.length / 3, renderState.count / 12)); i++) {
+        for (int i = 0; i < Math.clamp(renderState.count / 12, 1, CONTENT_POSITIONS.length / 3); i++) {
             poseStack.pushPose();
             poseStack.translate(0.5f, 0.5f, 0.5f);
             poseStack.translate(x + CONTENT_POSITIONS[i * 3], y + CONTENT_POSITIONS[i * 3 + 1], z + CONTENT_POSITIONS[i * 3 + 2]);

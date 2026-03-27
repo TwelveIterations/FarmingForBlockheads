@@ -4,12 +4,10 @@ import net.blay09.mods.balm.Balm;
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheads;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.FileToIdConverter;
-import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 
 public class MarketDefaultsLoader implements ResourceManagerReloadListener {

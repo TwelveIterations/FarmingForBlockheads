@@ -30,9 +30,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
-import java.util.List;
-import java.util.function.Consumer;
-
 public class ChickenNestBlock extends BaseEntityBlock {
 
     public static final MapCodec<ChickenNestBlock> CODEC = simpleCodec(ChickenNestBlock::new);

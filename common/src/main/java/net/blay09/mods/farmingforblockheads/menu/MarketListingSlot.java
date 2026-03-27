@@ -11,7 +11,7 @@ import org.jspecify.annotations.Nullable;
 public class MarketListingSlot extends FakeSlot {
 
     private final Level level;
-    private RecipeDisplayEntry recipeDisplayEntry;
+    private @Nullable RecipeDisplayEntry recipeDisplayEntry;
 
     public MarketListingSlot(Container container, int slotId, int x, int y, Level level) {
         super(container, slotId, x, y);
@@ -45,13 +45,8 @@ public class MarketListingSlot extends FakeSlot {
         this.recipeDisplayEntry = recipeDisplayEntry;
     }
 
-    @Nullable
-    public RecipeDisplayEntry getRecipeDisplayEntry() {
+    public @Nullable RecipeDisplayEntry getRecipeDisplayEntry() {
         return recipeDisplayEntry;
     }
 
-    @Override
-    public boolean isFake() {
-        return true;
-    }
 }

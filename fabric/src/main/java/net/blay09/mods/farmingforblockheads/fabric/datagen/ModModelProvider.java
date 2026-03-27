@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
 import static net.minecraft.client.data.models.BlockModelGenerators.*;
-import static net.minecraft.client.data.models.BlockModelGenerators.NOP;
 
 public class ModModelProvider extends FabricModelProvider {
 

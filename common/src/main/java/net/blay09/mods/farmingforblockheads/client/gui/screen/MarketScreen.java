@@ -1,6 +1,5 @@
 package net.blay09.mods.farmingforblockheads.client.gui.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.blay09.mods.balm.mixin.ScreenAccessor;
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheads;
 import net.blay09.mods.farmingforblockheads.client.gui.widget.MarketFilterButton;
@@ -13,7 +12,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.recipebook.GhostSlots;
 import net.minecraft.client.gui.screens.recipebook.RecipeUpdateListener;
@@ -28,7 +26,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.crafting.display.*;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplayContext;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,7 +58,7 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> implements
     private int indexWhenClicked;
     private int lastNumberOfMoves;
 
-    private EditBox searchBar;
+    private @Nullable EditBox searchBar;
 
     public MarketScreen(MarketMenu container, Inventory playerInventory, Component displayName) {
         super(container, playerInventory, displayName, 176, 174);
@@ -93,7 +93,7 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> implements
         int curY = -80;
         final var categories = menu.getCategories();
         for (final var category : categories) {
-            MarketFilterButton filterButton = new MarketFilterButton(width / 2 + curX, height / 2 + curY, menu, category, button -> {
+            MarketFilterButton filterButton = new MarketFilterButton(width / 2 + curX, height / 2 + curY, menu, category, _ -> {
                 if (menu.getCurrentCategory().map(it -> it.equals(category)).orElse(false)) {
                     menu.setCategory(null);
                 } else {
@@ -137,7 +137,7 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> implements
 
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
-        if (event.button() == 1 && event.x() >= searchBar.getX() && event.y() < searchBar.getX() + searchBar.getWidth() && event.y() >= searchBar.getY() && event.y() < searchBar.getY() + searchBar.getHeight()) {
+        if (searchBar != null && event.button() == 1 && event.x() >= searchBar.getX() && event.y() < searchBar.getX() + searchBar.getWidth() && event.y() >= searchBar.getY() && event.y() < searchBar.getY() + searchBar.getHeight()) {
             searchBar.setValue("");
             menu.setSearch(null);
             menu.updateListingSlots();
@@ -156,16 +156,18 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> implements
     public boolean charTyped(CharacterEvent event) {
         boolean result = super.charTyped(event);
 
-        menu.setSearch(searchBar.getValue());
-        menu.updateListingSlots();
-        setCurrentOffset(currentOffset);
+        if (searchBar != null) {
+            menu.setSearch(searchBar.getValue());
+            menu.updateListingSlots();
+            setCurrentOffset(currentOffset);
+        }
 
         return result;
     }
 
     @Override
     public boolean keyPressed(KeyEvent event) {
-        if (searchBar.keyPressed(event) || searchBar.isFocused()) {
+        if (searchBar != null && (searchBar.keyPressed(event) || searchBar.isFocused())) {
             if (event.isEscape()) {
                 minecraft.player.closeContainer();
             } else {
@@ -256,7 +258,7 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> implements
     }
 
     private void setCurrentOffset(int currentOffset) {
-        this.currentOffset = Math.max(0, Math.min(currentOffset, (int) Math.ceil(menu.getFilteredListCount() / 3f) - VISIBLE_ROWS));
+        this.currentOffset = Math.clamp(currentOffset, 0, (int) Math.ceil(menu.getFilteredListCount() / 3f) - VISIBLE_ROWS);
 
         menu.setScrollOffset(this.currentOffset);
 

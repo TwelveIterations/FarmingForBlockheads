@@ -2,8 +2,6 @@ package net.blay09.mods.farmingforblockheads.client;
 
 import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.client.BalmClientRegistrars;
-import net.blay09.mods.balm.platform.compatibility.recipeviewer.RecipeViewerInfoProvider;
-import net.blay09.mods.balm.platform.compatibility.recipeviewer.RecipeViewerRegistrar;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
 import net.blay09.mods.farmingforblockheads.client.gui.screen.MarketScreen;
 import net.blay09.mods.farmingforblockheads.recipe.MarketRecipe;
@@ -22,27 +20,24 @@ public class FarmingForBlockheadsClient {
         registrars.blockEntityRenderers(ModRenderers::initialize);
 
 
-        Balm.modSupport().recipeViewers().register(id("recipes"), new RecipeViewerInfoProvider() {
-            @Override
-            public void initialize(RecipeViewerRegistrar registrar) {
-                registrar.registerRecipeType(id("market"), MarketRecipe.class)
-                        .withSyncedRecipes(ModRecipes.marketRecipe)
-                        .withCraftingStation(ModBlocks.market)
-                        .buildDisplay(display -> display
-                                .title(Component.translatable("jei.farmingforblockheads.market"))
-                                .icon(ModBlocks.market)
-                                .size(86, 48)
-                                .background(id("textures/gui/jei_market.png"))
-                                .slots((recipe, slots) -> {
-                                    final var payment = MarketDefaultsRegistry.resolvePayment(recipe);
-                                    slots.inputSlot(16, 13).add(payment.ingredient());
-                                    slots.outputSlot(54, 13).add(recipe.result());
-                                }));
+        Balm.modSupport().recipeViewers().register(id("recipes"), registrar -> {
+            registrar.registerRecipeType(id("market"), MarketRecipe.class)
+                    .withSyncedRecipes(ModRecipes.marketRecipe)
+                    .withCraftingStation(ModBlocks.market)
+                    .buildDisplay(display -> display
+                            .title(Component.translatable("jei.farmingforblockheads.market"))
+                            .icon(ModBlocks.market)
+                            .size(86, 48)
+                            .background(id("textures/gui/jei_market.png"))
+                            .slots((recipe, slots) -> {
+                                final var payment = MarketDefaultsRegistry.resolvePayment(recipe);
+                                slots.inputSlot(16, 13).add(payment.ingredient());
+                                slots.outputSlot(54, 13).add(recipe.result());
+                            }));
 
-                registrar.registerScreenOcclusion(MarketScreen.class, marketScreen -> marketScreen.getFilterButtons().stream()
-                        .map(button -> new Rect2i(button.getX(), button.getY(), button.getWidth(), button.getHeight()))
-                        .toList());
-            }
+            registrar.registerScreenOcclusion(MarketScreen.class, marketScreen -> marketScreen.getFilterButtons().stream()
+                    .map(button -> new Rect2i(button.getX(), button.getY(), button.getWidth(), button.getHeight()))
+                    .toList());
         });
     }
 }

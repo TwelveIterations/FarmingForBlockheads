@@ -1,8 +1,6 @@
 package net.blay09.mods.farmingforblockheads.api;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 
 public interface MarketCategory extends Comparable<MarketCategory> {

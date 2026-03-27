@@ -104,11 +104,11 @@ public class ChickenNestBlockEntity extends BlockEntity implements BalmContainer
                 worldPosition.getX() + range,
                 worldPosition.getY() + range,
                 worldPosition.getZ() + range);
-        List<ItemEntity> list = level.getEntitiesOfClass(ItemEntity.class, aabb, p -> p != null && isEggItem(p.getItem()));
+        List<ItemEntity> list = level.getEntitiesOfClass(ItemEntity.class, aabb, p -> isEggItem(p.getItem()));
         if (list.isEmpty()) {
             return;
         }
-        ItemEntity entityItem = list.get(0);
+        ItemEntity entityItem = list.getFirst();
         ItemStack originalStack = entityItem.getItem();
         ItemStack restStack = entityItem.getItem().copy();
         for (int i = 0; i < container.getContainerSize(); i++) {

@@ -15,7 +15,7 @@ import static net.blay09.mods.farmingforblockheads.FarmingForBlockheads.id;
 
 public record MarketPlaceRecipeMessage(int containerId, RecipeDisplayId recipe, boolean useMaxItems) implements CustomPacketPayload {
 
-    public static StreamCodec<RegistryFriendlyByteBuf, MarketPlaceRecipeMessage> STREAM_CODEC = StreamCodec.composite(
+    public static final StreamCodec<RegistryFriendlyByteBuf, MarketPlaceRecipeMessage> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.CONTAINER_ID,
             MarketPlaceRecipeMessage::containerId,
             RecipeDisplayId.STREAM_CODEC,

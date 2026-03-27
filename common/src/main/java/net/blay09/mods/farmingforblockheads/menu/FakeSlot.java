@@ -24,7 +24,7 @@ public class FakeSlot extends Slot {
 
     @Override
     public boolean hasItem() {
-        return displayStack != null;
+        return !displayStack.isEmpty();
     }
 
     @Override

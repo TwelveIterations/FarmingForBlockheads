@@ -1,7 +1,6 @@
 package net.blay09.mods.farmingforblockheads.block;
 
 import com.mojang.serialization.MapCodec;
-import net.blay09.mods.balm.Balm;
 import net.blay09.mods.farmingforblockheads.block.entity.MarketBlockEntity;
 import net.blay09.mods.farmingforblockheads.entity.MerchantEntity;
 import net.blay09.mods.farmingforblockheads.entity.ModEntities;
@@ -11,7 +10,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;

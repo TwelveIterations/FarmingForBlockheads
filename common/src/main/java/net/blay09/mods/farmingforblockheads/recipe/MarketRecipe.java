@@ -7,20 +7,20 @@ import net.blay09.mods.farmingforblockheads.api.Payment;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
 import net.blay09.mods.farmingforblockheads.registry.MarketDefaultsRegistry;
 import net.blay09.mods.farmingforblockheads.registry.PaymentImpl;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +29,10 @@ import java.util.Optional;
 public class MarketRecipe implements Recipe<RecipeInput> {
 
     private final String defaults;
-    private final Identifier category;
+    private final @Nullable Identifier category;
     private final ItemStackTemplate result;
     private final ItemStackTemplate icon;
-    private final Payment payment;
+    private final @Nullable Payment payment;
     private final int sortIndex;
 
     public MarketRecipe(ItemStackTemplate result, String defaults, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<Identifier> category, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<Payment> payment, int sortIndex, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<ItemStackTemplate> icon) {
@@ -157,7 +157,7 @@ public class MarketRecipe implements Recipe<RecipeInput> {
             Identifier.CODEC.optionalFieldOf("category").forGetter(MarketRecipe::getCategory),
             PaymentImpl.CODEC.optionalFieldOf("payment").forGetter(MarketRecipe::getPayment),
             Codec.INT.fieldOf("sortIndex").orElse(0).forGetter(MarketRecipe::getSortIndex),
-            ItemStackTemplate.CODEC.optionalFieldOf("icon").forGetter(recipe -> Optional.ofNullable(recipe.icon))
+            ItemStackTemplate.CODEC.optionalFieldOf("icon").forGetter(recipe -> Optional.of(recipe.icon))
     ).apply(instance, MarketRecipe::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, MarketRecipe> STREAM_CODEC = StreamCodec.of(MarketRecipe::toNetwork, MarketRecipe::fromNetwork);
@@ -165,18 +165,18 @@ public class MarketRecipe implements Recipe<RecipeInput> {
     public static MarketRecipe fromNetwork(RegistryFriendlyByteBuf buf) {
         final var resultItem = ItemStackTemplate.STREAM_CODEC.decode(buf);
         final var defaults = buf.readUtf();
-        final var category = buf.readIdentifier();
-        final var payment = PaymentImpl.fromNetwork(buf);
+        final var category = buf.readNullable(FriendlyByteBuf::readIdentifier);
+        final var payment = buf.readNullable(buffer -> PaymentImpl.fromNetwork((RegistryFriendlyByteBuf) buffer));
         final var sortIndex = buf.readVarInt();
         final var icon = ItemStackTemplate.STREAM_CODEC.decode(buf);
-        return new MarketRecipe(resultItem, defaults, Optional.of(category), Optional.of(payment), sortIndex, Optional.of(icon));
+        return new MarketRecipe(resultItem, defaults, Optional.ofNullable(category), Optional.ofNullable(payment), sortIndex, Optional.of(icon));
     }
 
     public static void toNetwork(RegistryFriendlyByteBuf buf, MarketRecipe recipe) {
         ItemStackTemplate.STREAM_CODEC.encode(buf, recipe.result);
         buf.writeUtf(recipe.defaults);
-        buf.writeIdentifier(recipe.category);
-        PaymentImpl.toNetwork(buf, recipe.payment);
+        buf.writeNullable(recipe.category, FriendlyByteBuf::writeIdentifier);
+        buf.writeNullable(recipe.payment, (buffer, payment) -> PaymentImpl.toNetwork((RegistryFriendlyByteBuf) buffer, payment));
         buf.writeVarInt(recipe.sortIndex);
         ItemStackTemplate.STREAM_CODEC.encode(buf, recipe.icon);
     }

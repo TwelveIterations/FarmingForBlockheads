@@ -15,6 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -25,7 +26,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class MarketBlockEntity extends BlockEntity implements BalmMenuProvider<BlockPos> {
@@ -66,12 +69,14 @@ public class MarketBlockEntity extends BlockEntity implements BalmMenuProvider<B
     }
 
     private List<RecipeDisplayEntry> getRecipeDisplays() {
-        final var recipeManager = level.getServer().getRecipeManager();
         final var result = new ArrayList<RecipeDisplayEntry>();
-        if (recipeManager instanceof RecipeManagerAccessor accessor) {
-            final var recipes = accessor.getRecipes().byType(ModRecipes.marketRecipe.type());
-            for (final var recipeHolder : recipes) {
-                recipeManager.listDisplaysForRecipe(recipeHolder.id(), result::add);
+        if (level instanceof ServerLevel serverLevel) {
+            final var recipeManager = serverLevel.getServer().getRecipeManager();
+            if (recipeManager instanceof RecipeManagerAccessor accessor) {
+                final var recipes = accessor.getRecipes().byType(ModRecipes.marketRecipe.type());
+                for (final var recipeHolder : recipes) {
+                    recipeManager.listDisplaysForRecipe(recipeHolder.id(), result::add);
+                }
             }
         }
         return result;

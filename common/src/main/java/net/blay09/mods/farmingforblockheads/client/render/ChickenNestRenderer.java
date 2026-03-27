@@ -48,7 +48,7 @@ public class ChickenNestRenderer implements BlockEntityRenderer<ChickenNestBlock
     }
 
     @Override
-    public void extractRenderState(ChickenNestBlockEntity blockEntity, ChickenNestRenderState renderState, float delta, Vec3 vec, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+    public void extractRenderState(ChickenNestBlockEntity blockEntity, ChickenNestRenderState renderState, float delta, Vec3 vec, ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderState.extractBase(blockEntity, renderState, crumblingOverlay);
         renderState.facing = blockEntity.getBlockState().getValue(ChickenNestBlock.FACING);
         renderState.count = blockEntity.getEggCount();

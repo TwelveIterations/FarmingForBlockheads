@@ -55,16 +55,16 @@ public class MarketMenu extends AbstractContainerMenu {
     private List<SimpleHolder<MarketCategory>> categories = List.of();
     private List<RecipeDisplayEntry> recipes = List.of();
 
-    private String currentSearch;
-    private SimpleHolder<MarketCategory> currentCategory;
+    private @Nullable String currentSearch;
+    private @Nullable SimpleHolder<MarketCategory> currentCategory;
 
     private boolean scrollOffsetDirty;
     private int scrollOffset;
 
     private final List<RecipeDisplayEntry> filteredRecipes = new ArrayList<>();
 
-    private RecipeDisplayEntry selectedRecipeDisplayEntry;
-    private RecipeHolder<MarketRecipe> serverSelectedRecipe;
+    private @Nullable RecipeDisplayEntry selectedRecipeDisplayEntry;
+    private @Nullable RecipeHolder<MarketRecipe> serverSelectedRecipe;
 
     public MarketMenu(int windowId, Inventory playerInventory, ContainerLevelAccess access) {
         super(ModMenus.market.value(), windowId);
@@ -110,7 +110,7 @@ public class MarketMenu extends AbstractContainerMenu {
     @Override
     public void slotsChanged(Container pContainer) {
         if (!placingRecipe) {
-            access.execute((level, pos) -> {
+            access.execute((level, _) -> {
                 if (level instanceof ServerLevel serverLevel) {
                     slotChangedMarket(this, serverLevel, player, paymentSlots, resultSlots, serverSelectedRecipe);
                 }
@@ -242,7 +242,6 @@ public class MarketMenu extends AbstractContainerMenu {
 
     public Slot getPaymentSlot() {
         // Awful suggestion by IntelliJ. What if PAYMENT_SLOT changes in the future?
-        // noinspection SequencedCollectionMethodCanBeUsed
         return this.slots.get(PAYMENT_SLOT);
     }
 

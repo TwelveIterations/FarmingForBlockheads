@@ -24,7 +24,7 @@ public class FarmingForBlockheads {
 
     public static final String MOD_ID = "farmingforblockheads";
 
-    public static Logger logger = LogManager.getLogger();
+    public static final Logger logger = LogManager.getLogger();
 
     public static void initialize(BalmRegistrars registrars) {
         FarmingForBlockheadsConfig.initialize();
