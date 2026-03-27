@@ -1,4 +1,4 @@
 @NullMarked
-package net.blay09.mods.farmingforblockheads;
+package net.blay09.mods.farmingforblockheads.neoforge;
 
 import org.jspecify.annotations.NullMarked;
