@@ -2,4 +2,10 @@ dependencies {
     implementation(libs.balmNeoForge) {
         changing = libs.versions.balm.get().endsWith("SNAPSHOT")
     }
+    api(libs.shogiApi)
+    jarJar("net.blay09.mods:shogi-api") {
+        version {
+            prefer libs.shogiApi.get().version
+        }
+    }
 }

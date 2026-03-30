@@ -3,12 +3,20 @@ import net.darkhax.curseforgegradle.TaskPublishCurseForge
 plugins {
     id 'multiloader-loader'
     alias libs.plugins.forgeGradle
+    alias libs.plugins.forgeJarJar
     alias libs.plugins.curseForgeGradle
     alias libs.plugins.modrinthMinotaur
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(java_version)
 
+jarJar.register()
+tasks.named('jar') {
+    archiveClassifier = 'slim'
+}
+tasks.named('jarJar') {
+    archiveClassifier = null
+}
 
 minecraft {
     mappings channel: 'official', version: libs.minecraft.get().version
@@ -65,7 +73,7 @@ tasks.register('curseforge', TaskPublishCurseForge) {
         projectId != null
     }
     if (projectId) {
-        def mainFile = upload(findProperty("curseforge_project_id"), jar.archiveFile.get().asFile)
+        def mainFile = upload(findProperty("curseforge_project_id"), tasks.jarJar.archiveFile.get().asFile)
         mainFile.changelog = rootProject.file('CHANGELOG.md').text
         mainFile.addRequirement("balm")
         mainFile.addGameVersion(libs.minecraft.get().version)
@@ -79,7 +87,7 @@ modrinth {
     projectId = findProperty("modrinth_project_id")
     versionType = "release"
     versionNumber = project.version + "+forge-" + libs.minecraft.get().version
-    uploadFile = jar
+    uploadFile = tasks.jarJar.archiveFile.get().asFile
     changelog = rootProject.file("CHANGELOG.md").text
     gameVersions = [libs.minecraft.get().version]
     loaders = ['forge']

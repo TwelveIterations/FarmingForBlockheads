@@ -8,6 +8,8 @@ import net.blay09.mods.farmingforblockheads.api.Payment;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
 import net.blay09.mods.farmingforblockheads.registry.MarketDefaultsRegistry;
 import net.blay09.mods.farmingforblockheads.registry.PaymentImpl;
+import net.blay09.mods.shogi.context.MutableShogiContext;
+import net.blay09.mods.shogi.effect.ShogiEffect;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
@@ -15,11 +17,13 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.Level;
 import org.jspecify.annotations.Nullable;
 
@@ -34,15 +38,17 @@ public class MarketRecipeImpl implements Recipe<RecipeInput>, MarketRecipe {
     private final ItemStackTemplate result;
     private final ItemStackTemplate icon;
     private final @Nullable Payment payment;
+    private final @Nullable ShogiEffect<?> predicate;
     private final int sortIndex;
 
-    public MarketRecipeImpl(ItemStackTemplate result, String defaults, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<Identifier> category, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<Payment> payment, int sortIndex, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<ItemStackTemplate> icon) {
+    public MarketRecipeImpl(ItemStackTemplate result, String defaults, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<Identifier> category, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<Payment> payment, int sortIndex, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<ItemStackTemplate> icon, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<ShogiEffect<?>> predicate) {
         this.defaults = defaults;
         this.category = category.orElse(null);
         this.result = result;
         this.icon = icon.orElse(result);
         this.payment = payment.orElse(null);
         this.sortIndex = sortIndex;
+        this.predicate = predicate.orElse(null);
     }
 
     @Override
@@ -148,6 +154,22 @@ public class MarketRecipeImpl implements Recipe<RecipeInput>, MarketRecipe {
         return sortIndex;
     }
 
+    public Optional<ShogiEffect<?>> getPredicate() {
+        return Optional.ofNullable(predicate);
+    }
+
+    public boolean isVisibleFor(Player player, @Nullable BlockEntity blockEntity) {
+        if (predicate == null) {
+            return true;
+        }
+
+        final var context = MutableShogiContext.of(player);
+        if (blockEntity != null) {
+            context.withBlockEntity(blockEntity);
+        }
+        return predicate.test(context);
+    }
+
     public static RecipeSerializer<MarketRecipeImpl> serializer() {
         return new RecipeSerializer<>(CODEC, STREAM_CODEC);
     }
@@ -164,7 +186,8 @@ public class MarketRecipeImpl implements Recipe<RecipeInput>, MarketRecipe {
             Identifier.CODEC.optionalFieldOf("category").forGetter(MarketRecipeImpl::getCategory),
             PaymentImpl.CODEC.optionalFieldOf("payment").forGetter(MarketRecipeImpl::getPayment),
             Codec.INT.fieldOf("sortIndex").orElse(0).forGetter(MarketRecipeImpl::getSortIndex),
-            ItemStackTemplate.CODEC.optionalFieldOf("icon").forGetter(recipe -> Optional.of(recipe.icon))
+            ItemStackTemplate.CODEC.optionalFieldOf("icon").forGetter(recipe -> Optional.of(recipe.icon)),
+            MarketRules.SCOPE.getEffectCodec().optionalFieldOf("predicate").forGetter(MarketRecipeImpl::getPredicate)
     ).apply(instance, MarketRecipeImpl::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, MarketRecipeImpl> STREAM_CODEC = StreamCodec.of(MarketRecipeImpl::toNetwork, MarketRecipeImpl::fromNetwork);
@@ -176,7 +199,7 @@ public class MarketRecipeImpl implements Recipe<RecipeInput>, MarketRecipe {
         final var payment = buf.readNullable(buffer -> PaymentImpl.fromNetwork((RegistryFriendlyByteBuf) buffer));
         final var sortIndex = buf.readVarInt();
         final var icon = ItemStackTemplate.STREAM_CODEC.decode(buf);
-        return new MarketRecipeImpl(resultItem, defaults, Optional.ofNullable(category), Optional.ofNullable(payment), sortIndex, Optional.of(icon));
+        return new MarketRecipeImpl(resultItem, defaults, Optional.ofNullable(category), Optional.ofNullable(payment), sortIndex, Optional.of(icon), Optional.empty());
     }
 
     public static void toNetwork(RegistryFriendlyByteBuf buf, MarketRecipeImpl recipe) {

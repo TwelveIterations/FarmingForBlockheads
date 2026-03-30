@@ -44,7 +44,7 @@ public class MarketBlockEntity extends BlockEntity implements BalmMenuProvider<B
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player player) {
-        final var displays = getRecipeDisplays();
+        final var displays = getRecipeDisplays(player);
         final var categories = getCategories(displays);
         final var menu = new MarketMenu(windowId, playerInventory, ContainerLevelAccess.create(level, worldPosition));
         menu.setCategories(categories);
@@ -68,14 +68,16 @@ public class MarketBlockEntity extends BlockEntity implements BalmMenuProvider<B
         return usedCategories.stream().map(it -> SimpleHolder.of(it, categories.get(it))).filter(Objects::nonNull).toList();
     }
 
-    private List<RecipeDisplayEntry> getRecipeDisplays() {
+    private List<RecipeDisplayEntry> getRecipeDisplays(Player player) {
         final var result = new ArrayList<RecipeDisplayEntry>();
         if (level instanceof ServerLevel serverLevel) {
             final var recipeManager = serverLevel.getServer().getRecipeManager();
             if (recipeManager instanceof RecipeManagerAccessor accessor) {
                 final var recipes = accessor.getRecipes().byType(ModRecipes.marketRecipe.type());
                 for (final var recipeHolder : recipes) {
-                    recipeManager.listDisplaysForRecipe(recipeHolder.id(), result::add);
+                    if (recipeHolder.value().isVisibleFor(player, this)) {
+                        recipeManager.listDisplaysForRecipe(recipeHolder.id(), result::add);
+                    }
                 }
             }
         }
@@ -85,7 +87,7 @@ public class MarketBlockEntity extends BlockEntity implements BalmMenuProvider<B
     public void openMenu(Player player) {
         Balm.networking().openMenu(player, this);
 
-        final var displays = getRecipeDisplays();
+        final var displays = getRecipeDisplays(player);
         final var categories = getCategories(displays);
         Balm.networking().sendTo(player, new MarketCategoriesMessage(categories));
         Balm.networking().sendTo(player, new MarketRecipesMessage(displays));
