@@ -1,1 +1,3 @@
-- Updated to Minecraft 26.1
+- Added `predicate` field to market recipes, allowing control over what recipes are available for which players (and other conditions)
+  - This option is backed by [Shogi](https://shogi.twelveiterations.com) and thus supports all Shogi conditions
+- Added `MarketPlaceRecipeEvent` and `MarketClearRecipeEvent` to allow other mods to hook into filling/clearing the payment slot on market item clicks
