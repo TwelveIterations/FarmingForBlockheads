@@ -1,5 +1,6 @@
 package net.blay09.mods.farmingforblockheads.fabric.datagen;
 
+import net.blay09.mods.balm.world.level.block.DeferredBlock;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
 import net.blay09.mods.farmingforblockheads.tag.ModBlockTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
@@ -18,6 +19,9 @@ public class ModBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider arg) {
+        final var relocationNotSupported = valueLookupBuilder(TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("c", "relocation_not_supported")));
+        relocationNotSupported.add(ModBlocks.market.asBlock());
+
         final var dirtTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("dirt"));
         valueLookupBuilder(dirtTag).add(ModBlocks.fertilizedFarmlandHealthy.asBlock(),
                 ModBlocks.fertilizedFarmlandRich.asBlock(),
