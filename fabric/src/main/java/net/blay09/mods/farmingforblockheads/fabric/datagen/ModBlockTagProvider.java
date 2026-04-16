@@ -19,6 +19,9 @@ public class ModBlockTagProvider extends FabricTagProvider<Block> {
 
     @Override
     protected void addTags(HolderLookup.Provider arg) {
+        final var relocationNotSupported = getOrCreateTagBuilder(TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("c", "relocation_not_supported")));
+        relocationNotSupported.add(ModBlocks.market);
+
         final var dirtTag = TagKey.create(Registries.BLOCK, ResourceLocation.withDefaultNamespace("dirt"));
         getOrCreateTagBuilder(dirtTag).add(ModBlocks.fertilizedFarmlandHealthy,
                 ModBlocks.fertilizedFarmlandRich,
