@@ -1,0 +1,9 @@
+{
+  "tooltip": {
+    "translate": "category.farmingforblockheads.spawn_eggs"
+  },
+  "icon": {
+    "id": "minecraft:cow_spawn_egg"
+  },
+  "sortIndex": 40
+}

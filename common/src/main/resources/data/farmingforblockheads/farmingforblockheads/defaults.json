@@ -33,6 +33,7 @@
   "selling.eggs": {
   },
   "selling.spawn_eggs": {
+    "category": "farmingforblockheads:spawn_eggs",
     "payment": {
       "ingredient": ["minecraft:diamond"],
       "count": 1
