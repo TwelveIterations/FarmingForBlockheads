@@ -16,12 +16,20 @@
       "values": [
         "supplementaries"
       ]
+    },
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.seeds.supplementaries.flax_seeds"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "supplementaries"
+    },
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.seeds.supplementaries.flax_seeds"
     }
   ]
 }

@@ -16,12 +16,20 @@
       "values": [
         "tropicraft"
       ]
+    },
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.flowers.tropicraft.bromeliad"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "tropicraft"
+    },
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.flowers.tropicraft.bromeliad"
     }
   ]
 }

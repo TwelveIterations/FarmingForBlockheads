@@ -16,12 +16,20 @@
       "values": [
         "quark"
       ]
+    },
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.saplings.quark.lavender_blossom_sapling"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "quark"
+    },
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.saplings.quark.lavender_blossom_sapling"
     }
   ]
 }

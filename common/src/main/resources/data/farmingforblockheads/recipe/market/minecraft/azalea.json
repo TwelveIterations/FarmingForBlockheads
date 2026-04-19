@@ -4,5 +4,17 @@
     "count": 1,
     "item": "minecraft:azalea"
   },
-  "defaults": "selling.rare.saplings.minecraft.azalea"
+  "defaults": "selling.rare.saplings.minecraft.azalea",
+  "fabric:load_conditions": [
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.rare.saplings.minecraft.azalea"
+    }
+  ],
+  "neoforge:conditions": [
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.rare.saplings.minecraft.azalea"
+    }
+  ]
 }

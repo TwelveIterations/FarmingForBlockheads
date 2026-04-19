@@ -16,12 +16,20 @@
       "values": [
         "betternether"
       ]
+    },
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.seeds.betternether.black_apple_seed"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "betternether"
+    },
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.seeds.betternether.black_apple_seed"
     }
   ]
 }

@@ -16,12 +16,20 @@
       "values": [
         "endergetic"
       ]
+    },
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.soils.endergetic.eumus_poismoss"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "endergetic"
+    },
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.soils.endergetic.eumus_poismoss"
     }
   ]
 }

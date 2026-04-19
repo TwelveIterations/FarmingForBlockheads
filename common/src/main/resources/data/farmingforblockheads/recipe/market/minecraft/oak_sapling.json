@@ -4,5 +4,17 @@
     "count": 1,
     "item": "minecraft:oak_sapling"
   },
-  "defaults": "selling.saplings.minecraft.oak_sapling"
+  "defaults": "selling.saplings.minecraft.oak_sapling",
+  "fabric:load_conditions": [
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.saplings.minecraft.oak_sapling"
+    }
+  ],
+  "neoforge:conditions": [
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.saplings.minecraft.oak_sapling"
+    }
+  ]
 }

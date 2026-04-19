@@ -16,12 +16,20 @@
       "values": [
         "twilightforest"
       ]
+    },
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.soils.twilightforest.uberous_soil"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "twilightforest"
+    },
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.soils.twilightforest.uberous_soil"
     }
   ]
 }

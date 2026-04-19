@@ -4,5 +4,17 @@
     "count": 1,
     "item": "minecraft:wheat_seeds"
   },
-  "defaults": "selling.seeds.minecraft.wheat_seeds"
+  "defaults": "selling.seeds.minecraft.wheat_seeds",
+  "fabric:load_conditions": [
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.seeds.minecraft.wheat_seeds"
+    }
+  ],
+  "neoforge:conditions": [
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.seeds.minecraft.wheat_seeds"
+    }
+  ]
 }

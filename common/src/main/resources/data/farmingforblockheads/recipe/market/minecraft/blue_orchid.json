@@ -4,5 +4,17 @@
     "count": 1,
     "item": "minecraft:blue_orchid"
   },
-  "defaults": "selling.flowers.minecraft.blue_orchid"
+  "defaults": "selling.flowers.minecraft.blue_orchid",
+  "fabric:load_conditions": [
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.flowers.minecraft.blue_orchid"
+    }
+  ],
+  "neoforge:conditions": [
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.flowers.minecraft.blue_orchid"
+    }
+  ]
 }

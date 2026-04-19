@@ -16,12 +16,20 @@
       "values": [
         "pamhc2crops"
       ]
+    },
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.seeds.pamhc2crops.peasseeditem"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "pamhc2crops"
+    },
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.seeds.pamhc2crops.peasseeditem"
     }
   ]
 }

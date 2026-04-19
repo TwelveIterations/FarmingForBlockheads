@@ -4,5 +4,17 @@
     "count": 1,
     "item": "minecraft:mangrove_propagule"
   },
-  "defaults": "selling.rare.saplings.minecraft.mangrove_propagule"
+  "defaults": "selling.rare.saplings.minecraft.mangrove_propagule",
+  "fabric:load_conditions": [
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.rare.saplings.minecraft.mangrove_propagule"
+    }
+  ],
+  "neoforge:conditions": [
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.rare.saplings.minecraft.mangrove_propagule"
+    }
+  ]
 }

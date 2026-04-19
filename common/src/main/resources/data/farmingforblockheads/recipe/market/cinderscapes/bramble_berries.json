@@ -17,12 +17,20 @@
       "values": [
         "cinderscapes"
       ]
+    },
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.berries.cinderscapes.bramble_berries"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "cinderscapes"
+    },
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.berries.cinderscapes.bramble_berries"
     }
   ]
 }

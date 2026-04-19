@@ -16,12 +16,20 @@
       "values": [
         "farmingforblockheads"
       ]
+    },
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.fertilizers.farmingforblockheads.green_fertilizer"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "farmingforblockheads"
+    },
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.fertilizers.farmingforblockheads.green_fertilizer"
     }
   ]
 }

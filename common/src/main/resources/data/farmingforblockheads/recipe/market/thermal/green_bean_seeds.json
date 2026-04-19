@@ -16,12 +16,20 @@
       "values": [
         "thermal"
       ]
+    },
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.seeds.thermal.green_bean_seeds"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "thermal"
+    },
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.seeds.thermal.green_bean_seeds"
     }
   ]
 }

@@ -5,5 +5,17 @@
     "count": 1,
     "item": "minecraft:potato"
   },
-  "defaults": "selling.seed_crops.minecraft.potato"
+  "defaults": "selling.seed_crops.minecraft.potato",
+  "fabric:load_conditions": [
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.seed_crops.minecraft.potato"
+    }
+  ],
+  "neoforge:conditions": [
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.seed_crops.minecraft.potato"
+    }
+  ]
 }

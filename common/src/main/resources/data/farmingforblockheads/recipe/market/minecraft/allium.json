@@ -4,5 +4,17 @@
     "count": 1,
     "item": "minecraft:allium"
   },
-  "defaults": "selling.flowers.minecraft.allium"
+  "defaults": "selling.flowers.minecraft.allium",
+  "fabric:load_conditions": [
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.flowers.minecraft.allium"
+    }
+  ],
+  "neoforge:conditions": [
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.flowers.minecraft.allium"
+    }
+  ]
 }

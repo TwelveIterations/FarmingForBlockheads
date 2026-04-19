@@ -4,5 +4,17 @@
     "count": 1,
     "item": "minecraft:kelp"
   },
-  "defaults": "selling.crops.minecraft.kelp"
+  "defaults": "selling.crops.minecraft.kelp",
+  "fabric:load_conditions": [
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.crops.minecraft.kelp"
+    }
+  ],
+  "neoforge:conditions": [
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.crops.minecraft.kelp"
+    }
+  ]
 }

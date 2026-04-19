@@ -4,5 +4,17 @@
     "count": 1,
     "item": "minecraft:grass_block"
   },
-  "defaults": "selling.soils.minecraft.grass_block"
+  "defaults": "selling.soils.minecraft.grass_block",
+  "fabric:load_conditions": [
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.soils.minecraft.grass_block"
+    }
+  ],
+  "neoforge:conditions": [
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.soils.minecraft.grass_block"
+    }
+  ]
 }

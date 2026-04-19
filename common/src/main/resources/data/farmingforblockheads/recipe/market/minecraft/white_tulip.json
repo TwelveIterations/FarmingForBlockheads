@@ -4,5 +4,17 @@
     "count": 1,
     "item": "minecraft:white_tulip"
   },
-  "defaults": "selling.flowers.minecraft.white_tulip"
+  "defaults": "selling.flowers.minecraft.white_tulip",
+  "fabric:load_conditions": [
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.flowers.minecraft.white_tulip"
+    }
+  ],
+  "neoforge:conditions": [
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.flowers.minecraft.white_tulip"
+    }
+  ]
 }

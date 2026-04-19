@@ -4,5 +4,17 @@
     "count": 1,
     "item": "minecraft:pumpkin_seeds"
   },
-  "defaults": "selling.seeds.minecraft.pumpkin_seeds"
+  "defaults": "selling.seeds.minecraft.pumpkin_seeds",
+  "fabric:load_conditions": [
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.seeds.minecraft.pumpkin_seeds"
+    }
+  ],
+  "neoforge:conditions": [
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.seeds.minecraft.pumpkin_seeds"
+    }
+  ]
 }

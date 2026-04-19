@@ -4,5 +4,17 @@
     "count": 1,
     "item": "minecraft:brown_mushroom"
   },
-  "defaults": "selling.mushrooms.minecraft.brown_mushroom"
+  "defaults": "selling.mushrooms.minecraft.brown_mushroom",
+  "fabric:load_conditions": [
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.mushrooms.minecraft.brown_mushroom"
+    }
+  ],
+  "neoforge:conditions": [
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.mushrooms.minecraft.brown_mushroom"
+    }
+  ]
 }

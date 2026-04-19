@@ -4,5 +4,17 @@
     "count": 1,
     "item": "minecraft:panda_spawn_egg"
   },
-  "defaults": "selling.spawn_eggs.minecraft.panda_spawn_egg"
+  "defaults": "selling.spawn_eggs.minecraft.panda_spawn_egg",
+  "fabric:load_conditions": [
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.spawn_eggs.minecraft.panda_spawn_egg"
+    }
+  ],
+  "neoforge:conditions": [
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.spawn_eggs.minecraft.panda_spawn_egg"
+    }
+  ]
 }

@@ -4,5 +4,17 @@
     "count": 1,
     "item": "minecraft:crimson_fungus"
   },
-  "defaults": "selling.mushrooms.minecraft.crimson_fungus"
+  "defaults": "selling.mushrooms.minecraft.crimson_fungus",
+  "fabric:load_conditions": [
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.mushrooms.minecraft.crimson_fungus"
+    }
+  ],
+  "neoforge:conditions": [
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.mushrooms.minecraft.crimson_fungus"
+    }
+  ]
 }

@@ -4,5 +4,17 @@
     "count": 1,
     "item": "minecraft:sweet_berries"
   },
-  "defaults": "selling.crops.minecraft.sweet_berries"
+  "defaults": "selling.crops.minecraft.sweet_berries",
+  "fabric:load_conditions": [
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.crops.minecraft.sweet_berries"
+    }
+  ],
+  "neoforge:conditions": [
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.crops.minecraft.sweet_berries"
+    }
+  ]
 }

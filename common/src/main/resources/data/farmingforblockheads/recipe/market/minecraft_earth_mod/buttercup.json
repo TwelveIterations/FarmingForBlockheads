@@ -17,12 +17,20 @@
       "values": [
         "minecraft_earth_mod"
       ]
+    },
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.flowers.minecraft_earth_mod.buttercup"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "minecraft_earth_mod"
+    },
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.flowers.minecraft_earth_mod.buttercup"
     }
   ]
 }

@@ -17,12 +17,20 @@
       "values": [
         "outer_end"
       ]
+    },
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.end.berries.outer_end.azure_berries"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "outer_end"
+    },
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.end.berries.outer_end.azure_berries"
     }
   ]
 }

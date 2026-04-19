@@ -17,12 +17,20 @@
       "values": [
         "actuallyadditions"
       ]
+    },
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.seeds.actuallyadditions.canola_seeds"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "actuallyadditions"
+    },
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.seeds.actuallyadditions.canola_seeds"
     }
   ]
 }

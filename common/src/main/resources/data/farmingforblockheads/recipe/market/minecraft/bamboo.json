@@ -4,5 +4,17 @@
     "count": 1,
     "item": "minecraft:bamboo"
   },
-  "defaults": "selling.crops.minecraft.bamboo"
+  "defaults": "selling.crops.minecraft.bamboo",
+  "fabric:load_conditions": [
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.crops.minecraft.bamboo"
+    }
+  ],
+  "neoforge:conditions": [
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.crops.minecraft.bamboo"
+    }
+  ]
 }

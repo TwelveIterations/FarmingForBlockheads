@@ -17,12 +17,20 @@
       "values": [
         "ic2"
       ]
+    },
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.rare.saplings.ic2.rubber_sapling"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "ic2"
+    },
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.rare.saplings.ic2.rubber_sapling"
     }
   ]
 }

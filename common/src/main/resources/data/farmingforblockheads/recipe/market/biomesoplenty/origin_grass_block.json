@@ -16,12 +16,20 @@
       "values": [
         "biomesoplenty"
       ]
+    },
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.soils.biomesoplenty.origin_grass_block"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "biomesoplenty"
+    },
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.soils.biomesoplenty.origin_grass_block"
     }
   ]
 }

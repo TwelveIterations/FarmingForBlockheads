@@ -4,5 +4,17 @@
     "count": 1,
     "item": "minecraft:warped_nylium"
   },
-  "defaults": "selling.soils.minecraft.warped_nylium"
+  "defaults": "selling.soils.minecraft.warped_nylium",
+  "fabric:load_conditions": [
+    {
+      "condition": "farmingforblockheads:is_group_enabled",
+      "group": "selling.soils.minecraft.warped_nylium"
+    }
+  ],
+  "neoforge:conditions": [
+    {
+      "type": "farmingforblockheads:is_group_enabled",
+      "group": "selling.soils.minecraft.warped_nylium"
+    }
+  ]
 }
