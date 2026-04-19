@@ -4,7 +4,7 @@
     "count": 1,
     "item": "minecraft:soul_sand"
   },
-  "defaults": "selling.soils.minecraft.soul_sand",
+  "defaults": "selling.nether.soils.minecraft.soul_sand",
   "fabric:load_conditions": [
     {
       "condition": "farmingforblockheads:is_group_enabled",
