@@ -12,6 +12,7 @@ import net.blay09.mods.farmingforblockheads.loot.ModLootModifiers;
 import net.blay09.mods.farmingforblockheads.menu.ModMenus;
 import net.blay09.mods.farmingforblockheads.network.ModNetworking;
 import net.blay09.mods.farmingforblockheads.recipe.ModRecipes;
+import net.blay09.mods.farmingforblockheads.registry.IsGroupEnabledResourceCondition;
 import net.blay09.mods.farmingforblockheads.registry.MarketCategoryLoader;
 import net.blay09.mods.farmingforblockheads.registry.MarketDefaultsLoader;
 import net.blay09.mods.farmingforblockheads.sound.ModSounds;
@@ -40,9 +41,12 @@ public class FarmingForBlockheads {
         registrars.recipeTypes(ModRecipes::initialize);
         ModLootModifiers.initialize(Balm.lootModifiers());
 
+        registrars.resourceConditions(registrar -> registrar.register("is_group_enabled", IsGroupEnabledResourceCondition.CODEC));
+
         registrars.resourceReloadListeners(registrar -> {
             registrar.register("market_category_loader", new MarketCategoryLoader());
             registrar.register("market_defaults_loader", MarketDefaultsLoader::new);
+            registrar.addDependency(id("market_defaults_loader"), registrar.vanillaKeys().recipes());
         });
 
         CropCallback.Grow.After.EVENT.register(FarmlandHandler::onGrowEvent);

@@ -71,17 +71,17 @@ public class MarketDefaultsRegistry {
         return result;
     }
 
-    public static MarketDefault resolveDefaults(MarketRecipeImpl recipe) {
-        final var result = flattenDefaults(recipe.getDefaults()).stream().map(MarketDefaultsRegistry::resolveExactDefault).toList();
+    public static MarketDefault resolveDefaults(String defaultsPath) {
+        final var result = flattenDefaults(defaultsPath).stream().map(MarketDefaultsRegistry::resolveExactDefault).toList();
         return new CompositeMarketDefault(result);
+    }
+
+    public static MarketDefault resolveDefaults(MarketRecipeImpl recipe) {
+        return resolveDefaults(recipe.getDefaults());
     }
 
     public static Identifier resolveCategory(MarketRecipeImpl recipe) {
         final var defaults = resolveDefaults(recipe);
-
-
-
-
         return recipe.getCategory().orElse(defaults.category().orElseGet(MarketDefaultsRegistry::defaultCategory));
     }
 
@@ -91,8 +91,12 @@ public class MarketDefaultsRegistry {
     }
 
     public static boolean isEnabled(MarketRecipeImpl recipe) {
-        final var defaults = resolveDefaults(recipe);
-        final var recipeGroups = flattenDefaults(recipe.getDefaults());
+        return isEnabled(recipe.getDefaults());
+    }
+
+    public static boolean isEnabled(String groupPath) {
+        final var defaults = resolveDefaults(groupPath);
+        final var recipeGroups = flattenDefaults(groupPath);
         final var includedGroups = FarmingForBlockheadsConfig.getActive().includedGroups;
         final var excludedGroups = FarmingForBlockheadsConfig.getActive().excludedGroups;
         final var useDefaultIncludedGroups = includedGroups.contains("default") && !excludedGroups.contains("default");
