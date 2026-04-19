@@ -4,6 +4,7 @@ import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.platform.config.reflection.Comment;
 import net.blay09.mods.balm.platform.config.reflection.Config;
 import net.blay09.mods.balm.platform.config.reflection.NestedType;
+import net.blay09.mods.balm.platform.config.reflection.Range;
 
 import java.util.List;
 import java.util.Objects;
@@ -40,14 +41,17 @@ public class FarmingForBlockheadsConfig {
     @Comment("The range at which the chicken nest picks up laid eggs.")
     public int chickenNestRange = 8; // 1-16
 
+    @Range(min = "0", max = "1")
     @Comment("The chance to get a bonus crop when using Green Fertilizer.")
-    public double fertilizerBonusCropChance = 1f; // 0-1
+    public double fertilizerBonusCropChance = 1f;
 
+    @Range(min = "0", max = "1")
     @Comment("The chance to get a bonus growth when using Red Fertilizer.")
-    public double fertilizerBonusGrowthChance = 1f; // 0-1
+    public double fertilizerBonusGrowthChance = 1f;
 
+    @Range(min = "0", max = "1")
     @Comment("The chance for Fertilized Farmland to turn back into regular Farmland (per provided bonus).")
-    public double fertilizerRegressionChance = 0f; // 0-1
+    public double fertilizerRegressionChance = 0f;
 
     @Comment("If true, merchants will be considered babies (on a technical level only), which may resolve exploits based on merchant death loot (like blood)")
     public boolean treatMerchantsLikeBabies = false;
