@@ -56,6 +56,10 @@ public class MarketDefaultsRegistry {
         return INSTANCE.defaultsByGroup.getOrDefault(defaults, EMPTY_DEFAULT);
     }
 
+    public Set<String> getKnownGroups() {
+        return defaultsByGroup.keySet();
+    }
+
     public static List<String> flattenDefaults(String defaults) {
         final var result = new ArrayList<String>();
         final var parts = defaults.split("\\.");

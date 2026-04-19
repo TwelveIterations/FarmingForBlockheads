@@ -5,6 +5,7 @@ import net.blay09.mods.balm.core.BalmRegistrars;
 import net.blay09.mods.balm.platform.event.callback.CropCallback;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
 import net.blay09.mods.farmingforblockheads.block.entity.ModBlockEntities;
+import net.blay09.mods.farmingforblockheads.command.FarmingForBlockheadsCommand;
 import net.blay09.mods.farmingforblockheads.component.ModComponents;
 import net.blay09.mods.farmingforblockheads.entity.ModEntities;
 import net.blay09.mods.farmingforblockheads.item.ModItems;
@@ -29,6 +30,7 @@ public class FarmingForBlockheads {
 
     public static void initialize(BalmRegistrars registrars) {
         FarmingForBlockheadsConfig.initialize();
+        Balm.commands().register(FarmingForBlockheadsCommand::register);
         registrars.dataComponentTypes(ModComponents::initialize);
         ModNetworking.initialize(Balm.networking());
         registrars.blocks(ModBlocks::initialize);
