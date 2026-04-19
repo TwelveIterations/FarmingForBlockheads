@@ -1,0 +1,9 @@
+{
+  "tooltip": {
+    "translate": "category.farmingforblockheads.soils"
+  },
+  "icon": {
+    "id": "minecraft:grass_block"
+  },
+  "sortIndex": 35
+}

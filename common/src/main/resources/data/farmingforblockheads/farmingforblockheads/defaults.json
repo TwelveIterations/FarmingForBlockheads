@@ -20,6 +20,10 @@
     "category": "farmingforblockheads:seeds"
   },
   "selling.soils": {
+    "category": "farmingforblockheads:soils"
+  },
+  "selling.nether.soils": {
+    "category": "farmingforblockheads:soils"
   },
   "selling.bees": {
   },

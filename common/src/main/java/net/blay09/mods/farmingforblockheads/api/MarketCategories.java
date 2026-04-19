@@ -6,6 +6,7 @@ public class MarketCategories {
     public static final Identifier SEEDS = Identifier.fromNamespaceAndPath("farmingforblockheads", "seeds");
     public static final Identifier SAPLINGS = Identifier.fromNamespaceAndPath("farmingforblockheads", "saplings");
     public static final Identifier FLOWERS = Identifier.fromNamespaceAndPath("farmingforblockheads", "flowers");
+    public static final Identifier SOILS = Identifier.fromNamespaceAndPath("farmingforblockheads", "soils");
     public static final Identifier SPAWN_EGGS = Identifier.fromNamespaceAndPath("farmingforblockheads", "spawn_eggs");
     public static final Identifier OTHER = Identifier.fromNamespaceAndPath("farmingforblockheads", "other");
 }
