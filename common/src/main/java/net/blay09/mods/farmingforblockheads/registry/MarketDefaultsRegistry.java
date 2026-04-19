@@ -90,10 +90,6 @@ public class MarketDefaultsRegistry {
         return recipe.getPayment().orElse(defaults.payment().orElseGet(MarketDefaultsRegistry::defaultPayment));
     }
 
-    public static boolean isEnabled(MarketRecipeImpl recipe) {
-        return isEnabled(recipe.getDefaults());
-    }
-
     public static boolean isEnabled(String groupPath) {
         final var defaults = resolveDefaults(groupPath);
         final var recipeGroups = flattenDefaults(groupPath);

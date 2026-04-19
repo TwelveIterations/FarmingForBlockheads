@@ -83,10 +83,6 @@ public class MarketRecipeImpl implements Recipe<RecipeInput>, MarketRecipe {
         return defaults;
     }
 
-    public boolean enabled() {
-        return MarketDefaultsRegistry.isEnabled(this);
-    }
-
     private SlotDisplay paymentSlotDisplay(Payment payment) {
         final var ingredient = payment.ingredient();
         final List<SlotDisplay> slotDisplays = new ArrayList<>();
@@ -108,7 +104,6 @@ public class MarketRecipeImpl implements Recipe<RecipeInput>, MarketRecipe {
                         ModBlocks.market.asItem()),
                 effectiveCategory,
                 sortIndex,
-                enabled(),
                 new SlotDisplay.ItemStackSlotDisplay(icon)));
     }
 
