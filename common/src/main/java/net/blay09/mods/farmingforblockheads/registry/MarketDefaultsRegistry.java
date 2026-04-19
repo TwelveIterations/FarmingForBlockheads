@@ -21,6 +21,7 @@ import java.util.*;
 
 public class MarketDefaultsRegistry {
 
+    private static final Gson gson = new Gson();
     private static final Codec<MarketDefault> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
             Codec.BOOL.optionalFieldOf("enabledByDefault").forGetter(MarketDefault::enabledByDefault),
             Identifier.CODEC.optionalFieldOf("category").forGetter(MarketDefault::category),
@@ -30,23 +31,24 @@ public class MarketDefaultsRegistry {
     public static final MarketDefaultsRegistry INSTANCE = new MarketDefaultsRegistry();
     private static final MarketDefault EMPTY_DEFAULT = new MarketDefaultImpl(Optional.empty(), Optional.empty(), Optional.empty());
 
-    private final Map<String, MarketDefault> defaultsByGroup = new HashMap<>();
+    private volatile Map<String, MarketDefault> defaultsByGroup = Map.of();
 
     public void register(String group, MarketDefault preset) {
-        defaultsByGroup.put(group, preset);
+        final var newDefaults = new HashMap<>(defaultsByGroup);
+        newDefaults.put(group, preset);
+        replace(newDefaults);
     }
 
-    public void clear() {
-        defaultsByGroup.clear();
+    public void replace(Map<String, MarketDefault> defaultsByGroup) {
+        this.defaultsByGroup = Map.copyOf(defaultsByGroup);
     }
 
-    public void loadAdditionally(HolderLookup.Provider registries, BufferedReader reader) {
-        final var gson = new Gson();
+    public static void loadAdditionally(Map<String, MarketDefault> defaultsByGroup, HolderLookup.Provider registries, BufferedReader reader) {
         final var json = gson.fromJson(reader, JsonObject.class);
         final var ops = RegistryOps.create(JsonOps.INSTANCE, registries);
         for (final var entry : json.entrySet()) {
             final var defaults = CODEC.parse(ops, entry.getValue()).getOrThrow();
-            register(entry.getKey(), defaults);
+            defaultsByGroup.put(entry.getKey(), defaults);
         }
     }
 
