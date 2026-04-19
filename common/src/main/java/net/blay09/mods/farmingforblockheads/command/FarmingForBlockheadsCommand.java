@@ -14,6 +14,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -35,7 +36,9 @@ public class FarmingForBlockheadsCommand {
                 .then(Commands.literal("disable")
                         .then(Commands.argument("group", StringArgumentType.word())
                                 .suggests(GROUP_SUGGESTIONS)
-                                .executes(context -> toggleGroup(context, false)))));
+                                .executes(context -> toggleGroup(context, false))))
+                .then(Commands.literal("list")
+                        .executes(FarmingForBlockheadsCommand::listDefaults)));
     }
 
     private static int toggleGroup(CommandContext<CommandSourceStack> context, boolean enabled) {
@@ -57,6 +60,82 @@ public class FarmingForBlockheadsCommand {
         final var translationKey = enabled ? "commands.farmingforblockheads.enable.success" : "commands.farmingforblockheads.disable.success";
         context.getSource().sendSuccess(() -> Component.translatable(translationKey, group), true);
         return Command.SINGLE_SUCCESS;
+    }
+
+    private static int listDefaults(CommandContext<CommandSourceStack> context) {
+        final var enabledDefaults = collectEnabledDefaults();
+        final var disabledDefaults = collectDisabledDefaults();
+
+        context.getSource().sendSuccess(() -> Component.translatable(
+                "commands.farmingforblockheads.list.enabled",
+                formatGroupList(enabledDefaults, ChatFormatting.GREEN)), false);
+        if (!disabledDefaults.isEmpty()) {
+            context.getSource().sendSuccess(() -> Component.translatable(
+                    "commands.farmingforblockheads.list.disabled",
+                    formatGroupList(disabledDefaults, ChatFormatting.RED)), false);
+        }
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private static Component formatGroupList(Set<String> groups, ChatFormatting color) {
+        if (groups.isEmpty()) {
+            return Component.translatable("commands.farmingforblockheads.list.none").withStyle(ChatFormatting.GRAY);
+        }
+
+        return Component.literal(String.join(", ", groups)).withStyle(color);
+    }
+
+    private static Set<String> collectEnabledDefaults() {
+        final var config = FarmingForBlockheadsConfig.getActive();
+        final var includedGroups = config.includedGroups;
+        final var excludedGroups = config.excludedGroups;
+        final var enabledDefaults = new TreeSet<String>();
+
+        for (final var group : includedGroups) {
+            if (!group.equals("default") && !excludedGroups.contains(group)) {
+                enabledDefaults.add(group);
+            }
+        }
+
+        if (includedGroups.contains("default") && !excludedGroups.contains("default")) {
+            for (final var group : MarketDefaultsRegistry.INSTANCE.getKnownGroups()) {
+                final var marketDefault = MarketDefaultsRegistry.resolveExactDefault(group);
+                if (marketDefault.enabledByDefault().orElse(false) && !excludedGroups.contains(group)) {
+                    enabledDefaults.add(group);
+                }
+            }
+        }
+
+        return enabledDefaults;
+    }
+
+    private static Set<String> collectDisabledDefaults() {
+        final var config = FarmingForBlockheadsConfig.getActive();
+        final var includedGroups = config.includedGroups;
+        final var excludedGroups = config.excludedGroups;
+        final var disabledDefaults = new TreeSet<String>();
+        final var useDefaultIncludedGroups = includedGroups.contains("default") && !excludedGroups.contains("default");
+
+        for (final var group : excludedGroups) {
+            if (isIncludedByGroup(group, includedGroups)) {
+                disabledDefaults.add(group);
+            } else if (!group.equals("default") && useDefaultIncludedGroups && MarketDefaultsRegistry.resolveDefaults(group).enabledByDefault().orElse(false)) {
+                disabledDefaults.add(group);
+            }
+        }
+
+        return disabledDefaults;
+    }
+
+    private static boolean isIncludedByGroup(String group, Set<String> includedGroups) {
+        for (final var includedGroup : includedGroups) {
+            if (!includedGroup.equals("default") && (group.equals(includedGroup) || group.startsWith(includedGroup + "."))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static Set<String> collectKnownGroups(CommandSourceStack source) {
