@@ -32,6 +32,6 @@ The market allows searching and scrolling through trades, can filter by category
 
 ## Custom Market Configuration
 
-For information on how to customize the market trades, see the [README on GitHub](https://github.com/TwelveIterationMods/FarmingForBlockheads/blob/1.19.x/README.md#custom-market-entries).
+For information on how to customize the market trades, see the [README on GitHub](https://github.com/TwelveIterations/FarmingForBlockheads/blob/1.19.x/README.md#custom-market-entries).
 
 ![](https://blay09.net/files/brand/farmingforblockheads_market.png)
