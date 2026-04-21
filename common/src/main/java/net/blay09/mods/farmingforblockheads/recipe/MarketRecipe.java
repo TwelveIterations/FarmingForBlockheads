@@ -1,5 +1,6 @@
 package net.blay09.mods.farmingforblockheads.recipe;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.blay09.mods.farmingforblockheads.api.MarketPreset;
@@ -27,13 +28,15 @@ public class MarketRecipe implements Recipe<RecipeInput> {
     private final ItemStack resultItem;
     private final ItemStack icon;
     private final Payment payment;
+    private final int sortIndex;
 
-    public MarketRecipe(ItemStack resultItem, ResourceLocation category, ResourceLocation preset, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<Payment> payment, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<ItemStack> icon) {
+    public MarketRecipe(ItemStack resultItem, ResourceLocation category, ResourceLocation preset, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<Payment> payment, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<ItemStack> icon, int sortIndex) {
         this.preset = preset;
         this.category = category;
         this.resultItem = resultItem;
         this.payment = payment.orElse(null);
         this.icon = icon.orElse(resultItem);
+        this.sortIndex = sortIndex;
     }
 
     @Override
@@ -88,6 +91,10 @@ public class MarketRecipe implements Recipe<RecipeInput> {
         return icon;
     }
 
+    public int getSortIndex() {
+        return sortIndex;
+    }
+
     static class Serializer implements RecipeSerializer<MarketRecipe> {
 
         private static final MapCodec<ItemStack> RESULT_CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
@@ -103,7 +110,8 @@ public class MarketRecipe implements Recipe<RecipeInput> {
                 ResourceLocation.CODEC.fieldOf("category").forGetter(recipe -> recipe.category),
                 ResourceLocation.CODEC.fieldOf("preset").forGetter(recipe -> recipe.preset),
                 PaymentImpl.CODEC.optionalFieldOf("payment").forGetter(recipe -> Optional.ofNullable(recipe.payment)),
-                ItemStack.CODEC.optionalFieldOf("icon").forGetter(recipe -> Optional.ofNullable(recipe.icon))
+                ItemStack.CODEC.optionalFieldOf("icon").forGetter(recipe -> Optional.ofNullable(recipe.icon)),
+                Codec.INT.fieldOf("sortIndex").orElse(0).forGetter(MarketRecipe::getSortIndex)
         ).apply(instance, MarketRecipe::new));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, MarketRecipe> STREAM_CODEC = StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
@@ -124,7 +132,8 @@ public class MarketRecipe implements Recipe<RecipeInput> {
             final var preset = buf.readResourceLocation();
             final var payment = PaymentImpl.fromNetwork(buf);
             final var icon = ItemStack.OPTIONAL_STREAM_CODEC.decode(buf);
-            return new MarketRecipe(resultItem, category, preset, Optional.of(payment), Optional.of(icon));
+            final var sortIndex = buf.readVarInt();
+            return new MarketRecipe(resultItem, category, preset, Optional.of(payment), Optional.of(icon), sortIndex);
         }
 
         public static void toNetwork(RegistryFriendlyByteBuf buf, MarketRecipe recipe) {
@@ -133,6 +142,7 @@ public class MarketRecipe implements Recipe<RecipeInput> {
             buf.writeResourceLocation(recipe.preset);
             PaymentImpl.toNetwork(buf, recipe.getPaymentOrDefault());
             ItemStack.OPTIONAL_STREAM_CODEC.encode(buf, recipe.icon);
+            buf.writeVarInt(recipe.sortIndex);
         }
     }
 

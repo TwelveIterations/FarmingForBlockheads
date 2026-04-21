@@ -81,6 +81,7 @@ public class MarketMenu extends AbstractContainerMenu {
                     (RecipeHolder<MarketRecipe> recipe) -> MarketCategoryRegistry.INSTANCE.get(recipe.value().getCategory())
                             .map(MarketCategory::sortIndex)
                             .orElse(0))
+            .thenComparing(recipe -> recipe.value().getSortIndex())
             .thenComparing(recipe -> recipe.value()
                     .getIcon()
                     .getDisplayName()
