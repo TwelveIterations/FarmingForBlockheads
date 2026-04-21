@@ -43,7 +43,7 @@ public class FarmingForBlockheadsConfigData implements BalmConfigData {
     public double fertilizerRegressionChance = 0f; // 0-1
 
     @Comment("If true, merchants will be considered babies (on a technical level only), which may resolve exploits based on merchant death loot (like blood)")
-    public boolean treatMerchantsLikeBabies = true;
+    public boolean treatMerchantsLikeBabies = false;
 
     public String getRandomMerchantName(Random rand) {
         List<? extends String> candidates = merchantNames;
