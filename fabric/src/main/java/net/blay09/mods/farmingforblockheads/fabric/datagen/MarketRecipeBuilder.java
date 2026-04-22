@@ -53,7 +53,8 @@ public class MarketRecipeBuilder implements RecipeBuilder {
                 category,
                 preset,
                 Optional.ofNullable(payment),
-                Optional.of(new ItemStack(result, count)));
+                Optional.of(new ItemStack(result, count)),
+                0);
         recipeOutput.accept(resourceLocation, marketRecipe, null);
     }
 
