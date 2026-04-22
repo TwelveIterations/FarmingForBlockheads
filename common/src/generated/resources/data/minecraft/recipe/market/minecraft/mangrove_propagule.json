@@ -1,0 +1,14 @@
+{
+  "type": "farmingforblockheads:market",
+  "category": "farmingforblockheads:saplings",
+  "icon": {
+    "count": 1,
+    "id": "minecraft:mangrove_propagule"
+  },
+  "preset": "minecraft:exotic_saplings",
+  "result": {
+    "count": 1,
+    "item": "minecraft:mangrove_propagule"
+  },
+  "sortIndex": 0
+}

@@ -1,9 +1,0 @@
-{
-  "type": "farmingforblockheads:market",
-  "category": "farmingforblockheads:saplings",
-  "preset": "minecraft:saplings",
-  "result": {
-    "count": 1,
-    "item": "minecraft:oak_sapling"
-  }
-}

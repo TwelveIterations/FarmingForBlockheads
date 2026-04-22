@@ -1,9 +1,0 @@
-{
-  "type": "farmingforblockheads:market",
-  "category": "farmingforblockheads:saplings",
-  "preset": "minecraft:exotic_saplings",
-  "result": {
-    "count": 1,
-    "item": "minecraft:flowering_azalea"
-  }
-}

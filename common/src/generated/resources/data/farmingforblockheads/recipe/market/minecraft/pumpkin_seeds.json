@@ -1,9 +1,0 @@
-{
-  "type": "farmingforblockheads:market",
-  "category": "farmingforblockheads:seeds",
-  "preset": "minecraft:seeds",
-  "result": {
-    "count": 1,
-    "item": "minecraft:pumpkin_seeds"
-  }
-}

@@ -1,0 +1,14 @@
+{
+  "type": "farmingforblockheads:market",
+  "category": "farmingforblockheads:other",
+  "icon": {
+    "count": 1,
+    "id": "minecraft:grass_block"
+  },
+  "preset": "minecraft:soil",
+  "result": {
+    "count": 1,
+    "item": "minecraft:grass_block"
+  },
+  "sortIndex": 0
+}

@@ -1,0 +1,14 @@
+{
+  "type": "farmingforblockheads:market",
+  "category": "farmingforblockheads:other",
+  "icon": {
+    "count": 1,
+    "id": "minecraft:warped_nylium"
+  },
+  "preset": "minecraft:soil",
+  "result": {
+    "count": 1,
+    "item": "minecraft:warped_nylium"
+  },
+  "sortIndex": 0
+}

@@ -1,0 +1,14 @@
+{
+  "type": "farmingforblockheads:market",
+  "category": "farmingforblockheads:other",
+  "icon": {
+    "count": 1,
+    "id": "minecraft:warped_fungus"
+  },
+  "preset": "minecraft:mushrooms",
+  "result": {
+    "count": 1,
+    "item": "minecraft:warped_fungus"
+  },
+  "sortIndex": 0
+}

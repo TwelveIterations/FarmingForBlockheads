@@ -1,9 +1,0 @@
-{
-  "type": "farmingforblockheads:market",
-  "category": "farmingforblockheads:other",
-  "preset": "minecraft:bone_meal",
-  "result": {
-    "count": 1,
-    "item": "minecraft:bone_meal"
-  }
-}

@@ -1,9 +1,0 @@
-{
-  "type": "farmingforblockheads:market",
-  "category": "farmingforblockheads:other",
-  "preset": "minecraft:mushrooms",
-  "result": {
-    "count": 1,
-    "item": "minecraft:crimson_fungus"
-  }
-}

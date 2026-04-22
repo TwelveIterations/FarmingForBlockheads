@@ -1,0 +1,14 @@
+{
+  "type": "farmingforblockheads:market",
+  "category": "farmingforblockheads:other",
+  "icon": {
+    "count": 1,
+    "id": "minecraft:red_mushroom"
+  },
+  "preset": "minecraft:mushrooms",
+  "result": {
+    "count": 1,
+    "item": "minecraft:red_mushroom"
+  },
+  "sortIndex": 0
+}

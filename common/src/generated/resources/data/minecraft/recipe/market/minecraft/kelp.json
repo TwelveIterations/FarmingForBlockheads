@@ -1,0 +1,14 @@
+{
+  "type": "farmingforblockheads:market",
+  "category": "farmingforblockheads:other",
+  "icon": {
+    "count": 1,
+    "id": "minecraft:kelp"
+  },
+  "preset": "minecraft:crops",
+  "result": {
+    "count": 1,
+    "item": "minecraft:kelp"
+  },
+  "sortIndex": 0
+}

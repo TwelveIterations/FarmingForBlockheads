@@ -1,0 +1,14 @@
+{
+  "type": "farmingforblockheads:market",
+  "category": "farmingforblockheads:seeds",
+  "icon": {
+    "count": 1,
+    "id": "minecraft:wheat_seeds"
+  },
+  "preset": "minecraft:seeds",
+  "result": {
+    "count": 1,
+    "item": "minecraft:wheat_seeds"
+  },
+  "sortIndex": 0
+}

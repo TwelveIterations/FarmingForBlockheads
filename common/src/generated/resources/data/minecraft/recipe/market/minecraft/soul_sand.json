@@ -1,0 +1,14 @@
+{
+  "type": "farmingforblockheads:market",
+  "category": "farmingforblockheads:other",
+  "icon": {
+    "count": 1,
+    "id": "minecraft:soul_sand"
+  },
+  "preset": "minecraft:soil",
+  "result": {
+    "count": 1,
+    "item": "minecraft:soul_sand"
+  },
+  "sortIndex": 0
+}

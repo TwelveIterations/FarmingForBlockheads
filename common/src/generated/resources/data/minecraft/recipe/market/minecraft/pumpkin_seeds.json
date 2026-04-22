@@ -1,0 +1,14 @@
+{
+  "type": "farmingforblockheads:market",
+  "category": "farmingforblockheads:seeds",
+  "icon": {
+    "count": 1,
+    "id": "minecraft:pumpkin_seeds"
+  },
+  "preset": "minecraft:seeds",
+  "result": {
+    "count": 1,
+    "item": "minecraft:pumpkin_seeds"
+  },
+  "sortIndex": 0
+}

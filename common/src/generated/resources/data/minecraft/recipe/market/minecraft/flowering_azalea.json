@@ -1,0 +1,14 @@
+{
+  "type": "farmingforblockheads:market",
+  "category": "farmingforblockheads:saplings",
+  "icon": {
+    "count": 1,
+    "id": "minecraft:flowering_azalea"
+  },
+  "preset": "minecraft:exotic_saplings",
+  "result": {
+    "count": 1,
+    "item": "minecraft:flowering_azalea"
+  },
+  "sortIndex": 0
+}

@@ -1,0 +1,14 @@
+{
+  "type": "farmingforblockheads:market",
+  "category": "farmingforblockheads:seeds",
+  "icon": {
+    "count": 1,
+    "id": "minecraft:potato"
+  },
+  "preset": "minecraft:seed_crops",
+  "result": {
+    "count": 1,
+    "item": "minecraft:potato"
+  },
+  "sortIndex": 0
+}

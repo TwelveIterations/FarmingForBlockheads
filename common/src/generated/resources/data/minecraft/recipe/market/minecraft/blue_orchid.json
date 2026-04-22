@@ -1,0 +1,14 @@
+{
+  "type": "farmingforblockheads:market",
+  "category": "farmingforblockheads:flowers",
+  "icon": {
+    "count": 1,
+    "id": "minecraft:blue_orchid"
+  },
+  "preset": "minecraft:flowers",
+  "result": {
+    "count": 1,
+    "item": "minecraft:blue_orchid"
+  },
+  "sortIndex": 0
+}

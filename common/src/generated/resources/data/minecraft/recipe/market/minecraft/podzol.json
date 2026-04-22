@@ -1,0 +1,14 @@
+{
+  "type": "farmingforblockheads:market",
+  "category": "farmingforblockheads:other",
+  "icon": {
+    "count": 1,
+    "id": "minecraft:podzol"
+  },
+  "preset": "minecraft:soil",
+  "result": {
+    "count": 1,
+    "item": "minecraft:podzol"
+  },
+  "sortIndex": 0
+}

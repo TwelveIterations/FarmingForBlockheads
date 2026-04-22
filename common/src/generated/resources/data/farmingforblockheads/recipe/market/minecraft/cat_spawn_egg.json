@@ -1,9 +1,0 @@
-{
-  "type": "farmingforblockheads:market",
-  "category": "farmingforblockheads:other",
-  "preset": "minecraft:animal_eggs",
-  "result": {
-    "count": 1,
-    "item": "minecraft:cat_spawn_egg"
-  }
-}

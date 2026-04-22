@@ -1,9 +1,0 @@
-{
-  "type": "farmingforblockheads:market",
-  "category": "farmingforblockheads:flowers",
-  "preset": "minecraft:flowers",
-  "result": {
-    "count": 1,
-    "item": "minecraft:poppy"
-  }
-}

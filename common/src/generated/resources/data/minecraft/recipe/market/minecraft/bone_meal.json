@@ -1,0 +1,14 @@
+{
+  "type": "farmingforblockheads:market",
+  "category": "farmingforblockheads:other",
+  "icon": {
+    "count": 1,
+    "id": "minecraft:bone_meal"
+  },
+  "preset": "minecraft:bone_meal",
+  "result": {
+    "count": 1,
+    "item": "minecraft:bone_meal"
+  },
+  "sortIndex": 0
+}

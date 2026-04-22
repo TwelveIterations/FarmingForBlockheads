@@ -1,0 +1,14 @@
+{
+  "type": "farmingforblockheads:market",
+  "category": "farmingforblockheads:saplings",
+  "icon": {
+    "count": 1,
+    "id": "minecraft:oak_sapling"
+  },
+  "preset": "minecraft:saplings",
+  "result": {
+    "count": 1,
+    "item": "minecraft:oak_sapling"
+  },
+  "sortIndex": 0
+}

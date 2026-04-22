@@ -1,0 +1,14 @@
+{
+  "type": "farmingforblockheads:market",
+  "category": "farmingforblockheads:other",
+  "icon": {
+    "count": 1,
+    "id": "minecraft:cactus"
+  },
+  "preset": "minecraft:crops",
+  "result": {
+    "count": 1,
+    "item": "minecraft:cactus"
+  },
+  "sortIndex": 0
+}

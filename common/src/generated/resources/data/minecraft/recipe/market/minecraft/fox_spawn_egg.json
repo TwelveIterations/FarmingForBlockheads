@@ -1,0 +1,14 @@
+{
+  "type": "farmingforblockheads:market",
+  "category": "farmingforblockheads:other",
+  "icon": {
+    "count": 1,
+    "id": "minecraft:fox_spawn_egg"
+  },
+  "preset": "minecraft:animal_eggs",
+  "result": {
+    "count": 1,
+    "item": "minecraft:fox_spawn_egg"
+  },
+  "sortIndex": 0
+}
