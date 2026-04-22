@@ -1,1 +1,6 @@
-- Fixed crash with mods (e.g. Quark) when they modify tooltips without supporting TooltipContext.Empty
+- Added `sortIndex` field to market recipes (default: `0`)
+- Fixed markets being relocatable by other mods, which would result in a broken leftover half block
+- Fixed category buttons to wrap when they would overflow the screen
+- Fixed config translation keys
+- Changed default of `treatMerchantsLikeBabies` to `false`, as it may have other unwanted effects when shaders are used.
+  - This option was used in the past to avoid Merchants from being farmed for blood. If this is still an issue, please make a new report so that a proper solution can be looked into.
