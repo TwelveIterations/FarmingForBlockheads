@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "G": "#c:dyes/green",
     "N": "minecraft:gold_nugget",
