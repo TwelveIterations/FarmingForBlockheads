@@ -21,8 +21,6 @@ public class ModBlocks {
     public static DeferredBlock fertilizedFarmlandStable;
 
     public static void initialize(BalmBlockRegistrar blocks) {
-        blocks.enableBlockDescriptionPrefixForItems();
-
         market = blocks.register("market", MarketBlock::new, it -> it).withDefaultItem().asDeferredBlock();
         chickenNest = blocks.register("chicken_nest", ChickenNestBlock::new, it -> it)
                 .withDefaultItem(it -> it.component(ModComponents.description.value(),

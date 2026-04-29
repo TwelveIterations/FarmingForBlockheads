@@ -1,6 +1,5 @@
 package net.blay09.mods.farmingforblockheads.fabric.datagen;
 
-import net.blay09.mods.balm.world.level.block.DeferredBlock;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
 import net.blay09.mods.farmingforblockheads.tag.ModBlockTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
@@ -19,34 +18,34 @@ public class ModBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider arg) {
-        final var relocationNotSupported = valueLookupBuilder(TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("c", "relocation_not_supported")));
-        relocationNotSupported.add(ModBlocks.market.asBlock());
+        final var relocationNotSupported = builder(TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath("c", "relocation_not_supported")));
+        relocationNotSupported.add(ModBlocks.market.asResourceKey());
 
         final var dirtTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("dirt"));
-        valueLookupBuilder(dirtTag).add(ModBlocks.fertilizedFarmlandHealthy.asBlock(),
-                ModBlocks.fertilizedFarmlandRich.asBlock(),
-                ModBlocks.fertilizedFarmlandStable.asBlock(),
-                ModBlocks.fertilizedFarmlandHealthyStable.asBlock(),
-                ModBlocks.fertilizedFarmlandRichStable.asBlock());
+        builder(dirtTag).add(ModBlocks.fertilizedFarmlandHealthy.asResourceKey(),
+                ModBlocks.fertilizedFarmlandRich.asResourceKey(),
+                ModBlocks.fertilizedFarmlandStable.asResourceKey(),
+                ModBlocks.fertilizedFarmlandHealthyStable.asResourceKey(),
+                ModBlocks.fertilizedFarmlandRichStable.asResourceKey());
 
         final var mineableAxeTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("mineable/axe"));
-        valueLookupBuilder(mineableAxeTag).add(ModBlocks.market.asBlock(), ModBlocks.chickenNest.asBlock(), ModBlocks.feedingTrough.asBlock());
+        builder(mineableAxeTag).add(ModBlocks.market.asResourceKey(), ModBlocks.chickenNest.asResourceKey(), ModBlocks.feedingTrough.asResourceKey());
 
         final var mineableShovelTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("mineable/shovel"));
-        valueLookupBuilder(mineableShovelTag).add(ModBlocks.fertilizedFarmlandHealthyStable.asBlock(),
-                ModBlocks.fertilizedFarmlandRichStable.asBlock(),
-                ModBlocks.fertilizedFarmlandStable.asBlock(),
-                ModBlocks.fertilizedFarmlandHealthy.asBlock(),
-                ModBlocks.fertilizedFarmlandRich.asBlock());
+        builder(mineableShovelTag).add(ModBlocks.fertilizedFarmlandHealthyStable.asResourceKey(),
+                ModBlocks.fertilizedFarmlandRichStable.asResourceKey(),
+                ModBlocks.fertilizedFarmlandStable.asResourceKey(),
+                ModBlocks.fertilizedFarmlandHealthy.asResourceKey(),
+                ModBlocks.fertilizedFarmlandRich.asResourceKey());
 
-        valueLookupBuilder(ModBlockTags.RICH_FARMLAND).add(ModBlocks.fertilizedFarmlandRichStable.asBlock(), ModBlocks.fertilizedFarmlandRich.asBlock());
-        valueLookupBuilder(ModBlockTags.HEALTHY_FARMLAND).add(ModBlocks.fertilizedFarmlandHealthyStable.asBlock(), ModBlocks.fertilizedFarmlandHealthy.asBlock());
-        valueLookupBuilder(ModBlockTags.STABLE_FARMLAND).add(ModBlocks.fertilizedFarmlandHealthyStable.asBlock(),
-                ModBlocks.fertilizedFarmlandRichStable.asBlock(),
-                ModBlocks.fertilizedFarmlandStable.asBlock());
+        builder(ModBlockTags.RICH_FARMLAND).add(ModBlocks.fertilizedFarmlandRichStable.asResourceKey(), ModBlocks.fertilizedFarmlandRich.asResourceKey());
+        builder(ModBlockTags.HEALTHY_FARMLAND).add(ModBlocks.fertilizedFarmlandHealthyStable.asResourceKey(), ModBlocks.fertilizedFarmlandHealthy.asResourceKey());
+        builder(ModBlockTags.STABLE_FARMLAND).add(ModBlocks.fertilizedFarmlandHealthyStable.asResourceKey(),
+                ModBlocks.fertilizedFarmlandRichStable.asResourceKey(),
+                ModBlocks.fertilizedFarmlandStable.asResourceKey());
 
-        valueLookupBuilder(ModBlockTags.FERTILIZED_FARMLAND).add(ModBlocks.fertilizedFarmlandHealthyStable.asBlock(), ModBlocks.fertilizedFarmlandRichStable.asBlock(),
-                ModBlocks.fertilizedFarmlandStable.asBlock(), ModBlocks.fertilizedFarmlandHealthy.asBlock(), ModBlocks.fertilizedFarmlandRich.asBlock());
+        builder(ModBlockTags.FERTILIZED_FARMLAND).add(ModBlocks.fertilizedFarmlandHealthyStable.asResourceKey(), ModBlocks.fertilizedFarmlandRichStable.asResourceKey(),
+                ModBlocks.fertilizedFarmlandStable.asResourceKey(), ModBlocks.fertilizedFarmlandHealthy.asResourceKey(), ModBlocks.fertilizedFarmlandRich.asResourceKey());
     }
 
 }

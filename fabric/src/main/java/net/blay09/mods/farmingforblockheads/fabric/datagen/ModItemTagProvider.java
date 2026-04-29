@@ -15,17 +15,17 @@ public class ModItemTagProvider extends FabricTagsProvider.ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider lookup) {
-        valueLookupBuilder(ModItemTags.RICH_FARMLAND).add(ModBlocks.fertilizedFarmlandRichStable.asItem(), ModBlocks.fertilizedFarmlandRich.asItem());
-        valueLookupBuilder(ModItemTags.HEALTHY_FARMLAND).add(ModBlocks.fertilizedFarmlandHealthyStable.asItem(),
-                ModBlocks.fertilizedFarmlandHealthy.asItem());
-        valueLookupBuilder(ModItemTags.STABLE_FARMLAND).add(ModBlocks.fertilizedFarmlandHealthyStable.asItem(),
-                ModBlocks.fertilizedFarmlandRichStable.asItem(),
-                ModBlocks.fertilizedFarmlandStable.asItem());
+        builder(ModItemTags.RICH_FARMLAND).add(ModBlocks.fertilizedFarmlandRichStable.asBlockItemId(), ModBlocks.fertilizedFarmlandRich.asBlockItemId());
+        builder(ModItemTags.HEALTHY_FARMLAND).add(ModBlocks.fertilizedFarmlandHealthyStable.asBlockItemId(),
+                ModBlocks.fertilizedFarmlandHealthy.asBlockItemId());
+        builder(ModItemTags.STABLE_FARMLAND).add(ModBlocks.fertilizedFarmlandHealthyStable.asBlockItemId(),
+                ModBlocks.fertilizedFarmlandRichStable.asBlockItemId(),
+                ModBlocks.fertilizedFarmlandStable.asBlockItemId());
 
-        valueLookupBuilder(ModItemTags.FERTILIZED_FARMLAND).add(ModBlocks.fertilizedFarmlandHealthyStable.asItem(),
-                ModBlocks.fertilizedFarmlandRichStable.asItem(),
-                ModBlocks.fertilizedFarmlandStable.asItem(),
-                ModBlocks.fertilizedFarmlandHealthy.asItem(),
-                ModBlocks.fertilizedFarmlandRich.asItem());
+        builder(ModItemTags.FERTILIZED_FARMLAND).add(ModBlocks.fertilizedFarmlandHealthyStable.asBlockItemId(),
+                ModBlocks.fertilizedFarmlandRichStable.asBlockItemId(),
+                ModBlocks.fertilizedFarmlandStable.asBlockItemId(),
+                ModBlocks.fertilizedFarmlandHealthy.asBlockItemId(),
+                ModBlocks.fertilizedFarmlandRich.asBlockItemId());
     }
 }

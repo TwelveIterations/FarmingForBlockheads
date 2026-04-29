@@ -69,7 +69,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .pattern("PCP")
                         .pattern("W W")
                         .pattern("WWW")
-                        .define('C', Items.RED_WOOL)
+                        .define('C', Items.WOOL.red())
                         .define('P', ItemTags.PLANKS)
                         .define('W', ItemTags.LOGS)
                         .unlockedBy("has_wool", has(ItemTags.WOOL))
