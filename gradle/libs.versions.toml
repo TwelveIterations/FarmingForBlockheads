@@ -6,7 +6,7 @@ neoForge = "26.1.1.15-beta"
 forge = "63.0.2"
 fabricApi = "0.145.4+26.1.2"
 fabricLoader = "0.19.1"
-shogi = "26.1.2.2"
+shogi = "26.1.2.2-SNAPSHOT"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
