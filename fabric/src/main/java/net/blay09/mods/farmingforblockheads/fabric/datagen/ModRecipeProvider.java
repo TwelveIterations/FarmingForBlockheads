@@ -58,6 +58,15 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy("has_wheat_seeds", has(Items.WHEAT_SEEDS))
                         .save(exporter);
 
+                shaped(RecipeCategory.TOOLS, ModItems.scythe)
+                        .pattern("III")
+                        .pattern(" SI")
+                        .pattern(" S ")
+                        .define('I', Items.IRON_INGOT)
+                        .define('S', Items.STICK)
+                        .unlockedBy("has_iron_ingot", has(Items.IRON_INGOT))
+                        .save(exporter);
+
                 shaped(RecipeCategory.DECORATIONS, ModBlocks.chickenNest)
                         .pattern("PHP")
                         .define('H', Items.HAY_BLOCK)
