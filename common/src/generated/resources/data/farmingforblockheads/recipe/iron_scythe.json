@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    "III",
+    " SI",
+    " S "
+  ],
+  "result": {
+    "id": "farmingforblockheads:iron_scythe"
+  }
+}
