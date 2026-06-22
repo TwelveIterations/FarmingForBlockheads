@@ -50,6 +50,10 @@ public class FarmingForBlockheadsConfig {
     public double fertilizerBonusGrowthChance = 1f;
 
     @Range(min = "0", max = "1")
+    @Comment("The chance to get a bonus growth on farmland hydrated by a Watering Can.")
+    public double hydrationBonusGrowthChance = 1f;
+
+    @Range(min = "0", max = "1")
     @Comment("The chance for Fertilized Farmland to turn back into regular Farmland (per provided bonus).")
     public double fertilizerRegressionChance = 0f;
 

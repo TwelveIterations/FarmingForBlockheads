@@ -3,6 +3,7 @@ package net.blay09.mods.farmingforblockheads;
 import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.core.BalmRegistrars;
 import net.blay09.mods.balm.platform.event.callback.CropCallback;
+import net.blay09.mods.balm.platform.event.callback.ServerTickCallback;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
 import net.blay09.mods.farmingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.farmingforblockheads.command.FarmingForBlockheadsCommand;
@@ -51,7 +52,9 @@ public class FarmingForBlockheads {
             registrar.addDependency(id("market_defaults_loader"), registrar.vanillaKeys().recipes());
         });
 
-        CropCallback.Grow.After.EVENT.register(FarmlandHandler::onGrowEvent);
+        CropCallback.Grow.After.EVENT.register(FarmlandHandler::onFertilizerGrowEvent);
+        CropCallback.Grow.After.EVENT.register(FarmlandHandler::onHydratedFarmlandGrowEvent);
+        ServerTickCallback.ServerLevelTick.AFTER.register(level -> HydratedFarmlandData.get(level).dailyReset(level));
     }
 
     public static Identifier id(String path) {

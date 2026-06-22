@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": "minecraft:bucket",
+    "I": "minecraft:iron_ingot"
+  },
+  "pattern": [
+    " I ",
+    "I I",
+    " B "
+  ],
+  "result": {
+    "id": "farmingforblockheads:watering_can"
+  }
+}

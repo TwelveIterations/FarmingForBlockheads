@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "FarmlandBlockAccessor",
+    "FarmlandBlockMixin",
     "RecipeManagerAccessor"
   ],
   "client": [

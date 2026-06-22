@@ -3,6 +3,7 @@ package net.blay09.mods.farmingforblockheads.block;
 import com.mojang.serialization.MapCodec;
 import net.blay09.mods.balm.world.level.block.CustomFarmBlock;
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheadsConfig;
+import net.blay09.mods.farmingforblockheads.HydratedFarmlandData;
 import net.blay09.mods.farmingforblockheads.mixin.FarmlandBlockAccessor;
 import net.blay09.mods.farmingforblockheads.tag.ModBlockTags;
 import net.minecraft.core.BlockPos;
@@ -48,6 +49,13 @@ public class FertilizedFarmlandBlock extends FarmlandBlock implements CustomFarm
 
     @Override
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (HydratedFarmlandData.get(level).isHydrated(level, pos)) {
+            if (state.getValue(MOISTURE) < MAX_MOISTURE) {
+                level.setBlock(pos, state.setValue(MOISTURE, MAX_MOISTURE), 2);
+            }
+            return;
+        }
+
         int moisture = state.getValue(MOISTURE);
 
         if (!FarmlandBlockAccessor.callIsNearWater(level, pos) && !level.isRainingAt(pos.above())) {
