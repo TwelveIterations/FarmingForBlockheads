@@ -58,7 +58,9 @@ public class FertilizedFarmlandBlock extends FarmlandBlock implements CustomFarm
 
         int moisture = state.getValue(MOISTURE);
 
-        if (!FarmlandBlockAccessor.callIsNearWater(level, pos) && !level.isRainingAt(pos.above())) {
+        final var isNearWater = !FarmingForBlockheadsConfig.getActive().disableVanillaWatering
+                && FarmlandBlockAccessor.callIsNearWater(level, pos);
+        if (!isNearWater && !level.isRainingAt(pos.above())) {
             if (moisture > 0) {
                 level.setBlock(pos, state.setValue(MOISTURE, moisture - 1), 2);
             } else if (!FarmlandBlockAccessor.callShouldMaintainFarmland(level, pos) && state.is(ModBlockTags.STABLE_FARMLAND)) {

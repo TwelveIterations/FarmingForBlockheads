@@ -57,6 +57,8 @@
   "farmingforblockheads.configuration.hydrationBonusGrowthChance.tooltip": "The chance to get a bonus growth on farmland hydrated by a Watering Can.",
   "farmingforblockheads.configuration.fertilizerRegressionChance": "Fertilizer Regression Chance",
   "farmingforblockheads.configuration.fertilizerRegressionChance.tooltip": "The chance for Fertilized Farmland to turn back into regular Farmland (per provided bonus).",
+  "farmingforblockheads.configuration.disableVanillaWatering": "Disable Vanilla Watering",
+  "farmingforblockheads.configuration.disableVanillaWatering.tooltip": "If true, farmland will not become moist from nearby water. Rain and Watering Cans still hydrate farmland.",
   "farmingforblockheads.configuration.treatMerchantsLikeBabies": "Treat Merchants like Babies",
   "farmingforblockheads.configuration.treatMerchantsLikeBabies.tooltip": "If true, merchants will be considered babies (on a technical level only), which may resolve exploits based on merchant death loot (like blood)",
   "farmingforblockheads.configuration.excludedGroups": "Excluded Groups",
