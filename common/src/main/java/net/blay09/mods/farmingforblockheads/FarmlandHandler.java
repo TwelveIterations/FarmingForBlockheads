@@ -13,19 +13,34 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class FarmlandHandler {
 
-    public static void onGrowEvent(LevelAccessor levelAccessor, BlockPos pos, BlockState state) {
+    public static void onFertilizerGrowEvent(LevelAccessor levelAccessor, BlockPos pos, BlockState state) {
         BlockState plant = levelAccessor.getBlockState(pos);
-        if (plant.getBlock() instanceof BonemealableBlock growable && levelAccessor instanceof Level level) {
+        if (plant.getBlock() instanceof BonemealableBlock growable && levelAccessor instanceof ServerLevel level) {
             BlockState farmland = levelAccessor.getBlockState(pos.below());
             if (farmland.is(ModBlockTags.HEALTHY_FARMLAND)) {
                 final var doubleGrowthChance = (float) FarmingForBlockheadsConfig.getActive().fertilizerBonusGrowthChance;
                 if (Math.random() <= doubleGrowthChance) {
                     if (growable.isValidBonemealTarget(levelAccessor, pos, plant)) {
-                        growable.performBonemeal(((ServerLevel) levelAccessor), levelAccessor.getRandom(), pos, plant);
+                        growable.performBonemeal(level, levelAccessor.getRandom(), pos, plant);
                         levelAccessor.levelEvent(2005, pos, 0);
                         rollRegression(level, pos.below(), farmland);
                     }
                 }
+            }
+        }
+    }
+
+    public static void onHydratedFarmlandGrowEvent(LevelAccessor levelAccessor, BlockPos pos, BlockState state) {
+        if (!(levelAccessor instanceof ServerLevel level) || !HydratedFarmlandData.get(level).isHydrated(level, pos.below())) {
+            return;
+        }
+
+        BlockState plant = levelAccessor.getBlockState(pos);
+        if (plant.getBlock() instanceof BonemealableBlock growable) {
+            final var bonusGrowthChance = (float) FarmingForBlockheadsConfig.getActive().hydrationBonusGrowthChance;
+            if (Math.random() <= bonusGrowthChance && growable.isValidBonemealTarget(levelAccessor, pos, plant)) {
+                growable.performBonemeal(level, levelAccessor.getRandom(), pos, plant);
+                levelAccessor.levelEvent(2005, pos, 0);
             }
         }
     }

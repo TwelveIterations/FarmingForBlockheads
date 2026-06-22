@@ -51,6 +51,7 @@ public class ModModelProvider extends FabricModelProvider {
         generators.generateFlatItem(ModItems.redFertilizer.asItem(), ModelTemplates.FLAT_ITEM);
         generators.generateFlatItem(ModItems.yellowFertilizer.asItem(), ModelTemplates.FLAT_ITEM);
         generators.generateFlatItem(ModItems.scythe.asItem(), ModelTemplates.FLAT_HANDHELD_ITEM);
+        generators.generateFlatItem(ModItems.wateringCan.asItem(), ModelTemplates.FLAT_ITEM);
     }
 
     private void createFertilizedFarmland(BlockModelGenerators generators, Block farmland) {

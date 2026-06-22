@@ -67,6 +67,15 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy("has_iron_ingot", has(Items.IRON_INGOT))
                         .save(exporter);
 
+                shaped(RecipeCategory.TOOLS, ModItems.wateringCan)
+                        .pattern(" I ")
+                        .pattern("I I")
+                        .pattern(" B ")
+                        .define('I', Items.IRON_INGOT)
+                        .define('B', Items.WATER_BUCKET)
+                        .unlockedBy("has_water_bucket", has(Items.WATER_BUCKET))
+                        .save(exporter);
+
                 shaped(RecipeCategory.DECORATIONS, ModBlocks.chickenNest)
                         .pattern("PHP")
                         .define('H', Items.HAY_BLOCK)
