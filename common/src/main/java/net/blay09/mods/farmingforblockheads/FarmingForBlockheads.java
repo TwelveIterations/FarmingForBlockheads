@@ -54,7 +54,10 @@ public class FarmingForBlockheads {
 
         CropCallback.Grow.After.EVENT.register(FarmlandHandler::onFertilizerGrowEvent);
         CropCallback.Grow.After.EVENT.register(FarmlandHandler::onHydratedFarmlandGrowEvent);
-        ServerTickCallback.ServerLevelTick.AFTER.register(level -> HydratedFarmlandData.get(level).dailyReset(level));
+        ServerTickCallback.ServerLevelTick.AFTER.register(level -> {
+            HydratedFarmlandData.get(level).dailyReset(level);
+            ShippingBinSalesData.get(level).prune(level);
+        });
     }
 
     public static Identifier id(String path) {

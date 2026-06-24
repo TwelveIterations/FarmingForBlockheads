@@ -1,0 +1,6 @@
+{
+  "type": "farmingforblockheads:shipping_bin",
+  "input": "minecraft:wheat",
+  "fill": 1,
+  "output": "minecraft:emerald"
+}

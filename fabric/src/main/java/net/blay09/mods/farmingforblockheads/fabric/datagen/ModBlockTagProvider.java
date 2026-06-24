@@ -29,7 +29,7 @@ public class ModBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
                 ModBlocks.fertilizedFarmlandRichStable.asResourceKey());
 
         final var mineableAxeTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("mineable/axe"));
-        builder(mineableAxeTag).add(ModBlocks.market.asResourceKey(), ModBlocks.chickenNest.asResourceKey(), ModBlocks.feedingTrough.asResourceKey());
+        builder(mineableAxeTag).add(ModBlocks.market.asResourceKey(), ModBlocks.chickenNest.asResourceKey(), ModBlocks.feedingTrough.asResourceKey(), ModBlocks.shippingBin.asResourceKey());
 
         final var mineableShovelTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("mineable/shovel"));
         builder(mineableShovelTag).add(ModBlocks.fertilizedFarmlandHealthyStable.asResourceKey(),

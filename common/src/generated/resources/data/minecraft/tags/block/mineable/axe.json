@@ -2,6 +2,7 @@
   "values": [
     "farmingforblockheads:market",
     "farmingforblockheads:chicken_nest",
-    "farmingforblockheads:feeding_trough"
+    "farmingforblockheads:feeding_trough",
+    "farmingforblockheads:shipping_bin"
   ]
 }
