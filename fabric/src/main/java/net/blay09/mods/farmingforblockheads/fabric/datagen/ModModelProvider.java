@@ -35,6 +35,7 @@ public class ModModelProvider extends FabricModelProvider {
     public void generateBlockStateModels(BlockModelGenerators generators) {
         generators.createNonTemplateModelBlock(ModBlocks.feedingTrough.asBlock());
         generators.createNonTemplateModelBlock(ModBlocks.shippingBin.asBlock());
+        generators.registerSimpleItemModel(ModBlocks.shippingBin.asBlock(), ModelLocationUtils.getModelLocation(ModBlocks.shippingBin.asBlock()));
 
         createDoubleBlockMarket(generators, ModBlocks.market.asBlock(), ModBlocks.market.asBlock());
         generators.createNonTemplateHorizontalBlock(ModBlocks.chickenNest.asBlock());

@@ -5,6 +5,8 @@ import net.blay09.mods.balm.mixin.RecipeManagerAccessor;
 import net.blay09.mods.balm.world.*;
 import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.blay09.mods.farmingforblockheads.ShippingBinSalesData;
+import net.blay09.mods.farmingforblockheads.entity.ModEntities;
+import net.blay09.mods.farmingforblockheads.entity.ShippingBalloonEntity;
 import net.blay09.mods.farmingforblockheads.menu.ShippingBinMenu;
 import net.blay09.mods.farmingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.farmingforblockheads.recipe.ShippingBinRecipe;
@@ -296,7 +298,14 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
             }
             recordSale(level, recipeHolder, sale.count());
         });
+        spawnShippingBalloon(level);
         return true;
+    }
+
+    private void spawnShippingBalloon(ServerLevel level) {
+        final var balloon = new ShippingBalloonEntity(ModEntities.shippingBalloon.value(), level);
+        balloon.setPos(worldPosition.getX() + 0.5, worldPosition.getY() + 1, worldPosition.getZ() + 0.5);
+        level.addFreshEntity(balloon);
     }
 
     private record Sale(ItemStack stack, int count) {

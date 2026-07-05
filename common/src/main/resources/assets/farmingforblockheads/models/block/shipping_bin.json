@@ -1,5 +1,6 @@
 {
 	"format_version": "1.21.11",
+	"parent": "block/block",
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "farmingforblockheads:block/shipping_bin",
@@ -135,7 +136,7 @@
 			}
 		},
 		{
-			"name": "southSide",
+			"name": "bottom",
 			"from": [1.5, 1.75, 1.5],
 			"to": [14.5, 3.25, 14.5],
 			"rotation": {"angle": 0, "axis": "y", "origin": [0, 1.25, 12]},
@@ -324,6 +325,15 @@
 				"up": {"uv": [0, 14, 2, 16], "texture": "#0"},
 				"down": {"uv": [0, 14, 2, 16], "texture": "#0"}
 			}
+		}
+	],
+	"groups": [
+		{
+			"name": "crate",
+			"origin": [0, 13.75, 0.25],
+			"scope": 0,
+			"color": 0,
+			"children": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
 		}
 	]
 }
