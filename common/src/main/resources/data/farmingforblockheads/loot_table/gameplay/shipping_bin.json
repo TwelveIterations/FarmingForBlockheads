@@ -13,8 +13,8 @@
                 "type": "farmingforblockheads:shipment_value",
                 "amount": {
                   "type": "minecraft:linear",
-                  "base": 0.03125,
-                  "per_level_above_first": 0.03125
+                  "base": 0.0078125,
+                  "per_level_above_first": 0.0078125
                 }
               }
             }

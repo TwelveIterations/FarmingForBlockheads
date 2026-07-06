@@ -16,7 +16,7 @@ public final class FarmingForBlockheadsRules {
     });
 
     public static final ShogiValue<ShippingBinBlockEntity, Integer> SHIPPING_BIN_CAPACITY =
-            SCOPE.intValue(id("shipping_bin/capacity"), _ -> 64);
+            SCOPE.intValue(id("shipping_bin/capacity"), _ -> 128);
 
     private FarmingForBlockheadsRules() {
     }
