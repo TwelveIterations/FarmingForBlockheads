@@ -61,9 +61,12 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
     public static final int OUTPUT_SLOTS = 6;
     public static final int CONTAINER_SIZE = INPUT_SLOTS + OUTPUT_SLOTS;
     public static final int DISPLAYED_ITEM_SLOTS = 12;
+    public static final int SALE_CYCLE_TICKS = 20;
     public static final int DATA_SHIPMENT_VALUE = 0;
     public static final int DATA_SHIPMENT_CAPACITY = 1;
-    public static final int DATA_COUNT = 2;
+    public static final int DATA_SALE_PROGRESS = 2;
+    public static final int DATA_SALE_PROGRESS_MAX = 3;
+    public static final int DATA_COUNT = 4;
 
     private final DefaultContainer container = new DefaultContainer(CONTAINER_SIZE) {
         @Override
@@ -76,7 +79,7 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
             isDirty = true;
             ShippingBinBlockEntity.this.setChanged();
             if (!processing && level instanceof ServerLevel serverLevel) {
-                tryProcessSales(serverLevel);
+                tryProcessSales(serverLevel, false);
             }
         }
     };
@@ -88,6 +91,8 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
             return switch (index) {
                 case DATA_SHIPMENT_VALUE -> level instanceof ServerLevel serverLevel ? getShipmentValue(serverLevel) : 0;
                 case DATA_SHIPMENT_CAPACITY -> getShipmentCapacity();
+                case DATA_SALE_PROGRESS -> saleProgress;
+                case DATA_SALE_PROGRESS_MAX -> SALE_CYCLE_TICKS;
                 default -> 0;
             };
         }
@@ -107,6 +112,7 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
     private boolean isDirty;
     private boolean processing;
     private int shipmentValue;
+    private int saleProgress;
 
     public ShippingBinBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.shippingBin.value(), pos, state);
@@ -114,7 +120,7 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ShippingBinBlockEntity blockEntity) {
         if (level instanceof ServerLevel serverLevel) {
-            blockEntity.tryProcessSales(serverLevel);
+            blockEntity.tryProcessSales(serverLevel, true);
             if (blockEntity.isDirty) {
                 BalmBlockEntityUtils.sync(blockEntity);
                 blockEntity.isDirty = false;
@@ -130,6 +136,7 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
         input.child("ItemHandler").ifPresent(it -> ContainerHelper.loadAllItems(it, container.getItems()));
         input.child("DisplayedItems").ifPresent(it -> ContainerHelper.loadAllItems(it, displayedItems));
         shipmentValue = input.getIntOr("ShipmentValue", input.getIntOr("FillLevel", 0));
+        saleProgress = input.getIntOr("SaleProgress", 0);
         for (final var stack : input.listOrEmpty("OutputBuffer", ItemStack.CODEC)) {
             if (!stack.isEmpty()) {
                 outputBuffer.add(stack);
@@ -142,6 +149,7 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
         ContainerHelper.saveAllItems(output.child("ItemHandler"), container.getItems());
         ContainerHelper.saveAllItems(output.child("DisplayedItems"), displayedItems);
         output.putInt("ShipmentValue", shipmentValue);
+        output.putInt("SaleProgress", saleProgress);
         final var outputBufferList = output.list("OutputBuffer", ItemStack.CODEC);
         for (final var stack : outputBuffer) {
             outputBufferList.add(stack);
@@ -223,7 +231,7 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
         return shipmentValue == 0 || shipmentCapacity <= 0 ? 0 : Math.min(DISPLAYED_ITEM_SLOTS, (int) Math.ceilDiv((long) shipmentValue * DISPLAYED_ITEM_SLOTS, shipmentCapacity));
     }
 
-    private void tryProcessSales(ServerLevel level) {
+    private void tryProcessSales(ServerLevel level, boolean advanceSaleProgress) {
         if (processing) {
             return;
         }
@@ -234,6 +242,10 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
             boolean changed = updateDisplayedItems();
             changed |= moveBufferedOutputsToOutputSlots();
             if (hasBufferedOutputs()) {
+                if (saleProgress != 0) {
+                    saleProgress = 0;
+                    changed = true;
+                }
                 if (changed) {
                     setChanged();
                     isDirty = true;
@@ -241,14 +253,24 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
                 return;
             }
 
-            while (processSaleCycle(level)) {
+            if (shipmentValue < getShipmentCapacity()) {
+                if (saleProgress != 0) {
+                    saleProgress = 0;
+                    changed = true;
+                }
+            } else if (advanceSaleProgress) {
+                saleProgress++;
                 changed = true;
+                if (saleProgress >= SALE_CYCLE_TICKS) {
+                    saleProgress = 0;
+                    changed |= processSaleCycle(level);
+                }
+            }
+
+            if (changed) {
                 changed |= moveBufferedOutputsToOutputSlots();
                 shipmentValue = getShipmentValue(level);
                 changed |= updateDisplayedItems();
-                if (hasBufferedOutputs()) {
-                    break;
-                }
             }
 
             if (changed) {

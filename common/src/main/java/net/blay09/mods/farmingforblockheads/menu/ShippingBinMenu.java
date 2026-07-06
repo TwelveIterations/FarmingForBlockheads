@@ -79,4 +79,12 @@ public class ShippingBinMenu extends AbstractContainerMenu {
     public int getShipmentCapacity() {
         return containerData.get(ShippingBinBlockEntity.DATA_SHIPMENT_CAPACITY);
     }
+
+    public int getSaleProgress() {
+        return containerData.get(ShippingBinBlockEntity.DATA_SALE_PROGRESS);
+    }
+
+    public int getSaleProgressMax() {
+        return containerData.get(ShippingBinBlockEntity.DATA_SALE_PROGRESS_MAX);
+    }
 }

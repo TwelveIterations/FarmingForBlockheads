@@ -14,9 +14,12 @@ public class ShippingBinScreen extends AbstractContainerScreen<ShippingBinMenu> 
 
     private static final Identifier TEXTURE = id("textures/gui/shipping_bin.png");
 
-    private static final Identifier FILL_SPRITE = id("shipping_bin_fill");
-    private static final int FILL_WIDTH = 52;
-    private static final int FILL_HEIGHT = 7;
+    private static final Identifier FILL_PROGRESS_SPRITE = id("container/shipping_bin/fill_progress");
+    private static final Identifier SALE_PROGRESS_SPRITE = id("container/shipping_bin/sale_progress");
+    private static final int FILL_PROGRESS_WIDTH = 52;
+    private static final int FILL_PROGRESS_HEIGHT = 7;
+    private static final int SALE_PROGRESS_WIDTH = 24;
+    private static final int SALE_PROGRESS_HEIGHT = 16;
 
     public ShippingBinScreen(ShippingBinMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -28,9 +31,17 @@ public class ShippingBinScreen extends AbstractContainerScreen<ShippingBinMenu> 
 
         final int shipmentCapacity = menu.getShipmentCapacity();
         if (shipmentCapacity > 0) {
-            final int progressWidth = Math.max(0, Math.min(FILL_WIDTH, menu.getShipmentValue() * FILL_WIDTH / shipmentCapacity));
+            final int progressWidth = Math.max(0, Math.min(FILL_PROGRESS_WIDTH, menu.getShipmentValue() * FILL_PROGRESS_WIDTH / shipmentCapacity));
             if (progressWidth > 0) {
-                graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FILL_SPRITE, FILL_WIDTH, FILL_HEIGHT, 0, 0, leftPos + 20, topPos + 59, progressWidth, FILL_HEIGHT);
+                graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FILL_PROGRESS_SPRITE, FILL_PROGRESS_WIDTH, FILL_PROGRESS_HEIGHT, 0, 0, leftPos + 20, topPos + 59, progressWidth, FILL_PROGRESS_HEIGHT);
+            }
+        }
+
+        final int saleProgressMax = menu.getSaleProgressMax();
+        if (saleProgressMax > 0) {
+            final int progressWidth = Math.max(0, Math.min(SALE_PROGRESS_WIDTH, menu.getSaleProgress() * SALE_PROGRESS_WIDTH / saleProgressMax));
+            if (progressWidth > 0) {
+                graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SALE_PROGRESS_SPRITE, SALE_PROGRESS_WIDTH, SALE_PROGRESS_HEIGHT, 0, 0, leftPos + 80, topPos + 28, progressWidth, SALE_PROGRESS_HEIGHT);
             }
         }
     }
