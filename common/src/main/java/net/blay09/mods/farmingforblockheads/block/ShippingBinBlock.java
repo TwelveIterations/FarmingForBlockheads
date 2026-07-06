@@ -4,18 +4,25 @@ import com.mojang.serialization.MapCodec;
 import net.blay09.mods.farmingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.farmingforblockheads.block.entity.ShippingBinBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -26,10 +33,17 @@ public class ShippingBinBlock extends BaseEntityBlock {
 
     public static final MapCodec<ShippingBinBlock> CODEC = simpleCodec(ShippingBinBlock::new);
 
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
+
     private static final VoxelShape SHAPE = createShape();
 
     public ShippingBinBlock(Properties properties) {
         super(properties.sound(SoundType.WOOD).strength(2f));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
     }
 
     private static VoxelShape createShape() {
@@ -67,6 +81,12 @@ public class ShippingBinBlock extends BaseEntityBlock {
         return new ShippingBinBlockEntity(pos, state);
     }
 
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+    }
+
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult blockHitResult) {
         if (!level.isClientSide() && level.getBlockEntity(pos) instanceof ShippingBinBlockEntity shippingBin) {
@@ -83,6 +103,17 @@ public class ShippingBinBlock extends BaseEntityBlock {
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext collisionContext) {
         return SHAPE;
+    }
+
+    @Override
+    protected BlockState mirror(BlockState state, Mirror mirror) {
+        Direction facing = state.getValue(FACING);
+        return state.setValue(FACING, mirror.getRotation(facing).rotate(facing));
+    }
+
+    @Override
+    protected BlockState rotate(BlockState state, Rotation rotation) {
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
     }
 
     @Nullable
