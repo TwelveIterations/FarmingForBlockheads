@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:generic",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "farmingforblockheads:shipment_value",
+                "amount": {
+                  "type": "minecraft:linear",
+                  "base": 0.03125,
+                  "per_level_above_first": 0.03125
+                }
+              }
+            }
+          ],
+          "name": "minecraft:emerald"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "farmingforblockheads:shipping_bin"
+}

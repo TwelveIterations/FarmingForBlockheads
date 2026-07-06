@@ -12,7 +12,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import net.minecraft.world.item.crafting.display.ShapelessCraftingRecipeDisplay;
@@ -27,26 +26,24 @@ import java.util.Optional;
 public class ShippingBinRecipe implements Recipe<SingleRecipeInput> {
 
     private final Ingredient input;
-    private final int fill;
-    private final ItemStackTemplate output;
+    private final int value;
+    private final @Nullable ShogiEffect<?> valueEffect;
     private final @Nullable ShogiEffect<?> predicate;
-    private final @Nullable ShogiEffect<?> count;
 
-    public ShippingBinRecipe(Ingredient input, int fill, ItemStackTemplate output) {
-        this(input, fill, output, Optional.empty(), Optional.empty());
+    public ShippingBinRecipe(Ingredient input, int value) {
+        this(input, value, Optional.empty(), Optional.empty());
     }
 
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    public ShippingBinRecipe(Ingredient input, int fill, ItemStackTemplate output, Optional<ShogiEffect<?>> predicate, Optional<ShogiEffect<?>> count) {
-        this(input, fill, output, predicate.orElse(null), count.orElse(null));
+    public ShippingBinRecipe(Ingredient input, int value, Optional<ShogiEffect<?>> valueEffect, Optional<ShogiEffect<?>> predicate) {
+        this(input, value, valueEffect.orElse(null), predicate.orElse(null));
     }
 
-    public ShippingBinRecipe(Ingredient input, int fill, ItemStackTemplate output, @Nullable ShogiEffect<?> predicate, @Nullable ShogiEffect<?> count) {
+    public ShippingBinRecipe(Ingredient input, int value, @Nullable ShogiEffect<?> valueEffect, @Nullable ShogiEffect<?> predicate) {
         this.input = input;
-        this.fill = fill;
-        this.output = output;
+        this.value = value;
+        this.valueEffect = valueEffect;
         this.predicate = predicate;
-        this.count = count;
     }
 
     @Override
@@ -56,7 +53,7 @@ public class ShippingBinRecipe implements Recipe<SingleRecipeInput> {
 
     @Override
     public ItemStack assemble(SingleRecipeInput recipeInput) {
-        return output.create();
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -73,7 +70,7 @@ public class ShippingBinRecipe implements Recipe<SingleRecipeInput> {
     public List<RecipeDisplay> display() {
         return List.of(new ShapelessCraftingRecipeDisplay(
                 List.of(input.display()),
-                new SlotDisplay.ItemStackSlotDisplay(output),
+                SlotDisplay.Empty.INSTANCE,
                 new SlotDisplay.ItemSlotDisplay(ModBlocks.shippingBin.asItem())));
     }
 
@@ -101,49 +98,31 @@ public class ShippingBinRecipe implements Recipe<SingleRecipeInput> {
         return input;
     }
 
-    public int fill() {
-        return fill;
+    public int value() {
+        return value;
     }
 
-    public ItemStackTemplate output() {
-        return output;
-    }
-
-    public ItemStack result() {
-        return result(null, ItemStack.EMPTY);
-    }
-
-    public ItemStack result(@Nullable BlockEntity blockEntity, ItemStack soldStack) {
-        return result(blockEntity, soldStack, null);
-    }
-
-    public ItemStack result(@Nullable BlockEntity blockEntity, ItemStack soldStack, @Nullable Identifier recipeId) {
-        final var result = output.create();
-        result.setCount(resolveCount(blockEntity, soldStack, recipeId));
-        return result;
+    public Optional<ShogiEffect<?>> getValueEffect() {
+        return Optional.ofNullable(valueEffect);
     }
 
     public Optional<ShogiEffect<?>> getPredicate() {
         return Optional.ofNullable(predicate);
     }
 
-    public Optional<ShogiEffect<?>> getCount() {
-        return Optional.ofNullable(count);
-    }
-
     public boolean canSell(@Nullable BlockEntity blockEntity, ItemStack itemStack, @Nullable Identifier recipeId) {
         return predicate == null || predicate.test(createContext(blockEntity, itemStack, recipeId));
     }
 
-    public int resolveCount(@Nullable BlockEntity blockEntity, ItemStack itemStack, @Nullable Identifier recipeId) {
-        if (count == null) {
-            return output.count();
+    public int resolveValue(@Nullable BlockEntity blockEntity, ItemStack itemStack, @Nullable Identifier recipeId) {
+        if (valueEffect == null) {
+            return value;
         }
 
         try {
-            return Math.max(0, count.apply(createContext(blockEntity, itemStack, recipeId)).mapLeft(Coercion.INT).left().orElse(output.count()));
+            return Math.max(0, valueEffect.apply(createContext(blockEntity, itemStack, recipeId)).mapLeft(Coercion.INT).left().orElse(value));
         } catch (Throwable throwable) {
-            return output.count();
+            return value;
         }
     }
 
@@ -162,18 +141,15 @@ public class ShippingBinRecipe implements Recipe<SingleRecipeInput> {
 
     private static final MapCodec<ShippingBinRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Ingredient.CODEC.fieldOf("input").forGetter(ShippingBinRecipe::input),
-            ExtraCodecs.POSITIVE_INT.optionalFieldOf("fill", 1).forGetter(ShippingBinRecipe::fill),
-            ItemStackTemplate.CODEC.fieldOf("output").forGetter(ShippingBinRecipe::output),
-            MarketRules.SCOPE.getEffectCodec().optionalFieldOf("predicate").forGetter(ShippingBinRecipe::getPredicate),
-            MarketRules.SCOPE.getEffectCodec().optionalFieldOf("count").forGetter(ShippingBinRecipe::getCount)
+            ExtraCodecs.NON_NEGATIVE_INT.fieldOf("value").forGetter(ShippingBinRecipe::value),
+            FarmingForBlockheadsRules.SCOPE.getEffectCodec().optionalFieldOf("valueEffect").forGetter(ShippingBinRecipe::getValueEffect),
+            FarmingForBlockheadsRules.SCOPE.getEffectCodec().optionalFieldOf("predicate").forGetter(ShippingBinRecipe::getPredicate)
     ).apply(instance, ShippingBinRecipe::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ShippingBinRecipe> STREAM_CODEC = StreamCodec.composite(
             Ingredient.CONTENTS_STREAM_CODEC,
             ShippingBinRecipe::input,
             ByteBufCodecs.VAR_INT,
-            ShippingBinRecipe::fill,
-            ItemStackTemplate.STREAM_CODEC,
-            ShippingBinRecipe::output,
+            ShippingBinRecipe::value,
             ShippingBinRecipe::new);
 }

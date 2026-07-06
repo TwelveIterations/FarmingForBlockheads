@@ -182,7 +182,7 @@ public class MarketRecipeImpl implements Recipe<RecipeInput>, MarketRecipe {
             PaymentImpl.CODEC.optionalFieldOf("payment").forGetter(MarketRecipeImpl::getPayment),
             Codec.INT.fieldOf("sortIndex").orElse(0).forGetter(MarketRecipeImpl::getSortIndex),
             ItemStackTemplate.CODEC.optionalFieldOf("icon").forGetter(recipe -> Optional.of(recipe.icon)),
-            MarketRules.SCOPE.getEffectCodec().optionalFieldOf("predicate").forGetter(MarketRecipeImpl::getPredicate)
+            FarmingForBlockheadsRules.SCOPE.getEffectCodec().optionalFieldOf("predicate").forGetter(MarketRecipeImpl::getPredicate)
     ).apply(instance, MarketRecipeImpl::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, MarketRecipeImpl> STREAM_CODEC = StreamCodec.of(MarketRecipeImpl::toNetwork, MarketRecipeImpl::fromNetwork);

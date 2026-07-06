@@ -83,7 +83,7 @@ public class ShippingBinRenderer implements BlockEntityRenderer<ShippingBinBlock
 
         final var container = blockEntity.getContainer();
         final var totalWeight = WeightedRandom.getTotalWeight(INPUT_SLOT_INDICES, slot -> container.getItem(slot).getCount());
-        renderState.count = totalWeight == 0 ? 0 : Math.min(DISPLAYED_ITEMS, Math.ceilDiv(blockEntity.getFillLevel() * DISPLAYED_ITEMS, ShippingBinBlockEntity.FILL_CAPACITY));
+        renderState.count = totalWeight == 0 ? 0 : Math.min(DISPLAYED_ITEMS, Math.ceilDiv(blockEntity.getShipmentValue() * DISPLAYED_ITEMS, blockEntity.getShipmentCapacity()));
 
         final var level = blockEntity.getLevel();
         for (int i = 0; i < renderState.count; i++) {

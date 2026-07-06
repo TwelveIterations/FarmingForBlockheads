@@ -26,11 +26,11 @@ public class ShippingBinScreen extends AbstractContainerScreen<ShippingBinMenu> 
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
         graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight, 256, 256);
 
-        final int fillCapacity = menu.getFillCapacity();
-        if (fillCapacity > 0) {
-            final int fillWidth = Math.max(0, Math.min(FILL_WIDTH, menu.getFill() * FILL_WIDTH / fillCapacity));
-            if (fillWidth > 0) {
-                graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FILL_SPRITE, FILL_WIDTH, FILL_HEIGHT, 0, 0, leftPos + 20, topPos + 59, fillWidth, FILL_HEIGHT);
+        final int shipmentCapacity = menu.getShipmentCapacity();
+        if (shipmentCapacity > 0) {
+            final int progressWidth = Math.max(0, Math.min(FILL_WIDTH, menu.getShipmentValue() * FILL_WIDTH / shipmentCapacity));
+            if (progressWidth > 0) {
+                graphics.blitSprite(RenderPipelines.GUI_TEXTURED, FILL_SPRITE, FILL_WIDTH, FILL_HEIGHT, 0, 0, leftPos + 20, topPos + 59, progressWidth, FILL_HEIGHT);
             }
         }
     }

@@ -4,14 +4,18 @@ import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.mixin.RecipeManagerAccessor;
 import net.blay09.mods.balm.world.*;
 import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
+import net.blay09.mods.farmingforblockheads.FarmingForBlockheads;
 import net.blay09.mods.farmingforblockheads.ShippingBinSalesData;
 import net.blay09.mods.farmingforblockheads.entity.ModEntities;
 import net.blay09.mods.farmingforblockheads.entity.ShippingBalloonEntity;
+import net.blay09.mods.farmingforblockheads.loot.ModLootContextParams;
 import net.blay09.mods.farmingforblockheads.menu.ShippingBinMenu;
+import net.blay09.mods.farmingforblockheads.recipe.FarmingForBlockheadsRules;
 import net.blay09.mods.farmingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.farmingforblockheads.recipe.ShippingBinRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -19,6 +23,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Unit;
@@ -36,22 +41,26 @@ import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public class ShippingBinBlockEntity extends BlockEntity implements BalmContainerProvider, BalmMenuProvider<Unit> {
 
+    private static final ResourceKey<LootTable> LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, FarmingForBlockheads.id("gameplay/shipping_bin"));
+
     public static final int INPUT_SLOTS = 6;
     public static final int OUTPUT_SLOTS = 6;
     public static final int CONTAINER_SIZE = INPUT_SLOTS + OUTPUT_SLOTS;
-    public static final int FILL_CAPACITY = 64;
-    public static final int DATA_FILL = 0;
-    public static final int DATA_FILL_CAPACITY = 1;
+    public static final int DATA_SHIPMENT_VALUE = 0;
+    public static final int DATA_SHIPMENT_CAPACITY = 1;
     public static final int DATA_COUNT = 2;
 
     private final DefaultContainer container = new DefaultContainer(CONTAINER_SIZE) {
@@ -75,8 +84,8 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
         @Override
         public int get(int index) {
             return switch (index) {
-                case DATA_FILL -> level instanceof ServerLevel serverLevel ? getFill(serverLevel) : 0;
-                case DATA_FILL_CAPACITY -> FILL_CAPACITY;
+                case DATA_SHIPMENT_VALUE -> level instanceof ServerLevel serverLevel ? getShipmentValue(serverLevel) : 0;
+                case DATA_SHIPMENT_CAPACITY -> getShipmentCapacity();
                 default -> 0;
             };
         }
@@ -94,7 +103,7 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
 
     private boolean isDirty;
     private boolean processing;
-    private int fillLevel;
+    private int shipmentValue;
 
     public ShippingBinBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.shippingBin.value(), pos, state);
@@ -115,7 +124,7 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
         container.clearContent();
         outputBuffer.clear();
         input.child("ItemHandler").ifPresent(it -> ContainerHelper.loadAllItems(it, container.getItems()));
-        fillLevel = input.getIntOr("FillLevel", 0);
+        shipmentValue = input.getIntOr("ShipmentValue", input.getIntOr("FillLevel", 0));
         for (final var stack : input.listOrEmpty("OutputBuffer", ItemStack.CODEC)) {
             if (!stack.isEmpty()) {
                 outputBuffer.add(stack);
@@ -126,7 +135,7 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
     @Override
     public void saveAdditional(ValueOutput output) {
         ContainerHelper.saveAllItems(output.child("ItemHandler"), container.getItems());
-        output.putInt("FillLevel", fillLevel);
+        output.putInt("ShipmentValue", shipmentValue);
         final var outputBufferList = output.list("OutputBuffer", ItemStack.CODEC);
         for (final var stack : outputBuffer) {
             outputBufferList.add(stack);
@@ -192,8 +201,12 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
         return container;
     }
 
-    public int getFillLevel() {
-        return fillLevel;
+    public int getShipmentValue() {
+        return shipmentValue;
+    }
+
+    public int getShipmentCapacity() {
+        return FarmingForBlockheadsRules.getShippingBinCapacity(this);
     }
 
     private void tryProcessSales(ServerLevel level) {
@@ -203,7 +216,7 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
 
         processing = true;
         try {
-            fillLevel = getFill(level);
+            shipmentValue = getShipmentValue(level);
             boolean changed = moveBufferedOutputsToOutputSlots();
             if (hasBufferedOutputs()) {
                 if (changed) {
@@ -216,7 +229,7 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
             while (processSaleCycle(level)) {
                 changed = true;
                 changed |= moveBufferedOutputsToOutputSlots();
-                fillLevel = getFill(level);
+                shipmentValue = getShipmentValue(level);
                 if (hasBufferedOutputs()) {
                     break;
                 }
@@ -241,8 +254,8 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
                 .orElse(null);
     }
 
-    private int getFill(ServerLevel level) {
-        int fillLevel = 0;
+    private int getShipmentValue(ServerLevel level) {
+        int shipmentValue = 0;
         for (int slot = 0; slot < INPUT_SLOTS; slot++) {
             final var stack = container.getItem(slot);
             if (stack.isEmpty()) {
@@ -251,16 +264,16 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
 
             final var recipeHolder = findRecipe(level, stack);
             if (recipeHolder != null) {
-                fillLevel += stack.getCount() * recipeHolder.value().fill();
+                shipmentValue += stack.getCount() * recipeHolder.value().resolveValue(this, stack, recipeHolder.id().identifier());
             }
         }
 
-        return fillLevel;
+        return shipmentValue;
     }
 
     private boolean processSaleCycle(ServerLevel level) {
-        final var sales = new LinkedHashMap<RecipeHolder<ShippingBinRecipe>, Sale>();
-        final var fillLevel = getFill(level);
+        int value = 0;
+
         for (int slot = 0; slot < INPUT_SLOTS; slot++) {
             final var stack = container.getItem(slot);
             if (stack.isEmpty()) {
@@ -272,43 +285,56 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
                 continue;
             }
 
-            final var sale = sales.get(recipeHolder);
-            if (sale != null) {
-                sales.put(recipeHolder, new Sale(sale.stack(), sale.count() + stack.getCount()));
-            } else {
-                sales.put(recipeHolder, new Sale(stack.copy(), stack.getCount()));
-            }
+            value += recipeHolder.value().resolveValue(this, stack, recipeHolder.id().identifier()) * stack.getCount();
         }
 
-        if (fillLevel < FILL_CAPACITY) {
+        if (value < getShipmentCapacity()) {
             return false;
         }
 
+        final var soldItems = new ArrayList<ItemStack>();
         for (int slot = 0; slot < INPUT_SLOTS; slot++) {
             final var stack = container.getItem(slot);
-            if (!stack.isEmpty() && findRecipe(level, stack) != null) {
-                container.removeItem(slot, stack.getCount());
+            if (stack.isEmpty()) {
+                continue;
+            }
+
+            final var recipeHolder = findRecipe(level, stack);
+            if (recipeHolder == null) {
+                continue;
+            }
+
+            final var removedStack = container.removeItem(slot, stack.getCount());
+            if (!removedStack.isEmpty()) {
+                soldItems.add(removedStack);
+                recordSale(level, recipeHolder, removedStack.getCount());
             }
         }
 
-        sales.forEach((recipeHolder, sale) -> {
-            final var remainder = ContainerUtils.insertItemStacked(outputContainer, recipeHolder.value().result(this, sale.stack(), recipeHolder.id().identifier()), false);
+        rollSaleOutputs(level, soldItems, value);
+        spawnShippingBalloon(level);
+        return true;
+    }
+
+    private void rollSaleOutputs(ServerLevel level, List<ItemStack> shippedItems, int shipmentValue) {
+        final var lootTable = level.getServer().reloadableRegistries().getLootTable(LOOT_TABLE);
+        final var lootParams = new LootParams.Builder(level)
+                .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(worldPosition))
+                .withParameter(ModLootContextParams.SHIPMENT_VALUE, shipmentValue)
+                .withParameter(ModLootContextParams.SHIPMENT_ITEMS, List.copyOf(shippedItems))
+                .create(ModLootContextParams.SHIPPING_BIN_CONTEXT);
+        lootTable.getRandomItems(lootParams, itemStack -> {
+            final var remainder = ContainerUtils.insertItemStacked(outputContainer, itemStack, false);
             if (!remainder.isEmpty()) {
                 outputBuffer.add(remainder.copy());
             }
-            recordSale(level, recipeHolder, sale.count());
         });
-        spawnShippingBalloon(level);
-        return true;
     }
 
     private void spawnShippingBalloon(ServerLevel level) {
         final var balloon = new ShippingBalloonEntity(ModEntities.shippingBalloon.value(), level);
         balloon.setPos(worldPosition.getX() + 0.5, worldPosition.getY() + 1, worldPosition.getZ() + 0.5);
         level.addFreshEntity(balloon);
-    }
-
-    private record Sale(ItemStack stack, int count) {
     }
 
     private boolean moveBufferedOutputsToOutputSlots() {

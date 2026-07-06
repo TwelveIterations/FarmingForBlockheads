@@ -72,11 +72,11 @@ public class ShippingBinMenu extends AbstractContainerMenu {
         container.stopOpen(player);
     }
 
-    public int getFill() {
-        return containerData.get(ShippingBinBlockEntity.DATA_FILL);
+    public int getShipmentValue() {
+        return containerData.get(ShippingBinBlockEntity.DATA_SHIPMENT_VALUE);
     }
 
-    public int getFillCapacity() {
-        return containerData.get(ShippingBinBlockEntity.DATA_FILL_CAPACITY);
+    public int getShipmentCapacity() {
+        return containerData.get(ShippingBinBlockEntity.DATA_SHIPMENT_CAPACITY);
     }
 }
