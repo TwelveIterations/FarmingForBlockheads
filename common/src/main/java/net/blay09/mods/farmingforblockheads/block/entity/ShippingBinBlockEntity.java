@@ -6,14 +6,17 @@ import net.blay09.mods.balm.world.*;
 import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheads;
 import net.blay09.mods.farmingforblockheads.ShippingBinSalesData;
+import net.blay09.mods.farmingforblockheads.block.ShippingBinBlock;
 import net.blay09.mods.farmingforblockheads.entity.ModEntities;
 import net.blay09.mods.farmingforblockheads.entity.ShippingBalloonEntity;
+import net.blay09.mods.farmingforblockheads.entity.ShippingCrateEntity;
 import net.blay09.mods.farmingforblockheads.loot.ModLootContextParams;
 import net.blay09.mods.farmingforblockheads.menu.ShippingBinMenu;
 import net.blay09.mods.farmingforblockheads.recipe.FarmingForBlockheadsRules;
 import net.blay09.mods.farmingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.farmingforblockheads.recipe.ShippingBinRecipe;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.Registries;
@@ -62,6 +65,7 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
     public static final int CONTAINER_SIZE = INPUT_SLOTS + OUTPUT_SLOTS;
     public static final int DISPLAYED_ITEM_SLOTS = 12;
     public static final int SALE_CYCLE_TICKS = 20;
+    private static final int SALE_COOLDOWN_TICKS = 100;
     public static final int DATA_SHIPMENT_VALUE = 0;
     public static final int DATA_SHIPMENT_CAPACITY = 1;
     public static final int DATA_SALE_PROGRESS = 2;
@@ -113,6 +117,7 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
     private boolean processing;
     private int shipmentValue;
     private int saleProgress;
+    private int saleCooldown;
 
     public ShippingBinBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.shippingBin.value(), pos, state);
@@ -137,6 +142,7 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
         input.child("DisplayedItems").ifPresent(it -> ContainerHelper.loadAllItems(it, displayedItems));
         shipmentValue = input.getIntOr("ShipmentValue", input.getIntOr("FillLevel", 0));
         saleProgress = input.getIntOr("SaleProgress", 0);
+        saleCooldown = input.getIntOr("SaleCooldown", 0);
         for (final var stack : input.listOrEmpty("OutputBuffer", ItemStack.CODEC)) {
             if (!stack.isEmpty()) {
                 outputBuffer.add(stack);
@@ -150,6 +156,7 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
         ContainerHelper.saveAllItems(output.child("DisplayedItems"), displayedItems);
         output.putInt("ShipmentValue", shipmentValue);
         output.putInt("SaleProgress", saleProgress);
+        output.putInt("SaleCooldown", saleCooldown);
         final var outputBufferList = output.list("OutputBuffer", ItemStack.CODEC);
         for (final var stack : outputBuffer) {
             outputBufferList.add(stack);
@@ -253,7 +260,16 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
                 return;
             }
 
-            if (shipmentValue < getShipmentCapacity()) {
+            if (saleCooldown > 0) {
+                if (saleProgress != 0) {
+                    saleProgress = 0;
+                    changed = true;
+                }
+                if (advanceSaleProgress) {
+                    saleCooldown--;
+                    changed = true;
+                }
+            } else if (shipmentValue < getShipmentCapacity()) {
                 if (saleProgress != 0) {
                     saleProgress = 0;
                     changed = true;
@@ -263,7 +279,10 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
                 changed = true;
                 if (saleProgress >= SALE_CYCLE_TICKS) {
                     saleProgress = 0;
-                    changed |= processSaleCycle(level);
+                    if (processSaleCycle(level)) {
+                        saleCooldown = SALE_COOLDOWN_TICKS;
+                        changed = true;
+                    }
                 }
             }
 
@@ -400,7 +419,7 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
         }
 
         rollSaleOutputs(level, soldItems, value);
-        spawnShippingBalloon(level);
+        spawnShippingCarrier(level);
         return true;
     }
 
@@ -419,10 +438,27 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
         });
     }
 
+    private void spawnShippingCarrier(ServerLevel level) {
+        if (level.canSeeSkyFromBelowWater(worldPosition.above())) {
+            spawnShippingBalloon(level);
+        } else {
+            spawnShippingCrate(level);
+        }
+    }
+
     private void spawnShippingBalloon(ServerLevel level) {
         final var balloon = new ShippingBalloonEntity(ModEntities.shippingBalloon.value(), level);
-        balloon.setPos(worldPosition.getX() + 0.5, worldPosition.getY() + 1, worldPosition.getZ() + 0.5);
+        balloon.setPos(worldPosition.getX() + 0.5, worldPosition.getY() + 0.05, worldPosition.getZ() + 0.5);
         level.addFreshEntity(balloon);
+    }
+
+    private void spawnShippingCrate(ServerLevel level) {
+        final var crate = new ShippingCrateEntity(ModEntities.shippingCrate.value(), level);
+        crate.setPos(worldPosition.getX() + 0.5, worldPosition.getY() + 0.05, worldPosition.getZ() + 0.5);
+        crate.setFacing(getBlockState().hasProperty(ShippingBinBlock.FACING)
+                ? getBlockState().getValue(ShippingBinBlock.FACING)
+                : Direction.NORTH);
+        level.addFreshEntity(crate);
     }
 
     private boolean moveBufferedOutputsToOutputSlots() {

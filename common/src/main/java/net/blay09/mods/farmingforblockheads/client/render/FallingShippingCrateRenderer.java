@@ -17,7 +17,7 @@ import static net.blay09.mods.farmingforblockheads.FarmingForBlockheads.id;
 
 public class FallingShippingCrateRenderer extends EntityRenderer<FallingShippingCrateEntity, EntityRenderState> {
 
-    public static final ModelLayerLocation MODEL_LAYER = new ModelLayerLocation(id("shipping_crate"), "main");
+    public static final ModelLayerLocation MODEL_LAYER = ShippingCrateRenderer.MODEL_LAYER;
 
     private static final Identifier TEXTURE = id("textures/entity/shipping_balloon.png");
 

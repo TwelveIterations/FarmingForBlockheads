@@ -11,6 +11,8 @@ public class ModRenderers {
     public static void initialize(BalmEntityRendererRegistrar renderers) {
         renderers.register(ModEntities.merchant, MerchantRenderer::new);
         renderers.register(ModEntities.shippingBalloon, ShippingBalloonRenderer::new);
+        renderers.register(ModEntities.shippingCrate, ShippingCrateRenderer::new);
+        renderers.register(ModEntities.courier, CourierRenderer::new);
         renderers.register(ModEntities.fallingShippingCrate, FallingShippingCrateRenderer::new);
     }
 
@@ -22,6 +24,6 @@ public class ModRenderers {
 
     public static void initialize(BalmModelLayerRegistrar modelLayers) {
         modelLayers.register(ShippingBalloonRenderer.MODEL_LAYER.model(), ShippingBalloonRenderer.MODEL_LAYER.layer(), ShippingBalloonModel::createBodyLayer);
-        modelLayers.register(FallingShippingCrateRenderer.MODEL_LAYER.model(), FallingShippingCrateRenderer.MODEL_LAYER.layer(), ShippingCrateModel::createBodyLayer);
+        modelLayers.register(ShippingCrateRenderer.MODEL_LAYER.model(), ShippingCrateRenderer.MODEL_LAYER.layer(), ShippingCrateModel::createBodyLayer);
     }
 }

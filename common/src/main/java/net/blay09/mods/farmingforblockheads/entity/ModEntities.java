@@ -8,6 +8,8 @@ import net.minecraft.world.entity.MobCategory;
 public class ModEntities {
     public static Holder<EntityType<MerchantEntity>> merchant;
     public static Holder<EntityType<ShippingBalloonEntity>> shippingBalloon;
+    public static Holder<EntityType<ShippingCrateEntity>> shippingCrate;
+    public static Holder<EntityType<CourierEntity>> courier;
     public static Holder<EntityType<FallingShippingCrateEntity>> fallingShippingCrate;
 
     public static void initialize(BalmEntityTypeRegistrar entities) {
@@ -19,6 +21,18 @@ public class ModEntities {
                 .clientTrackingRange(8)
                 .updateInterval(20)
                 .noSave()).asHolder();
+        shippingCrate = entities.register("shipping_crate", () -> EntityType.Builder.of(ShippingCrateEntity::new, MobCategory.MISC)
+                .sized(0.9f, 0.9f)
+                .clientTrackingRange(8)
+                .updateInterval(2)
+                .noSave()).asHolder();
+        courier = entities.register("courier", () -> EntityType.Builder.of(CourierEntity::new, MobCategory.MISC)
+                        .sized(0.6f, 1.95f)
+                        .clientTrackingRange(8)
+                        .updateInterval(2)
+                        .noSave())
+                .withDefaultAttributes(CourierEntity::createAttributes)
+                .asHolder();
         fallingShippingCrate = entities.register("falling_shipping_crate", () -> EntityType.Builder.of(FallingShippingCrateEntity::new, MobCategory.MISC)
                 .sized(0.9f, 0.9f)
                 .clientTrackingRange(8)
