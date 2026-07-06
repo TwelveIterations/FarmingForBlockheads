@@ -15,6 +15,7 @@ import net.blay09.mods.farmingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.farmingforblockheads.recipe.ShippingBinRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -59,6 +60,7 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
     public static final int INPUT_SLOTS = 6;
     public static final int OUTPUT_SLOTS = 6;
     public static final int CONTAINER_SIZE = INPUT_SLOTS + OUTPUT_SLOTS;
+    public static final int DISPLAYED_ITEM_SLOTS = 12;
     public static final int DATA_SHIPMENT_VALUE = 0;
     public static final int DATA_SHIPMENT_CAPACITY = 1;
     public static final int DATA_COUNT = 2;
@@ -100,6 +102,7 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
         }
     };
     private final List<ItemStack> outputBuffer = new ArrayList<>();
+    private final NonNullList<ItemStack> displayedItems = NonNullList.withSize(DISPLAYED_ITEM_SLOTS, ItemStack.EMPTY);
 
     private boolean isDirty;
     private boolean processing;
@@ -123,7 +126,9 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
     protected void loadAdditional(ValueInput input) {
         container.clearContent();
         outputBuffer.clear();
+        displayedItems.clear();
         input.child("ItemHandler").ifPresent(it -> ContainerHelper.loadAllItems(it, container.getItems()));
+        input.child("DisplayedItems").ifPresent(it -> ContainerHelper.loadAllItems(it, displayedItems));
         shipmentValue = input.getIntOr("ShipmentValue", input.getIntOr("FillLevel", 0));
         for (final var stack : input.listOrEmpty("OutputBuffer", ItemStack.CODEC)) {
             if (!stack.isEmpty()) {
@@ -135,6 +140,7 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
     @Override
     public void saveAdditional(ValueOutput output) {
         ContainerHelper.saveAllItems(output.child("ItemHandler"), container.getItems());
+        ContainerHelper.saveAllItems(output.child("DisplayedItems"), displayedItems);
         output.putInt("ShipmentValue", shipmentValue);
         final var outputBufferList = output.list("OutputBuffer", ItemStack.CODEC);
         for (final var stack : outputBuffer) {
@@ -209,6 +215,14 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
         return FarmingForBlockheadsRules.getShippingBinCapacity(this);
     }
 
+    public List<ItemStack> getDisplayedItems() {
+        return displayedItems;
+    }
+
+    public static int getDisplayedItemCount(int shipmentValue, int shipmentCapacity) {
+        return shipmentValue == 0 || shipmentCapacity <= 0 ? 0 : Math.min(DISPLAYED_ITEM_SLOTS, (int) Math.ceilDiv((long) shipmentValue * DISPLAYED_ITEM_SLOTS, shipmentCapacity));
+    }
+
     private void tryProcessSales(ServerLevel level) {
         if (processing) {
             return;
@@ -217,7 +231,8 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
         processing = true;
         try {
             shipmentValue = getShipmentValue(level);
-            boolean changed = moveBufferedOutputsToOutputSlots();
+            boolean changed = updateDisplayedItems();
+            changed |= moveBufferedOutputsToOutputSlots();
             if (hasBufferedOutputs()) {
                 if (changed) {
                     setChanged();
@@ -230,6 +245,7 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
                 changed = true;
                 changed |= moveBufferedOutputsToOutputSlots();
                 shipmentValue = getShipmentValue(level);
+                changed |= updateDisplayedItems();
                 if (hasBufferedOutputs()) {
                     break;
                 }
@@ -242,6 +258,56 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
         } finally {
             processing = false;
         }
+    }
+
+    private boolean updateDisplayedItems() {
+        final var displayCount = getDisplayedItemCount(shipmentValue, getShipmentCapacity());
+        boolean changed = false;
+
+        for (int i = 0; i < displayedItems.size(); i++) {
+            final var displayedItem = displayedItems.get(i);
+            if (i >= displayCount) {
+                if (!displayedItem.isEmpty()) {
+                    displayedItems.set(i, ItemStack.EMPTY);
+                    changed = true;
+                }
+                continue;
+            }
+
+            if (displayedItem.isEmpty() || !hasInputStack(displayedItem)) {
+                final var itemStack = pickDisplayedItem(i);
+                if (!ItemStack.isSameItemSameComponents(displayedItem, itemStack)) {
+                    displayedItems.set(i, itemStack);
+                    changed = true;
+                }
+            }
+        }
+
+        return changed;
+    }
+
+    private boolean hasInputStack(ItemStack itemStack) {
+        for (int slot = 0; slot < INPUT_SLOTS; slot++) {
+            if (ItemStack.isSameItemSameComponents(container.getItem(slot), itemStack)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private ItemStack pickDisplayedItem(int displaySlot) {
+        final var startSlot = Math.floorMod(Long.hashCode(worldPosition.asLong() + displaySlot), INPUT_SLOTS);
+        for (int offset = 0; offset < INPUT_SLOTS; offset++) {
+            final var stack = container.getItem((startSlot + offset) % INPUT_SLOTS);
+            if (!stack.isEmpty()) {
+                final var itemStack = stack.copy();
+                itemStack.setCount(1);
+                return itemStack;
+            }
+        }
+
+        return ItemStack.EMPTY;
     }
 
     private @Nullable RecipeHolder<ShippingBinRecipe> findRecipe(ServerLevel level, ItemStack itemStack) {

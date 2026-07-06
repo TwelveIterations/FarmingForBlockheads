@@ -12,19 +12,12 @@ import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.RandomSource;
-import net.minecraft.util.random.WeightedRandom;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-import java.util.List;
-
 public class ShippingBinRenderer implements BlockEntityRenderer<ShippingBinBlockEntity, ShippingBinRenderer.ShippingBinRenderState> {
 
-    private static final int DISPLAYED_ITEMS = 12;
     private static final float[][] CONTENT_OFFSETS = new float[][]{
             {-0.24f, -0.22f, -0.22f},
             {0.05f, -0.20f, -0.24f},
@@ -53,10 +46,9 @@ public class ShippingBinRenderer implements BlockEntityRenderer<ShippingBinBlock
             16f,
             -8f,
     };
-    private static final List<Integer> INPUT_SLOT_INDICES = List.of(0, 1, 2, 3, 4, 5);
 
     public static class ShippingBinRenderState extends BlockEntityRenderState {
-        public final ItemStackRenderState[] items = new ItemStackRenderState[DISPLAYED_ITEMS];
+        public final ItemStackRenderState[] items = new ItemStackRenderState[ShippingBinBlockEntity.DISPLAYED_ITEM_SLOTS];
         public int count;
 
         public ShippingBinRenderState() {
@@ -81,14 +73,12 @@ public class ShippingBinRenderer implements BlockEntityRenderer<ShippingBinBlock
     public void extractRenderState(ShippingBinBlockEntity blockEntity, ShippingBinRenderState renderState, float delta, Vec3 vec, ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderState.extractBase(blockEntity, renderState, crumblingOverlay);
 
-        final var container = blockEntity.getContainer();
-        final var totalWeight = WeightedRandom.getTotalWeight(INPUT_SLOT_INDICES, slot -> container.getItem(slot).getCount());
-        renderState.count = totalWeight == 0 ? 0 : Math.min(DISPLAYED_ITEMS, Math.ceilDiv(blockEntity.getShipmentValue() * DISPLAYED_ITEMS, blockEntity.getShipmentCapacity()));
+        renderState.count = ShippingBinBlockEntity.getDisplayedItemCount(blockEntity.getShipmentValue(), blockEntity.getShipmentCapacity());
 
         final var level = blockEntity.getLevel();
         for (int i = 0; i < renderState.count; i++) {
             final var seed = renderState.blockPos.asLong() + i;
-            itemModelResolver.updateForTopItem(renderState.items[i], getWeightedStack(container, totalWeight, seed), ItemDisplayContext.FIXED, level, null, (int) seed);
+            itemModelResolver.updateForTopItem(renderState.items[i], blockEntity.getDisplayedItems().get(i), ItemDisplayContext.FIXED, level, null, (int) seed);
         }
     }
 
@@ -108,9 +98,4 @@ public class ShippingBinRenderer implements BlockEntityRenderer<ShippingBinBlock
         }
     }
 
-    private static ItemStack getWeightedStack(Container container, int totalWeight, long seed) {
-        return WeightedRandom.getRandomItem(RandomSource.create(seed), INPUT_SLOT_INDICES, totalWeight, slot -> container.getItem(slot).getCount())
-                .map(container::getItem)
-                .orElse(ItemStack.EMPTY);
-    }
 }
