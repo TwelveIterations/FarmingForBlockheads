@@ -101,6 +101,17 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .define('C', Items.GOLDEN_CARROT)
                         .unlockedBy("has_gold_ingot", has(Items.GOLD_INGOT))
                         .save(exporter);
+
+                shaped(RecipeCategory.DECORATIONS, ModBlocks.shippingBin)
+                        .pattern("IWI")
+                        .pattern("WEW")
+                        .pattern("IGI")
+                        .define('I', Items.IRON_INGOT)
+                        .define('W', ItemTags.LOGS)
+                        .define('E', Items.EMERALD)
+                        .define('G', Items.WOOL.green())
+                        .unlockedBy("has_wool", has(ItemTags.WOOL))
+                        .save(exporter);
             }
         };
     }
