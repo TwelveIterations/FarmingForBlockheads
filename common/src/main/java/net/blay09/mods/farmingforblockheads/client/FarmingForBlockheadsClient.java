@@ -18,6 +18,7 @@ public class FarmingForBlockheadsClient {
         registrars.menuScreens(ModScreens::initialize);
         registrars.entityRenderers(ModRenderers::initialize);
         registrars.blockEntityRenderers(ModRenderers::initialize);
+        registrars.modelLayers(ModRenderers::initialize);
 
 
         Balm.modSupport().recipeViewers().register(id("recipes"), registrar -> {

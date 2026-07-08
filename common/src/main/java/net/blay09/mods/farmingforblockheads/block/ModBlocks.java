@@ -12,6 +12,7 @@ import java.util.List;
 public class ModBlocks {
 
     public static DeferredBlock market;
+    public static DeferredBlock shippingBin;
     public static DeferredBlock chickenNest;
     public static DeferredBlock feedingTrough;
     public static DeferredBlock fertilizedFarmlandRich;
@@ -24,6 +25,9 @@ public class ModBlocks {
         blocks.enableBlockDescriptionPrefixForItems();
 
         market = blocks.register("market", MarketBlock::new, it -> it).withDefaultItem().asDeferredBlock();
+        shippingBin = blocks.register("shipping_bin", ShippingBinBlock::new, it -> it)
+                .withDefaultItem()
+                .asDeferredBlock();
         chickenNest = blocks.register("chicken_nest", ChickenNestBlock::new, it -> it)
                 .withDefaultItem(it -> it.component(ModComponents.description.value(),
                         new DescriptionComponent(Component.translatable("tooltip.farmingforblockheads.chicken_nest"))))

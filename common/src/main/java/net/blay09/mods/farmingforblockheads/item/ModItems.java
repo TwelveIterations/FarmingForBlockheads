@@ -30,6 +30,7 @@ public class ModItems {
                         .icon(() -> ModBlocks.market.createStack())
                         .displayItems((parameters, output) -> {
                             output.accept(ModBlocks.market);
+                            output.accept(ModBlocks.shippingBin);
                             output.accept(ModBlocks.chickenNest);
                             output.accept(ModBlocks.feedingTrough);
                             output.accept(greenFertilizer);
