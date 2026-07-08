@@ -24,19 +24,19 @@ public class ModEntities {
         shippingCrate = entities.register("shipping_crate", () -> EntityType.Builder.of(ShippingCrateEntity::new, MobCategory.MISC)
                 .sized(0.9f, 0.9f)
                 .clientTrackingRange(8)
-                .updateInterval(2)
+                .updateInterval(20)
                 .noSave()).asHolder();
         courier = entities.register("courier", () -> EntityType.Builder.of(CourierEntity::new, MobCategory.MISC)
                         .sized(0.6f, 1.95f)
                         .clientTrackingRange(8)
-                        .updateInterval(2)
+                        .updateInterval(20)
                         .noSave())
                 .withDefaultAttributes(CourierEntity::createAttributes)
                 .asHolder();
         fallingShippingCrate = entities.register("falling_shipping_crate", () -> EntityType.Builder.of(FallingShippingCrateEntity::new, MobCategory.MISC)
                 .sized(0.9f, 0.9f)
                 .clientTrackingRange(8)
-                .updateInterval(2)).asHolder();
+                .updateInterval(20)).asHolder();
     }
 
 }

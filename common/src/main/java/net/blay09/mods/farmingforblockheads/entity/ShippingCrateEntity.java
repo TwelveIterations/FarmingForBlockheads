@@ -59,12 +59,12 @@ public class ShippingCrateEntity extends Entity {
     }
 
     private Direction pickCourierDirection(ServerLevel level, CourierEntity courier) {
-        final var oldBehindDirection = getFacing().getOpposite();
+        final var defaultDirection = getFacing().getOpposite();
         final var directions = new Direction[]{
-                oldBehindDirection,
-                oldBehindDirection.getClockWise(),
-                oldBehindDirection.getCounterClockWise(),
-                oldBehindDirection.getOpposite()
+                defaultDirection,
+                defaultDirection.getClockWise(),
+                defaultDirection.getCounterClockWise(),
+                defaultDirection.getOpposite()
         };
 
         for (final var direction : directions) {
@@ -74,7 +74,7 @@ public class ShippingCrateEntity extends Entity {
             }
         }
 
-        return oldBehindDirection;
+        return defaultDirection;
     }
 
     private boolean canSpawnCourierAt(ServerLevel level, CourierEntity courier, BlockPos pos, Direction direction) {
