@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "farmingforblockheads:block/shipping_bin",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "farmingforblockheads:block/shipping_bin"
+    },
+    "facing=south": {
+      "model": "farmingforblockheads:block/shipping_bin",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "farmingforblockheads:block/shipping_bin",
+      "y": 270
+    }
+  }
+}

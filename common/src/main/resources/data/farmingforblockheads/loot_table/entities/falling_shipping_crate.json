@@ -1,0 +1,45 @@
+{
+  "type": "minecraft:entity",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "mod": "pantryforblockheads"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "pantryforblockheads"
+      ]
+    }
+  ],
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "pantryforblockheads"
+    }
+  ],
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "pantryforblockheads:mashed_produce"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "farmingforblockheads:entities/falling_shipping_crate"
+}

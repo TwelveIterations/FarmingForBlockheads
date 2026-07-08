@@ -10,7 +10,9 @@ import net.blay09.mods.farmingforblockheads.command.FarmingForBlockheadsCommand;
 import net.blay09.mods.farmingforblockheads.component.ModComponents;
 import net.blay09.mods.farmingforblockheads.entity.ModEntities;
 import net.blay09.mods.farmingforblockheads.item.ModItems;
+import net.blay09.mods.farmingforblockheads.loot.ModLootConditions;
 import net.blay09.mods.farmingforblockheads.loot.ModLootModifiers;
+import net.blay09.mods.farmingforblockheads.loot.ModLootNumberProviders;
 import net.blay09.mods.farmingforblockheads.menu.ModMenus;
 import net.blay09.mods.farmingforblockheads.network.ModNetworking;
 import net.blay09.mods.farmingforblockheads.recipe.ModRecipes;
@@ -40,6 +42,8 @@ public class FarmingForBlockheads {
         registrars.items(ModItems::initialize);
         registrars.creativeModeTabs(ModItems::initialize);
         registrars.registrar(Registries.SOUND_EVENT, ModSounds::initialize);
+        registrars.registrar(Registries.LOOT_CONDITION_TYPE, ModLootConditions::initialize);
+        registrars.registrar(Registries.LOOT_NUMBER_PROVIDER_TYPE, ModLootNumberProviders::initialize);
         registrars.menuTypes(ModMenus::initialize);
         registrars.recipeTypes(ModRecipes::initialize);
         ModLootModifiers.initialize(Balm.lootModifiers());
@@ -54,7 +58,10 @@ public class FarmingForBlockheads {
 
         CropCallback.Grow.After.EVENT.register(FarmlandHandler::onFertilizerGrowEvent);
         CropCallback.Grow.After.EVENT.register(FarmlandHandler::onHydratedFarmlandGrowEvent);
-        ServerTickCallback.ServerLevelTick.AFTER.register(level -> HydratedFarmlandData.get(level).dailyReset(level));
+        ServerTickCallback.ServerLevelTick.AFTER.register(level -> {
+            HydratedFarmlandData.get(level).dailyReset(level);
+            ShippingBinSalesData.get(level).prune(level);
+        });
     }
 
     public static Identifier id(String path) {

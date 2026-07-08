@@ -1,0 +1,27 @@
+{
+  "parent": "minecraft:husbandry/root",
+  "criteria": {
+    "lost_in_transit": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.farmingforblockheads.lost_in_transit.description"
+    },
+    "frame": "goal",
+    "hidden": true,
+    "icon": {
+      "id": "farmingforblockheads:shipping_bin"
+    },
+    "title": {
+      "translate": "advancements.farmingforblockheads.lost_in_transit.title"
+    }
+  },
+  "requirements": [
+    [
+      "lost_in_transit"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

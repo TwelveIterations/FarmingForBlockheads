@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "E": "minecraft:emerald",
+    "G": "minecraft:green_wool",
+    "I": "minecraft:iron_ingot",
+    "W": "#minecraft:logs"
+  },
+  "pattern": [
+    "IWI",
+    "WEW",
+    "IGI"
+  ],
+  "result": {
+    "id": "farmingforblockheads:shipping_bin"
+  }
+}
