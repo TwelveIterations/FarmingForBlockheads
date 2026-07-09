@@ -3,6 +3,7 @@ package net.blay09.mods.farmingforblockheads.block.entity;
 import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.blay09.mods.farmingforblockheads.HydratedFarmlandData;
 import net.blay09.mods.farmingforblockheads.block.SprinklerBlock;
+import net.blay09.mods.farmingforblockheads.tag.ModBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
@@ -10,8 +11,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -21,6 +24,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.AABB;
 import org.jspecify.annotations.Nullable;
 
 public class SprinklerBlockEntity extends BlockEntity {
@@ -39,6 +43,7 @@ public class SprinklerBlockEntity extends BlockEntity {
     private static final int STREAM_PARTICLES = 7;
     private static final double PARTICLE_SPEED = 0.08d;
     private static final double ROTATION_SPEED = 20d;
+    private static final int LAVA_FIRE_SECONDS = 4;
 
     private int ticksPassed;
     private ItemStack head = ItemStack.EMPTY;
@@ -135,6 +140,12 @@ public class SprinklerBlockEntity extends BlockEntity {
     private void serverTick(Level level) {
         updateLitState(level);
         if (isActive(ticksPassed) && (ticksPassed + 1) % HYDRATION_INTERVAL == 0 && level instanceof ServerLevel serverLevel) {
+            if (sprinklesLava(level)) {
+                igniteEntities(level);
+                ticksPassed = (ticksPassed + 1) % CYCLE_DURATION;
+                return;
+            }
+
             final var hydratedFarmlandData = HydratedFarmlandData.get(serverLevel);
             BlockPos.betweenClosed(worldPosition.offset(-RANGE, -1, -RANGE), worldPosition.offset(RANGE, 0, RANGE)).forEach(targetPos -> {
                 final var state = level.getBlockState(targetPos);
@@ -145,6 +156,22 @@ public class SprinklerBlockEntity extends BlockEntity {
             });
         }
         ticksPassed = (ticksPassed + 1) % CYCLE_DURATION;
+    }
+
+    private boolean sprinklesLava(Level level) {
+        return level.getBlockState(worldPosition.below()).is(ModBlockTags.LAVA_SPRINKLER_BASE);
+    }
+
+    private void igniteEntities(Level level) {
+        final var aabb = new AABB(worldPosition.getX() - RANGE,
+                worldPosition.getY() - 1,
+                worldPosition.getZ() - RANGE,
+                worldPosition.getX() + RANGE + 1,
+                worldPosition.getY() + 1,
+                worldPosition.getZ() + RANGE + 1);
+        for (final Entity entity : level.getEntitiesOfClass(Entity.class, aabb, Entity::isAlive)) {
+            entity.igniteForSeconds(LAVA_FIRE_SECONDS);
+        }
     }
 
     private void updateLitState(Level level) {
@@ -176,6 +203,9 @@ public class SprinklerBlockEntity extends BlockEntity {
     private void clientTick(Level level) {
         if (isActive(ticksPassed) && (ticksPassed + 1) % PARTICLE_INTERVAL == 0) {
             final RandomSource random = level.getRandom();
+            final boolean sprinklesLava = sprinklesLava(level);
+            final SimpleParticleType fallingParticle = sprinklesLava ? ParticleTypes.FALLING_LAVA : ParticleTypes.FALLING_WATER;
+            final SimpleParticleType landingParticle = sprinklesLava ? ParticleTypes.LANDING_LAVA : ParticleTypes.SPLASH;
             final double rotation = Math.toRadians(getActiveGameTime(ticksPassed) * ROTATION_SPEED);
             final double directionX = Math.cos(rotation);
             final double directionZ = Math.sin(rotation);
@@ -197,7 +227,7 @@ public class SprinklerBlockEntity extends BlockEntity {
                     final double particleX = startX + (endX - startX) * progress + (random.nextDouble() - 0.5) * 0.035;
                     final double particleY = y + (endY - y) * progress * progress + (random.nextDouble() - 0.5) * 0.025;
                     final double particleZ = startZ + (endZ - startZ) * progress + (random.nextDouble() - 0.5) * 0.035;
-                    level.addParticle(ParticleTypes.FALLING_WATER,
+                    level.addParticle(fallingParticle,
                             particleX,
                             particleY,
                             particleZ,
@@ -205,7 +235,7 @@ public class SprinklerBlockEntity extends BlockEntity {
                             -0.02 - progress * 0.04,
                             motionZ);
                     if (i == STREAM_PARTICLES - 1 && random.nextBoolean()) {
-                        level.addParticle(ParticleTypes.SPLASH,
+                        level.addParticle(landingParticle,
                                 particleX,
                                 particleY,
                                 particleZ,

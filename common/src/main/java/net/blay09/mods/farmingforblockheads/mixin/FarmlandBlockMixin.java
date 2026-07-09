@@ -65,7 +65,7 @@ public class FarmlandBlockMixin {
             )
     )
     private void preventFarmlandRegression(@Nullable Entity sourceEntity, BlockState state, Level level, BlockPos pos, Operation<Void> original) {
-        if (!(level instanceof ServerLevel serverLevel) || !ModPoiTypes.hasNearbySprinkler(serverLevel, pos)) {
+        if (!(level instanceof ServerLevel serverLevel) || !ModPoiTypes.hasNearbyWaterSprinkler(serverLevel, pos)) {
             original.call(sourceEntity, state, level, pos);
         }
     }

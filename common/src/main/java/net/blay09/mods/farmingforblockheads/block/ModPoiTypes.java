@@ -2,6 +2,7 @@ package net.blay09.mods.farmingforblockheads.block;
 
 import net.blay09.mods.balm.world.entity.ai.village.poi.BalmPoiTypeRegistrar;
 import net.blay09.mods.farmingforblockheads.block.entity.SprinklerBlockEntity;
+import net.blay09.mods.farmingforblockheads.tag.ModBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -33,12 +34,21 @@ public class ModPoiTypes {
                 .filter(sprinklerPos -> sprinklerPos.getY() > pos.getY() && sprinklerPos.getY() <= pos.getY() + 1);
     }
 
-    public static boolean hasNearbySprinkler(ServerLevel level, BlockPos pos) {
-        return findNearbySprinklers(level, pos).findAny().isPresent();
+    public static Stream<BlockPos> findNearbyWaterSprinklers(ServerLevel level, BlockPos pos) {
+        return findNearbySprinklers(level, pos)
+                .filter(it -> !isSpecialSprinkler(level, it));
+    }
+
+    public static boolean hasNearbyWaterSprinkler(ServerLevel level, BlockPos pos) {
+        return findNearbyWaterSprinklers(level, pos).findAny().isPresent();
     }
 
     public static boolean hasNearbySprinklerWithHead(ServerLevel level, BlockPos pos) {
-        return findNearbySprinklers(level, pos)
+        return findNearbyWaterSprinklers(level, pos)
                 .anyMatch(sprinklerPos -> level.getBlockEntity(sprinklerPos) instanceof SprinklerBlockEntity sprinklerBlockEntity && sprinklerBlockEntity.hasHead());
+    }
+
+    private static boolean isSpecialSprinkler(ServerLevel level, BlockPos sprinklerPos) {
+        return level.getBlockState(sprinklerPos.below()).is(ModBlockTags.LAVA_SPRINKLER_BASE);
     }
 }
