@@ -36,7 +36,7 @@ public class ModPoiTypes {
 
     public static Stream<BlockPos> findNearbyWaterSprinklers(ServerLevel level, BlockPos pos) {
         return findNearbySprinklers(level, pos)
-                .filter(it -> !isSpecialSprinkler(level, it));
+                .filter(it -> !isNonWaterSprinkler(level, it));
     }
 
     public static boolean hasNearbyWaterSprinkler(ServerLevel level, BlockPos pos) {
@@ -48,7 +48,13 @@ public class ModPoiTypes {
                 .anyMatch(sprinklerPos -> level.getBlockEntity(sprinklerPos) instanceof SprinklerBlockEntity sprinklerBlockEntity && sprinklerBlockEntity.hasHead());
     }
 
-    private static boolean isSpecialSprinkler(ServerLevel level, BlockPos sprinklerPos) {
-        return level.getBlockState(sprinklerPos.below()).is(ModBlockTags.LAVA_SPRINKLER_BASE);
+    private static boolean isNonWaterSprinkler(ServerLevel level, BlockPos sprinklerPos) {
+        final var stateBelow = level.getBlockState(sprinklerPos.below());
+        return stateBelow.is(ModBlockTags.LAVA_SPRINKLER_BASE)
+                || stateBelow.is(ModBlockTags.HONEY_SPRINKLER_BASE)
+                || stateBelow.is(ModBlockTags.SLIME_SPRINKLER_BASE)
+                || stateBelow.is(ModBlockTags.SNOW_SPRINKLER_BASE)
+                || stateBelow.is(ModBlockTags.SULFUR_SPRINKLER_BASE)
+                || stateBelow.is(ModBlockTags.SCULK_SPRINKLER_BASE);
     }
 }

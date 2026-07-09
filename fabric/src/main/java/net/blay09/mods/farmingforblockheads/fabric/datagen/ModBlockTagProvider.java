@@ -52,6 +52,11 @@ public class ModBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
                 ModBlocks.fertilizedFarmlandStable.asResourceKey(), ModBlocks.fertilizedFarmlandHealthy.asResourceKey(), ModBlocks.fertilizedFarmlandRich.asResourceKey());
 
         builder(ModBlockTags.LAVA_SPRINKLER_BASE).add(BlockItemIds.MAGMA_BLOCK);
+        builder(ModBlockTags.HONEY_SPRINKLER_BASE).add(BlockItemIds.HONEY_BLOCK);
+        builder(ModBlockTags.SLIME_SPRINKLER_BASE).add(BlockItemIds.SLIME_BLOCK);
+        builder(ModBlockTags.SNOW_SPRINKLER_BASE).add(BlockItemIds.SNOW_BLOCK, BlockItemIds.POWDER_SNOW);
+        builder(ModBlockTags.SULFUR_SPRINKLER_BASE).add(BlockItemIds.POTENT_SULFUR);
+        builder(ModBlockTags.SCULK_SPRINKLER_BASE).add(BlockItemIds.SCULK);
     }
 
 }
