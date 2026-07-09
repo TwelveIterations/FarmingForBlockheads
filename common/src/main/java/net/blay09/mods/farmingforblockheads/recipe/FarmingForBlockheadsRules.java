@@ -25,12 +25,18 @@ public final class FarmingForBlockheadsRules {
             SCOPE.maybe(id("sprinkler/honey/entity_effects"), SprinklerBlockEntity::removePoison);
     public static final ShogiValue<SprinklerBlockEntity, ?> SLIME_SPRINKLER_ENTITY_EFFECTS =
             SCOPE.maybe(id("sprinkler/slime/entity_effects"), SprinklerBlockEntity::slowEntities);
+    public static final ShogiValue<SprinklerBlockEntity, ?> SNOW_SPRINKLER_ENTITY_EFFECTS =
+            SCOPE.maybe(id("sprinkler/snow/entity_effects"), SprinklerBlockEntity::freezeEntities);
     public static final ShogiValue<SprinklerBlockEntity, ?> SULFUR_SPRINKLER_ENTITY_EFFECTS =
             SCOPE.maybe(id("sprinkler/sulfur/entity_effects"), SprinklerBlockEntity::nauseateEntities);
     public static final ShogiValue<SprinklerBlockEntity, Boolean> LAVA_SPRINKLER_CAN_MELT =
             SCOPE.booleanValue(id("sprinkler/lava/can_melt"), _ -> true);
     public static final ShogiValue<ShogiContext, Boolean> LAVA_SPRINKLER_CAN_MELT_AT =
             SCOPE.booleanValue(id("sprinkler/lava/can_melt_at"), _ -> true);
+    public static final ShogiValue<SprinklerBlockEntity, Boolean> LAVA_SPRINKLER_CAN_IGNITE =
+            SCOPE.booleanValue(id("sprinkler/lava/can_ignite"), _ -> true);
+    public static final ShogiValue<ShogiContext, Boolean> LAVA_SPRINKLER_CAN_IGNITE_AT =
+            SCOPE.booleanValue(id("sprinkler/lava/can_ignite_at"), _ -> true);
     public static final ShogiValue<SprinklerBlockEntity, Boolean> SNOW_SPRINKLER_CAN_FREEZE =
             SCOPE.booleanValue(id("sprinkler/snow/can_freeze"), _ -> true);
     public static final ShogiValue<ShogiContext, Boolean> SNOW_SPRINKLER_CAN_FREEZE_AT =

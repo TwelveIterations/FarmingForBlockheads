@@ -9,28 +9,32 @@ import net.blay09.mods.farmingforblockheads.tag.ModBlockTags;
 import net.blay09.mods.shogi.context.MutableShogiContext;
 import net.blay09.mods.shogi.context.ShogiContext;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FarmlandBlock;
 import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -60,6 +64,7 @@ public class SprinklerBlockEntity extends BlockEntity {
     private static final double ROTATION_SPEED = 20d;
     private static final int LAVA_FIRE_SECONDS = 4;
     private static final int SLIME_SLOWNESS_TICKS = 6 * 20;
+    private static final int SNOW_FREEZE_TICKS = 2 * 20;
     private static final int SULFUR_NAUSEA_TICKS = 4 * 20;
 
     private int ticksPassed;
@@ -185,18 +190,24 @@ public class SprinklerBlockEntity extends BlockEntity {
             case LAVA -> FarmingForBlockheadsRules.LAVA_SPRINKLER_ENTITY_EFFECTS.get(this);
             case HONEY -> FarmingForBlockheadsRules.HONEY_SPRINKLER_ENTITY_EFFECTS.get(this);
             case SLIME -> FarmingForBlockheadsRules.SLIME_SPRINKLER_ENTITY_EFFECTS.get(this);
+            case SNOW -> FarmingForBlockheadsRules.SNOW_SPRINKLER_ENTITY_EFFECTS.get(this);
             case SULFUR -> FarmingForBlockheadsRules.SULFUR_SPRINKLER_ENTITY_EFFECTS.get(this);
-            case WATER, SNOW, SCULK -> {
+            case WATER -> extinguishEntities();
+            case SCULK -> {
             }
         }
     }
 
     private void applySpecialBlockEffects(Level level, SprinkleMode sprinkleMode) {
         switch (sprinkleMode) {
-            case LAVA -> meltSnowAndIce(level);
-            case SNOW -> freezeWaterAndCreateSnow(level);
+            case WATER -> extinguishFires(level);
+            case LAVA -> meltAndIgnite(level);
+            case SNOW -> {
+                extinguishFires(level);
+                freezeWaterAndCreateSnow(level);
+            }
             case SCULK -> emitVibrations(level);
-            case WATER, HONEY, SLIME, SULFUR -> {
+            case HONEY, SLIME, SULFUR -> {
             }
         }
     }
@@ -232,14 +243,33 @@ public class SprinklerBlockEntity extends BlockEntity {
     }
 
     public Either<Object, ?> igniteEntities() {
-        for (final Entity entity : getEntitiesInRange(Entity.class)) {
+        for (final var entity : getEntitiesInRange(Entity.class)) {
             entity.igniteForSeconds(LAVA_FIRE_SECONDS);
         }
         return Either.left(true);
     }
 
-    private void meltSnowAndIce(Level level) {
-        if (!FarmingForBlockheadsRules.LAVA_SPRINKLER_CAN_MELT.getOrDefault(this)) {
+    private void extinguishEntities() {
+        for (final var entity : getEntitiesInRange(Entity.class)) {
+            entity.extinguishFire();
+        }
+    }
+
+    private void extinguishFires(Level level) {
+        BlockPos.betweenClosed(worldPosition.offset(-RANGE, -1, -RANGE), worldPosition.offset(RANGE, 0, RANGE)).forEach(targetPos -> {
+            final var state = level.getBlockState(targetPos);
+            if (state.is(BlockTags.FIRE)) {
+                level.setBlock(targetPos, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+            } else if (state.is(BlockTags.CAMPFIRES) && state.getValueOrElse(BlockStateProperties.LIT, false)) {
+                level.setBlock(targetPos, state.setValue(BlockStateProperties.LIT, false), Block.UPDATE_CLIENTS);
+            }
+        });
+    }
+
+    private void meltAndIgnite(Level level) {
+        final boolean canMelt = FarmingForBlockheadsRules.LAVA_SPRINKLER_CAN_MELT.getOrDefault(this);
+        final boolean canIgnite = FarmingForBlockheadsRules.LAVA_SPRINKLER_CAN_IGNITE.getOrDefault(this);
+        if (!canMelt && !canIgnite) {
             return;
         }
 
@@ -250,23 +280,53 @@ public class SprinklerBlockEntity extends BlockEntity {
             }
 
             final var state = level.getBlockState(targetPos);
-            if (!FarmingForBlockheadsRules.LAVA_SPRINKLER_CAN_MELT_AT.getOrDefault(targetContext(level, targetPos, state))) {
-                return;
+            final var targetContext = targetContext(level, targetPos, state);
+            if (canMelt && isMeltableByLavaSprinkler(state) && FarmingForBlockheadsRules.LAVA_SPRINKLER_CAN_MELT_AT.getOrDefault(targetContext)) {
+                meltBlock(level, targetPos, state);
             }
 
-            if (state.is(Blocks.SNOW)) {
-                final int layers = state.getValue(SnowLayerBlock.LAYERS);
-                if (layers > 1) {
-                    level.setBlock(targetPos, state.setValue(SnowLayerBlock.LAYERS, layers - 1), Block.UPDATE_CLIENTS);
-                } else {
-                    level.setBlock(targetPos, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
-                }
-            } else if (state.is(Blocks.ICE) || state.is(Blocks.FROSTED_ICE)) {
-                level.setBlock(targetPos, Blocks.WATER.defaultBlockState(), Block.UPDATE_CLIENTS);
-            } else if (state.is(Blocks.SNOW_BLOCK) || state.is(Blocks.POWDER_SNOW)) {
-                level.setBlock(targetPos, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+            if (canIgnite && state.ignitedByLava() && FarmingForBlockheadsRules.LAVA_SPRINKLER_CAN_IGNITE_AT.getOrDefault(targetContext)) {
+                igniteFlammableBlock(level, targetPos, random);
             }
         });
+    }
+
+    private boolean isMeltableByLavaSprinkler(BlockState state) {
+        return state.is(Blocks.SNOW)
+                || state.is(Blocks.ICE)
+                || state.is(Blocks.FROSTED_ICE)
+                || state.is(Blocks.SNOW_BLOCK)
+                || state.is(Blocks.POWDER_SNOW);
+    }
+
+    private void meltBlock(Level level, BlockPos targetPos, BlockState state) {
+        if (state.is(Blocks.SNOW)) {
+            final int layers = state.getValue(SnowLayerBlock.LAYERS);
+            if (layers > 1) {
+                level.setBlock(targetPos, state.setValue(SnowLayerBlock.LAYERS, layers - 1), Block.UPDATE_CLIENTS);
+            } else {
+                level.setBlock(targetPos, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+            }
+        } else if (state.is(Blocks.ICE) || state.is(Blocks.FROSTED_ICE)) {
+            level.setBlock(targetPos, Blocks.WATER.defaultBlockState(), Block.UPDATE_CLIENTS);
+        } else if (state.is(Blocks.SNOW_BLOCK) || state.is(Blocks.POWDER_SNOW)) {
+            level.setBlock(targetPos, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+        }
+    }
+
+    private void igniteFlammableBlock(Level level, BlockPos targetPos, RandomSource random) {
+        for (final Direction direction : Direction.allShuffled(random)) {
+            final var firePos = targetPos.relative(direction);
+            if (!level.isEmptyBlock(firePos)) {
+                continue;
+            }
+
+            final var fireState = BaseFireBlock.getState(level, firePos);
+            if (fireState.canSurvive(level, firePos)) {
+                level.setBlock(firePos, fireState, Block.UPDATE_CLIENTS);
+                break;
+            }
+        }
     }
 
     public Either<Object, ?> removePoison() {
@@ -279,6 +339,16 @@ public class SprinklerBlockEntity extends BlockEntity {
     public Either<Object, ?> slowEntities() {
         for (final LivingEntity entity : getEntitiesInRange(LivingEntity.class)) {
             entity.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, SLIME_SLOWNESS_TICKS, 3));
+        }
+        return Either.left(true);
+    }
+
+    public Either<Object, ?> freezeEntities() {
+        for (final var entity : getEntitiesInRange(Entity.class)) {
+            entity.extinguishFire();
+            if (entity.canFreeze()) {
+                entity.setTicksFrozen(Math.min(entity.getTicksRequiredToFreeze(), entity.getTicksFrozen() + SNOW_FREEZE_TICKS));
+            }
         }
         return Either.left(true);
     }
