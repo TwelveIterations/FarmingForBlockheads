@@ -3,7 +3,8 @@
 	"parent": "block/block",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"1": "farmingforblockheads:block/sprinkler"
+		"1": "farmingforblockheads:block/sprinkler",
+		"particle": "minecraft:block/spruce_log"
 	},
 	"elements": [
 		{
