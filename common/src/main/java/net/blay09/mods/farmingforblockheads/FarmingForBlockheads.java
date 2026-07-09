@@ -2,6 +2,7 @@ package net.blay09.mods.farmingforblockheads;
 
 import net.blay09.mods.balm.Balm;
 import net.blay09.mods.balm.core.BalmRegistrars;
+import net.blay09.mods.balm.platform.event.callback.BlockCallback;
 import net.blay09.mods.balm.platform.event.callback.CropCallback;
 import net.blay09.mods.balm.platform.event.callback.ServerTickCallback;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
@@ -58,6 +59,7 @@ public class FarmingForBlockheads {
 
         CropCallback.Grow.After.EVENT.register(FarmlandHandler::onFertilizerGrowEvent);
         CropCallback.Grow.After.EVENT.register(FarmlandHandler::onHydratedFarmlandGrowEvent);
+        BlockCallback.Break.Before.EVENT.register((level, pos, state, blockEntity, player) -> FarmlandHandler.onBlockBreak(level, pos, state));
         ServerTickCallback.ServerLevelTick.AFTER.register(level -> {
             HydratedFarmlandData.get(level).dailyReset(level);
             ShippingBinSalesData.get(level).prune(level);

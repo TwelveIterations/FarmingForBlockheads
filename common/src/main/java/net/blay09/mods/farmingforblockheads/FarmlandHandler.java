@@ -45,6 +45,14 @@ public class FarmlandHandler {
         }
     }
 
+    public static boolean onBlockBreak(LevelAccessor levelAccessor, BlockPos pos, BlockState state) {
+        if (levelAccessor instanceof ServerLevel level) {
+            HydratedFarmlandData.get(level).reset(level, pos);
+        }
+
+        return true;
+    }
+
     public static void rollRegression(Level level, BlockPos pos, BlockState farmland) {
         if (farmland.getBlock() instanceof FertilizedFarmlandBlock) {
             if (Math.random() <= ((FertilizedFarmlandBlock) farmland.getBlock()).getRegressionChance()) {
