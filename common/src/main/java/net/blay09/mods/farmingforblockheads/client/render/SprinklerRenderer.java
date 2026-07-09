@@ -50,7 +50,14 @@ public class SprinklerRenderer implements BlockEntityRenderer<SprinklerBlockEnti
     public void extractRenderState(SprinklerBlockEntity blockEntity, SprinklerRenderState renderState, float delta, Vec3 vec, ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderState.extractBase(blockEntity, renderState, crumblingOverlay);
         final var level = blockEntity.getLevel();
-        renderState.rotation = level != null ? (level.getGameTime() + delta) * ROTATION_SPEED : 0f;
+        if (level != null) {
+            final int ticksPassed = blockEntity.getTicksPassed();
+            final float frameDelta = SprinklerBlockEntity.isActive(ticksPassed) ? delta : 0f;
+            renderState.rotation = (SprinklerBlockEntity.getActiveGameTime(ticksPassed) + frameDelta) * ROTATION_SPEED;
+        } else {
+            renderState.rotation = 0f;
+        }
+
         renderState.rodParts.clear();
         ModRenderers.sprinklerRodModel.asBlockStateModel()
                 .collectParts(RandomSource.create(blockEntity.getBlockPos().asLong()), renderState.rodParts);

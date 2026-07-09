@@ -27,7 +27,10 @@ public class SprinklerBlockEntity extends BlockEntity {
 
     private static final int HYDRATION_INTERVAL = 20;
     private static final int PARTICLE_INTERVAL = 2;
-    private static final int RANGE = 4;
+    private static final int ACTIVE_DURATION = 10 * 20;
+    private static final int BREAK_DURATION = 60 * 20;
+    private static final int CYCLE_DURATION = ACTIVE_DURATION + BREAK_DURATION;
+    private static final int RANGE = 2;
     private static final double PIPE_END_OFFSET = 5.5 / 16d;
     private static final double NOZZLE_CLEARANCE = 2d / 16d;
     private static final double PIPE_HEIGHT = 12d / 16d;
@@ -37,7 +40,7 @@ public class SprinklerBlockEntity extends BlockEntity {
     private static final double PARTICLE_SPEED = 0.08d;
     private static final double ROTATION_SPEED = 20d;
 
-    private int tickTimer;
+    private int ticksPassed;
     private ItemStack head = ItemStack.EMPTY;
 
     public SprinklerBlockEntity(BlockPos pos, BlockState state) {
@@ -52,10 +55,21 @@ public class SprinklerBlockEntity extends BlockEntity {
         blockEntity.clientTick(level);
     }
 
+    public static boolean isActive(long ticksPassed) {
+        return ticksPassed % CYCLE_DURATION < ACTIVE_DURATION;
+    }
+
+    public static long getActiveGameTime(long ticksPassed) {
+        final long cycles = ticksPassed / CYCLE_DURATION;
+        final long cycleTick = ticksPassed % CYCLE_DURATION;
+        return cycles * ACTIVE_DURATION + Math.min(cycleTick, ACTIVE_DURATION);
+    }
+
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
         head = input.read("Head", ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY);
+        ticksPassed = input.getIntOr("TicksPassed", input.getIntOr("CycleAge", 0));
     }
 
     @Override
@@ -64,6 +78,7 @@ public class SprinklerBlockEntity extends BlockEntity {
         if (!head.isEmpty()) {
             output.store("Head", ItemStack.OPTIONAL_CODEC, head);
         }
+        output.putInt("TicksPassed", ticksPassed);
     }
 
     @Override
@@ -93,6 +108,10 @@ public class SprinklerBlockEntity extends BlockEntity {
         return !head.isEmpty();
     }
 
+    public int getTicksPassed() {
+        return ticksPassed;
+    }
+
     public void setHead(ItemStack head) {
         this.head = head.copyWithCount(1);
         setChanged();
@@ -115,20 +134,17 @@ public class SprinklerBlockEntity extends BlockEntity {
 
     private void serverTick(Level level) {
         updateLitState(level);
-        tickTimer++;
-        if (tickTimer < HYDRATION_INTERVAL || !(level instanceof ServerLevel serverLevel)) {
-            return;
+        if (isActive(ticksPassed) && (ticksPassed + 1) % HYDRATION_INTERVAL == 0 && level instanceof ServerLevel serverLevel) {
+            final var hydratedFarmlandData = HydratedFarmlandData.get(serverLevel);
+            BlockPos.betweenClosed(worldPosition.offset(-RANGE, -1, -RANGE), worldPosition.offset(RANGE, 0, RANGE)).forEach(targetPos -> {
+                final var state = level.getBlockState(targetPos);
+                if (state.getBlock() instanceof FarmlandBlock) {
+                    hydratedFarmlandData.hydrate(serverLevel, targetPos.immutable());
+                    level.setBlock(targetPos, state.setValue(FarmlandBlock.MOISTURE, FarmlandBlock.MAX_MOISTURE), Block.UPDATE_CLIENTS);
+                }
+            });
         }
-
-        tickTimer = 0;
-        final var hydratedFarmlandData = HydratedFarmlandData.get(serverLevel);
-        BlockPos.betweenClosed(worldPosition.offset(-RANGE, -1, -RANGE), worldPosition.offset(RANGE, 0, RANGE)).forEach(targetPos -> {
-            final var state = level.getBlockState(targetPos);
-            if (state.getBlock() instanceof FarmlandBlock) {
-                hydratedFarmlandData.hydrate(serverLevel, targetPos.immutable());
-                level.setBlock(targetPos, state.setValue(FarmlandBlock.MOISTURE, FarmlandBlock.MAX_MOISTURE), Block.UPDATE_CLIENTS);
-            }
-        });
+        ticksPassed = (ticksPassed + 1) % CYCLE_DURATION;
     }
 
     private void updateLitState(Level level) {
@@ -158,50 +174,48 @@ public class SprinklerBlockEntity extends BlockEntity {
     }
 
     private void clientTick(Level level) {
-        tickTimer++;
-        if (tickTimer % PARTICLE_INTERVAL != 0) {
-            return;
-        }
-
-        final RandomSource random = level.getRandom();
-        final double rotation = Math.toRadians(level.getGameTime() * ROTATION_SPEED);
-        final double directionX = Math.cos(rotation);
-        final double directionZ = Math.sin(rotation);
-        final double offsetX = directionX * (PIPE_END_OFFSET + NOZZLE_CLEARANCE);
-        final double offsetZ = directionZ * (PIPE_END_OFFSET + NOZZLE_CLEARANCE);
-        final double centerX = worldPosition.getX() + 0.5;
-        final double y = worldPosition.getY() + PIPE_HEIGHT;
-        final double centerZ = worldPosition.getZ() + 0.5;
-        for (int direction = -1; direction <= 1; direction += 2) {
-            final double motionX = directionX * PARTICLE_SPEED * direction;
-            final double motionZ = directionZ * PARTICLE_SPEED * direction;
-            final double startX = centerX + offsetX * direction;
-            final double startZ = centerZ + offsetZ * direction;
-            final double endX = centerX + directionX * STREAM_DISTANCE * direction;
-            final double endY = worldPosition.getY() + STREAM_END_HEIGHT;
-            final double endZ = centerZ + directionZ * STREAM_DISTANCE * direction;
-            for (int i = 0; i < STREAM_PARTICLES; i++) {
-                final double progress = Math.min(1d, (i + random.nextDouble() * 0.2) / (STREAM_PARTICLES - 1));
-                final double particleX = startX + (endX - startX) * progress + (random.nextDouble() - 0.5) * 0.035;
-                final double particleY = y + (endY - y) * progress * progress + (random.nextDouble() - 0.5) * 0.025;
-                final double particleZ = startZ + (endZ - startZ) * progress + (random.nextDouble() - 0.5) * 0.035;
-                level.addParticle(ParticleTypes.FALLING_WATER,
-                        particleX,
-                        particleY,
-                        particleZ,
-                        motionX,
-                        -0.02 - progress * 0.04,
-                        motionZ);
-                if (i == STREAM_PARTICLES - 1 && random.nextBoolean()) {
-                    level.addParticle(ParticleTypes.SPLASH,
+        if (isActive(ticksPassed) && (ticksPassed + 1) % PARTICLE_INTERVAL == 0) {
+            final RandomSource random = level.getRandom();
+            final double rotation = Math.toRadians(getActiveGameTime(ticksPassed) * ROTATION_SPEED);
+            final double directionX = Math.cos(rotation);
+            final double directionZ = Math.sin(rotation);
+            final double offsetX = directionX * (PIPE_END_OFFSET + NOZZLE_CLEARANCE);
+            final double offsetZ = directionZ * (PIPE_END_OFFSET + NOZZLE_CLEARANCE);
+            final double centerX = worldPosition.getX() + 0.5;
+            final double y = worldPosition.getY() + PIPE_HEIGHT;
+            final double centerZ = worldPosition.getZ() + 0.5;
+            for (int direction = -1; direction <= 1; direction += 2) {
+                final double motionX = directionX * PARTICLE_SPEED * direction;
+                final double motionZ = directionZ * PARTICLE_SPEED * direction;
+                final double startX = centerX + offsetX * direction;
+                final double startZ = centerZ + offsetZ * direction;
+                final double endX = centerX + directionX * STREAM_DISTANCE * direction;
+                final double endY = worldPosition.getY() + STREAM_END_HEIGHT;
+                final double endZ = centerZ + directionZ * STREAM_DISTANCE * direction;
+                for (int i = 0; i < STREAM_PARTICLES; i++) {
+                    final double progress = Math.min(1d, (i + random.nextDouble() * 0.2) / (STREAM_PARTICLES - 1));
+                    final double particleX = startX + (endX - startX) * progress + (random.nextDouble() - 0.5) * 0.035;
+                    final double particleY = y + (endY - y) * progress * progress + (random.nextDouble() - 0.5) * 0.025;
+                    final double particleZ = startZ + (endZ - startZ) * progress + (random.nextDouble() - 0.5) * 0.035;
+                    level.addParticle(ParticleTypes.FALLING_WATER,
                             particleX,
                             particleY,
                             particleZ,
-                            motionX * 0.4,
-                            0.01,
-                            motionZ * 0.4);
+                            motionX,
+                            -0.02 - progress * 0.04,
+                            motionZ);
+                    if (i == STREAM_PARTICLES - 1 && random.nextBoolean()) {
+                        level.addParticle(ParticleTypes.SPLASH,
+                                particleX,
+                                particleY,
+                                particleZ,
+                                motionX * 0.4,
+                                0.01,
+                                motionZ * 0.4);
+                    }
                 }
             }
         }
+        ticksPassed = (ticksPassed + 1) % CYCLE_DURATION;
     }
 }
