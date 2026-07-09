@@ -281,7 +281,7 @@ public class SprinklerBlockEntity extends BlockEntity {
 
             final var state = level.getBlockState(targetPos);
             final var targetContext = targetContext(level, targetPos, state);
-            if (canMelt && isMeltableByLavaSprinkler(state) && FarmingForBlockheadsRules.LAVA_SPRINKLER_CAN_MELT_AT.getOrDefault(targetContext)) {
+            if (canMelt && (state.is(ModBlockTags.MELTS_INTO_AIR) || state.is(ModBlockTags.MELTS_INTO_WATER)) && FarmingForBlockheadsRules.LAVA_SPRINKLER_CAN_MELT_AT.getOrDefault(targetContext)) {
                 meltBlock(level, targetPos, state);
             }
 
@@ -291,26 +291,21 @@ public class SprinklerBlockEntity extends BlockEntity {
         });
     }
 
-    private boolean isMeltableByLavaSprinkler(BlockState state) {
-        return state.is(Blocks.SNOW)
-                || state.is(Blocks.ICE)
-                || state.is(Blocks.FROSTED_ICE)
-                || state.is(Blocks.SNOW_BLOCK)
-                || state.is(Blocks.POWDER_SNOW);
-    }
-
     private void meltBlock(Level level, BlockPos targetPos, BlockState state) {
-        if (state.is(Blocks.SNOW)) {
-            final int layers = state.getValue(SnowLayerBlock.LAYERS);
+        if (state.is(ModBlockTags.MELTS_INTO_AIR)) {
+            if (!state.hasProperty(BlockStateProperties.LAYERS)) {
+                level.setBlock(targetPos, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+                return;
+            }
+
+            final int layers = state.getValue(BlockStateProperties.LAYERS);
             if (layers > 1) {
-                level.setBlock(targetPos, state.setValue(SnowLayerBlock.LAYERS, layers - 1), Block.UPDATE_CLIENTS);
+                level.setBlock(targetPos, state.setValue(BlockStateProperties.LAYERS, layers - 1), Block.UPDATE_CLIENTS);
             } else {
                 level.setBlock(targetPos, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
             }
-        } else if (state.is(Blocks.ICE) || state.is(Blocks.FROSTED_ICE)) {
+        } else if (state.is(ModBlockTags.MELTS_INTO_WATER)) {
             level.setBlock(targetPos, Blocks.WATER.defaultBlockState(), Block.UPDATE_CLIENTS);
-        } else if (state.is(Blocks.SNOW_BLOCK) || state.is(Blocks.POWDER_SNOW)) {
-            level.setBlock(targetPos, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
         }
     }
 
