@@ -102,6 +102,18 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy("has_gold_ingot", has(Items.GOLD_INGOT))
                         .save(exporter);
 
+                shaped(RecipeCategory.DECORATIONS, ModBlocks.sprinkler)
+                        .pattern("IWI")
+                        .pattern("CBC")
+                        .pattern("CRC")
+                        .define('I', Items.IRON_INGOT)
+                        .define('W', ItemTags.LOGS)
+                        .define('B', Items.WATER_BUCKET)
+                        .define('C', Items.COBBLESTONE)
+                        .define('R', Items.REDSTONE)
+                        .unlockedBy("has_redstone", has(Items.REDSTONE))
+                        .save(exporter);
+
                 shaped(RecipeCategory.DECORATIONS, ModBlocks.shippingBin)
                         .pattern("IWI")
                         .pattern("WEW")

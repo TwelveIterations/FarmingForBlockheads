@@ -34,6 +34,7 @@ public class ModModelProvider extends FabricModelProvider {
     @Override
     public void generateBlockStateModels(BlockModelGenerators generators) {
         generators.createNonTemplateModelBlock(ModBlocks.feedingTrough.asBlock());
+        generators.createNonTemplateModelBlock(ModBlocks.sprinkler.asBlock());
         generators.createNonTemplateHorizontalBlock(ModBlocks.shippingBin.asBlock());
         generators.registerSimpleItemModel(ModBlocks.shippingBin.asBlock(), ModelLocationUtils.getModelLocation(ModBlocks.shippingBin.asBlock()));
 

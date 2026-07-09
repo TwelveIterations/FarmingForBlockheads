@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "minecraft:water_bucket",
+    "C": "minecraft:copper_ingot",
+    "I": "minecraft:iron_ingot",
+    "R": "minecraft:redstone"
+  },
+  "pattern": [
+    " I ",
+    "CRC",
+    " B "
+  ],
+  "result": {
+    "id": "farmingforblockheads:sprinkler"
+  }
+}
