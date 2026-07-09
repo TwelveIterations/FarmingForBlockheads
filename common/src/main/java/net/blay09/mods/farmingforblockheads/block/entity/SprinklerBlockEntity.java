@@ -1,15 +1,27 @@
 package net.blay09.mods.farmingforblockheads.block.entity;
 
+import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.blay09.mods.farmingforblockheads.HydratedFarmlandData;
+import net.blay09.mods.farmingforblockheads.block.SprinklerBlock;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FarmlandBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import org.jspecify.annotations.Nullable;
 
 public class SprinklerBlockEntity extends BlockEntity {
 
@@ -18,6 +30,7 @@ public class SprinklerBlockEntity extends BlockEntity {
     private static final int RANGE = 4;
 
     private int tickTimer;
+    private ItemStack head = ItemStack.EMPTY;
 
     public SprinklerBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.sprinkler.value(), pos, state);
@@ -31,7 +44,69 @@ public class SprinklerBlockEntity extends BlockEntity {
         blockEntity.clientTick(level);
     }
 
+    @Override
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        head = input.read("Head", ItemStack.OPTIONAL_CODEC).orElse(ItemStack.EMPTY);
+    }
+
+    @Override
+    public void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        if (!head.isEmpty()) {
+            output.store("Head", ItemStack.OPTIONAL_CODEC, head);
+        }
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return BalmBlockEntityUtils.createUpdateTag(registries, this::saveAdditional);
+    }
+
+    @Override
+    public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
+        return BalmBlockEntityUtils.createUpdatePacket(this);
+    }
+
+    @Override
+    public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+        super.preRemoveSideEffects(pos, state);
+        if (level != null && !level.isClientSide() && !head.isEmpty()) {
+            Block.popResource(level, pos, head);
+            head = ItemStack.EMPTY;
+        }
+    }
+
+    public ItemStack getHead() {
+        return head;
+    }
+
+    public boolean hasHead() {
+        return !head.isEmpty();
+    }
+
+    public void setHead(ItemStack head) {
+        this.head = head.copyWithCount(1);
+        setChanged();
+        if (level != null && !level.isClientSide()) {
+            updateLitState(level);
+            BalmBlockEntityUtils.sync(this);
+        }
+    }
+
+    public ItemStack removeHead() {
+        final var result = head;
+        head = ItemStack.EMPTY;
+        setChanged();
+        if (level != null && !level.isClientSide()) {
+            updateLitState(level);
+            BalmBlockEntityUtils.sync(this);
+        }
+        return result;
+    }
+
     private void serverTick(Level level) {
+        updateLitState(level);
         tickTimer++;
         if (tickTimer < HYDRATION_INTERVAL || !(level instanceof ServerLevel serverLevel)) {
             return;
@@ -46,6 +121,32 @@ public class SprinklerBlockEntity extends BlockEntity {
                 level.setBlock(targetPos, state.setValue(FarmlandBlock.MOISTURE, FarmlandBlock.MAX_MOISTURE), Block.UPDATE_CLIENTS);
             }
         });
+    }
+
+    private void updateLitState(Level level) {
+        final var state = getBlockState();
+        if (!state.hasProperty(SprinklerBlock.LIT)) {
+            return;
+        }
+
+        final boolean lit = headEmitsLight();
+        if (state.getValue(SprinklerBlock.LIT) != lit) {
+            level.setBlock(worldPosition, state.setValue(SprinklerBlock.LIT, lit), Block.UPDATE_CLIENTS);
+        }
+    }
+
+    private boolean headEmitsLight() {
+        if (head.getItem() instanceof BlockItem blockItem) {
+            var blockState = blockItem.getBlock().defaultBlockState();
+            final var blockStateProperties = head.get(DataComponents.BLOCK_STATE);
+            if (blockStateProperties != null) {
+                blockState = blockStateProperties.apply(blockState);
+            }
+
+            return blockState.getLightEmission() > 0;
+        }
+
+        return false;
     }
 
     private void clientTick(Level level) {

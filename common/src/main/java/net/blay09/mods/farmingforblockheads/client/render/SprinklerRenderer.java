@@ -12,10 +12,13 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
@@ -28,10 +31,14 @@ public class SprinklerRenderer implements BlockEntityRenderer<SprinklerBlockEnti
 
     public static class SprinklerRenderState extends BlockEntityRenderState {
         public final List<BlockStateModelPart> rodParts = new ArrayList<>();
+        public final ItemStackRenderState head = new ItemStackRenderState();
         public float rotation;
     }
 
+    private final ItemModelResolver itemModelResolver;
+
     public SprinklerRenderer(BlockEntityRendererProvider.Context context) {
+        itemModelResolver = context.itemModelResolver();
     }
 
     @Override
@@ -47,6 +54,7 @@ public class SprinklerRenderer implements BlockEntityRenderer<SprinklerBlockEnti
         renderState.rodParts.clear();
         ModRenderers.sprinklerRodModel.asBlockStateModel()
                 .collectParts(RandomSource.create(blockEntity.getBlockPos().asLong()), renderState.rodParts);
+        itemModelResolver.updateForTopItem(renderState.head, blockEntity.getHead(), ItemDisplayContext.FIXED, level, null, (int) renderState.blockPos.asLong());
     }
 
     @Override
@@ -56,6 +64,10 @@ public class SprinklerRenderer implements BlockEntityRenderer<SprinklerBlockEnti
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.wrapDegrees(renderState.rotation)));
         poseStack.translate(-0.5f, 0f, -0.5f);
         submitNodeCollector.submitBlockModel(poseStack, Sheets.cutoutBlockItemSheet(), renderState.rodParts, BlockModelRenderState.EMPTY_TINTS, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+        if (!renderState.head.isEmpty()) {
+            poseStack.translate(0.5f, 1.2f, 0.5f);
+            renderState.head.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+        }
         poseStack.popPose();
     }
 }

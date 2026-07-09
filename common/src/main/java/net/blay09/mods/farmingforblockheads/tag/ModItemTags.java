@@ -11,4 +11,5 @@ public class ModItemTags {
     public static final TagKey<Item> RICH_FARMLAND = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(FarmingForBlockheads.MOD_ID, "rich_farmland"));
     public static final TagKey<Item> HEALTHY_FARMLAND = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(FarmingForBlockheads.MOD_ID, "healthy_farmland"));
     public static final TagKey<Item> STABLE_FARMLAND = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(FarmingForBlockheads.MOD_ID, "stable_farmland"));
+    public static final TagKey<Item> SPRINKLER_TOPS = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(FarmingForBlockheads.MOD_ID, "sprinkler_tops"));
 }

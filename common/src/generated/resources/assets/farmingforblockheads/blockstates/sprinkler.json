@@ -1,6 +1,9 @@
 {
   "variants": {
-    "": {
+    "lit=false": {
+      "model": "farmingforblockheads:block/sprinkler"
+    },
+    "lit=true": {
       "model": "farmingforblockheads:block/sprinkler"
     }
   }

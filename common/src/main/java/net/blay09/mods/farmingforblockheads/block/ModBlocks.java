@@ -37,7 +37,7 @@ public class ModBlocks {
                 .withDefaultItem(it -> it.component(ModComponents.description.value(),
                         new DescriptionComponent(Component.translatable("tooltip.farmingforblockheads.feeding_trough"))))
                 .asDeferredBlock();
-        sprinkler = blocks.register("sprinkler", SprinklerBlock::new, it -> it.sound(SoundType.METAL).strength(2f))
+        sprinkler = blocks.register("sprinkler", SprinklerBlock::new, it -> it.sound(SoundType.METAL).strength(2f).lightLevel(state -> state.getValue(SprinklerBlock.LIT) ? 15 : 0))
                 .withDefaultItem()
                 .asDeferredBlock();
         fertilizedFarmlandRich = blocks.register("fertilized_farmland_rich", FertilizedFarmlandBlock::new, it -> it)
