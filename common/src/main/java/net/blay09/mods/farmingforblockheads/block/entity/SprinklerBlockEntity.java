@@ -30,7 +30,7 @@ public class SprinklerBlockEntity extends BlockEntity {
     private static final int ACTIVE_DURATION = 10 * 20;
     private static final int BREAK_DURATION = 60 * 20;
     private static final int CYCLE_DURATION = ACTIVE_DURATION + BREAK_DURATION;
-    private static final int RANGE = 2;
+    public static final int RANGE = 2;
     private static final double PIPE_END_OFFSET = 5.5 / 16d;
     private static final double NOZZLE_CLEARANCE = 2d / 16d;
     private static final double PIPE_HEIGHT = 12d / 16d;

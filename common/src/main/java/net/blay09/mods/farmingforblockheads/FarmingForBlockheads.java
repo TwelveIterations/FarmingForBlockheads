@@ -6,6 +6,7 @@ import net.blay09.mods.balm.platform.event.callback.BlockCallback;
 import net.blay09.mods.balm.platform.event.callback.CropCallback;
 import net.blay09.mods.balm.platform.event.callback.ServerTickCallback;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
+import net.blay09.mods.farmingforblockheads.block.ModPoiTypes;
 import net.blay09.mods.farmingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.farmingforblockheads.command.FarmingForBlockheadsCommand;
 import net.blay09.mods.farmingforblockheads.component.ModComponents;
@@ -42,6 +43,7 @@ public class FarmingForBlockheads {
         registrars.entityTypes(ModEntities::initialize);
         registrars.items(ModItems::initialize);
         registrars.creativeModeTabs(ModItems::initialize);
+        registrars.poiTypes(ModPoiTypes::initialize);
         registrars.registrar(Registries.SOUND_EVENT, ModSounds::initialize);
         registrars.registrar(Registries.LOOT_CONDITION_TYPE, ModLootConditions::initialize);
         registrars.registrar(Registries.LOOT_NUMBER_PROVIDER_TYPE, ModLootNumberProviders::initialize);
