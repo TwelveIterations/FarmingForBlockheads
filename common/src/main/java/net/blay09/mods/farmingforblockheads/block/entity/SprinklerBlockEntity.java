@@ -26,8 +26,16 @@ import org.jspecify.annotations.Nullable;
 public class SprinklerBlockEntity extends BlockEntity {
 
     private static final int HYDRATION_INTERVAL = 20;
-    private static final int PARTICLE_INTERVAL = 4;
+    private static final int PARTICLE_INTERVAL = 2;
     private static final int RANGE = 4;
+    private static final double PIPE_END_OFFSET = 5.5 / 16d;
+    private static final double NOZZLE_CLEARANCE = 2d / 16d;
+    private static final double PIPE_HEIGHT = 12d / 16d;
+    private static final double STREAM_DISTANCE = 2d;
+    private static final double STREAM_END_HEIGHT = 1.5d / 16d;
+    private static final int STREAM_PARTICLES = 7;
+    private static final double PARTICLE_SPEED = 0.08d;
+    private static final double ROTATION_SPEED = 20d;
 
     private int tickTimer;
     private ItemStack head = ItemStack.EMPTY;
@@ -156,19 +164,44 @@ public class SprinklerBlockEntity extends BlockEntity {
         }
 
         final RandomSource random = level.getRandom();
-        final double x = worldPosition.getX() + 0.5;
-        final double y = worldPosition.getY() + 0.85;
-        final double z = worldPosition.getZ() + 0.5;
-        for (int i = 0; i < 4; i++) {
-            final double angle = random.nextDouble() * Math.PI * 2;
-            final double speed = 0.08 + random.nextDouble() * 0.08;
-            level.addParticle(ParticleTypes.SPLASH,
-                    x,
-                    y,
-                    z,
-                    Math.cos(angle) * speed,
-                    0.03 + random.nextDouble() * 0.02,
-                    Math.sin(angle) * speed);
+        final double rotation = Math.toRadians(level.getGameTime() * ROTATION_SPEED);
+        final double directionX = Math.cos(rotation);
+        final double directionZ = Math.sin(rotation);
+        final double offsetX = directionX * (PIPE_END_OFFSET + NOZZLE_CLEARANCE);
+        final double offsetZ = directionZ * (PIPE_END_OFFSET + NOZZLE_CLEARANCE);
+        final double centerX = worldPosition.getX() + 0.5;
+        final double y = worldPosition.getY() + PIPE_HEIGHT;
+        final double centerZ = worldPosition.getZ() + 0.5;
+        for (int direction = -1; direction <= 1; direction += 2) {
+            final double motionX = directionX * PARTICLE_SPEED * direction;
+            final double motionZ = directionZ * PARTICLE_SPEED * direction;
+            final double startX = centerX + offsetX * direction;
+            final double startZ = centerZ + offsetZ * direction;
+            final double endX = centerX + directionX * STREAM_DISTANCE * direction;
+            final double endY = worldPosition.getY() + STREAM_END_HEIGHT;
+            final double endZ = centerZ + directionZ * STREAM_DISTANCE * direction;
+            for (int i = 0; i < STREAM_PARTICLES; i++) {
+                final double progress = Math.min(1d, (i + random.nextDouble() * 0.2) / (STREAM_PARTICLES - 1));
+                final double particleX = startX + (endX - startX) * progress + (random.nextDouble() - 0.5) * 0.035;
+                final double particleY = y + (endY - y) * progress * progress + (random.nextDouble() - 0.5) * 0.025;
+                final double particleZ = startZ + (endZ - startZ) * progress + (random.nextDouble() - 0.5) * 0.035;
+                level.addParticle(ParticleTypes.FALLING_WATER,
+                        particleX,
+                        particleY,
+                        particleZ,
+                        motionX,
+                        -0.02 - progress * 0.04,
+                        motionZ);
+                if (i == STREAM_PARTICLES - 1 && random.nextBoolean()) {
+                    level.addParticle(ParticleTypes.SPLASH,
+                            particleX,
+                            particleY,
+                            particleZ,
+                            motionX * 0.4,
+                            0.01,
+                            motionZ * 0.4);
+                }
+            }
         }
     }
 }
