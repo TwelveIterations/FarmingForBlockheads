@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "farmingforblockheads:block/sprinkler"
+    "model": "farmingforblockheads:item/sprinkler"
   }
 }
