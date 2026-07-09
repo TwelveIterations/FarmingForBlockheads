@@ -1,9 +1,13 @@
 package net.blay09.mods.farmingforblockheads.block.entity;
 
+import com.mojang.datafixers.util.Either;
 import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.blay09.mods.farmingforblockheads.HydratedFarmlandData;
 import net.blay09.mods.farmingforblockheads.block.SprinklerBlock;
+import net.blay09.mods.farmingforblockheads.recipe.FarmingForBlockheadsRules;
 import net.blay09.mods.farmingforblockheads.tag.ModBlockTags;
+import net.blay09.mods.shogi.context.MutableShogiContext;
+import net.blay09.mods.shogi.context.ShogiContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
@@ -165,7 +169,7 @@ public class SprinklerBlockEntity extends BlockEntity {
         if (isActive(ticksPassed)) {
             final var sprinkleMode = getSprinkleMode(level);
             if ((ticksPassed + 1) % ENTITY_EFFECT_INTERVAL == 0) {
-                applyEntityEffects(level, sprinkleMode);
+                applyEntityEffects(sprinkleMode);
             }
             if (sprinkleMode == SprinkleMode.WATER && (ticksPassed + 1) % WATER_HYDRATION_INTERVAL == 0 && level instanceof ServerLevel serverLevel) {
                 hydrateFarmland(level, serverLevel);
@@ -176,12 +180,12 @@ public class SprinklerBlockEntity extends BlockEntity {
         ticksPassed = (ticksPassed + 1) % CYCLE_DURATION;
     }
 
-    private void applyEntityEffects(Level level, SprinkleMode sprinkleMode) {
+    private void applyEntityEffects(SprinkleMode sprinkleMode) {
         switch (sprinkleMode) {
-            case LAVA -> igniteEntities(level);
-            case HONEY -> removePoison(level);
-            case SLIME -> slowEntities(level);
-            case SULFUR -> nauseateEntities(level);
+            case LAVA -> FarmingForBlockheadsRules.LAVA_SPRINKLER_ENTITY_EFFECTS.get(this);
+            case HONEY -> FarmingForBlockheadsRules.HONEY_SPRINKLER_ENTITY_EFFECTS.get(this);
+            case SLIME -> FarmingForBlockheadsRules.SLIME_SPRINKLER_ENTITY_EFFECTS.get(this);
+            case SULFUR -> FarmingForBlockheadsRules.SULFUR_SPRINKLER_ENTITY_EFFECTS.get(this);
             case WATER, SNOW, SCULK -> {
             }
         }
@@ -227,13 +231,18 @@ public class SprinklerBlockEntity extends BlockEntity {
         });
     }
 
-    private void igniteEntities(Level level) {
-        for (final Entity entity : getEntitiesInRange(level, Entity.class)) {
+    public Either<Object, ?> igniteEntities() {
+        for (final Entity entity : getEntitiesInRange(Entity.class)) {
             entity.igniteForSeconds(LAVA_FIRE_SECONDS);
         }
+        return Either.left(true);
     }
 
     private void meltSnowAndIce(Level level) {
+        if (!FarmingForBlockheadsRules.LAVA_SPRINKLER_CAN_MELT.getOrDefault(this)) {
+            return;
+        }
+
         final RandomSource random = level.getRandom();
         BlockPos.betweenClosed(worldPosition.offset(-RANGE, -1, -RANGE), worldPosition.offset(RANGE, 0, RANGE)).forEach(targetPos -> {
             if (random.nextFloat() >= SPECIAL_BLOCK_EFFECT_CHANCE) {
@@ -241,6 +250,10 @@ public class SprinklerBlockEntity extends BlockEntity {
             }
 
             final var state = level.getBlockState(targetPos);
+            if (!FarmingForBlockheadsRules.LAVA_SPRINKLER_CAN_MELT_AT.getOrDefault(targetContext(level, targetPos, state))) {
+                return;
+            }
+
             if (state.is(Blocks.SNOW)) {
                 final int layers = state.getValue(SnowLayerBlock.LAYERS);
                 if (layers > 1) {
@@ -256,34 +269,46 @@ public class SprinklerBlockEntity extends BlockEntity {
         });
     }
 
-    private void removePoison(Level level) {
-        for (final LivingEntity entity : getEntitiesInRange(level, LivingEntity.class)) {
+    public Either<Object, ?> removePoison() {
+        for (final LivingEntity entity : getEntitiesInRange(LivingEntity.class)) {
             entity.removeEffect(MobEffects.POISON);
         }
+        return Either.left(true);
     }
 
-    private void slowEntities(Level level) {
-        for (final LivingEntity entity : getEntitiesInRange(level, LivingEntity.class)) {
+    public Either<Object, ?> slowEntities() {
+        for (final LivingEntity entity : getEntitiesInRange(LivingEntity.class)) {
             entity.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, SLIME_SLOWNESS_TICKS, 3));
         }
+        return Either.left(true);
     }
 
-    private void nauseateEntities(Level level) {
-        for (final LivingEntity entity : getEntitiesInRange(level, LivingEntity.class)) {
+    public Either<Object, ?> nauseateEntities() {
+        for (final LivingEntity entity : getEntitiesInRange(LivingEntity.class)) {
             entity.addEffect(new MobEffectInstance(MobEffects.NAUSEA, SULFUR_NAUSEA_TICKS));
         }
+        return Either.left(true);
     }
 
     private void emitVibrations(Level level) {
+        if (!FarmingForBlockheadsRules.SCULK_SPRINKLER_CAN_EMIT_VIBRATIONS.getOrDefault(this)) {
+            return;
+        }
+
         final RandomSource random = level.getRandom();
         BlockPos.betweenClosed(worldPosition.offset(-RANGE, -1, -RANGE), worldPosition.offset(RANGE, 0, RANGE)).forEach(targetPos -> {
-            if (random.nextFloat() < SPECIAL_BLOCK_EFFECT_CHANCE) {
+            if (random.nextFloat() < SPECIAL_BLOCK_EFFECT_CHANCE
+                    && FarmingForBlockheadsRules.SCULK_SPRINKLER_CAN_EMIT_VIBRATIONS_AT.getOrDefault(targetContext(level, targetPos))) {
                 level.gameEvent(GameEvent.BLOCK_ACTIVATE, targetPos, GameEvent.Context.of(getBlockState()));
             }
         });
     }
 
-    private <T extends Entity> List<T> getEntitiesInRange(Level level, Class<T> entityClass) {
+    private <T extends Entity> List<T> getEntitiesInRange(Class<T> entityClass) {
+        if (level == null) {
+            return List.of();
+        }
+
         final var aabb = new AABB(worldPosition.getX() - RANGE,
                 worldPosition.getY() - 1,
                 worldPosition.getZ() - RANGE,
@@ -294,6 +319,12 @@ public class SprinklerBlockEntity extends BlockEntity {
     }
 
     private void freezeWaterAndCreateSnow(Level level) {
+        final boolean canFreeze = FarmingForBlockheadsRules.SNOW_SPRINKLER_CAN_FREEZE.getOrDefault(this);
+        final boolean canCreateSnow = FarmingForBlockheadsRules.SNOW_SPRINKLER_CAN_CREATE_SNOW.getOrDefault(this);
+        if (!canFreeze && !canCreateSnow) {
+            return;
+        }
+
         final RandomSource random = level.getRandom();
         BlockPos.betweenClosed(worldPosition.offset(-RANGE, -1, -RANGE), worldPosition.offset(RANGE, -1, RANGE)).forEach(targetPos -> {
             if (random.nextFloat() >= SPECIAL_BLOCK_EFFECT_CHANCE) {
@@ -301,12 +332,20 @@ public class SprinklerBlockEntity extends BlockEntity {
             }
 
             final var state = level.getBlockState(targetPos);
-            if (state.is(Blocks.WATER)) {
+            if (canFreeze && state.is(Blocks.WATER) && FarmingForBlockheadsRules.SNOW_SPRINKLER_CAN_FREEZE_AT.getOrDefault(targetContext(level, targetPos, state))) {
                 level.setBlock(targetPos, Blocks.ICE.defaultBlockState(), Block.UPDATE_CLIENTS);
+            }
+
+            if (!canCreateSnow) {
+                return;
             }
 
             final var snowPos = targetPos.above();
             final var snowState = level.getBlockState(snowPos);
+            if (!FarmingForBlockheadsRules.SNOW_SPRINKLER_CAN_CREATE_SNOW_AT.getOrDefault(targetContext(level, snowPos, snowState))) {
+                return;
+            }
+
             final int maxLayers = getMaxSnowLayersForPosition(snowPos);
             if (snowState.is(Blocks.SNOW)) {
                 final int layers = snowState.getValue(SnowLayerBlock.LAYERS);
@@ -320,6 +359,17 @@ public class SprinklerBlockEntity extends BlockEntity {
                 }
             }
         });
+    }
+
+    private ShogiContext targetContext(Level level, BlockPos targetPos) {
+        return targetContext(level, targetPos, level.getBlockState(targetPos));
+    }
+
+    private ShogiContext targetContext(Level level, BlockPos targetPos, BlockState targetState) {
+        return MutableShogiContext.of(this)
+                .withLevel(level)
+                .withBlockPos(targetPos)
+                .withBlockState(targetState);
     }
 
     private int getMaxSnowLayersForPosition(BlockPos pos) {
