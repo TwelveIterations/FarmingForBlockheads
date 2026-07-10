@@ -44,7 +44,7 @@ public class ModPoiTypes {
     }
 
     public static boolean hasNearbySprinklerWithHead(ServerLevel level, BlockPos pos) {
-        return findNearbyWaterSprinklers(level, pos)
+        return findNearbySprinklers(level, pos)
                 .anyMatch(sprinklerPos -> level.getBlockEntity(sprinklerPos) instanceof SprinklerBlockEntity sprinklerBlockEntity && sprinklerBlockEntity.hasHead());
     }
 

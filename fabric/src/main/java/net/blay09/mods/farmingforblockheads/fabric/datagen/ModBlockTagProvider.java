@@ -6,9 +6,9 @@ import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.references.BlockIds;
 import net.minecraft.references.BlockItemIds;
 import net.minecraft.resources.Identifier;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 
 import java.util.concurrent.CompletableFuture;
@@ -56,7 +56,7 @@ public class ModBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
         builder(ModBlockTags.MELTS_INTO_AIR).add(BlockItemIds.SNOW, BlockItemIds.SNOW_BLOCK, BlockItemIds.POWDER_SNOW);
         builder(ModBlockTags.MELTS_INTO_WATER)
                 .add(BlockItemIds.ICE)
-                .add(ResourceKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("frosted_ice")));
+                .add(BlockIds.FROSTED_ICE);
         builder(ModBlockTags.HONEY_SPRINKLER_BASE).add(BlockItemIds.HONEY_BLOCK);
         builder(ModBlockTags.SLIME_SPRINKLER_BASE).add(BlockItemIds.SLIME_BLOCK);
         builder(ModBlockTags.SNOW_SPRINKLER_BASE).add(BlockItemIds.SNOW_BLOCK, BlockItemIds.POWDER_SNOW);

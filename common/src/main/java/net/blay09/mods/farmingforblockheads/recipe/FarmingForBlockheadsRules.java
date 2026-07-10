@@ -19,6 +19,8 @@ public final class FarmingForBlockheadsRules {
 
     public static final ShogiValue<ShippingBinBlockEntity, Integer> SHIPPING_BIN_CAPACITY =
             SCOPE.intValue(id("shipping_bin/capacity"), _ -> 128);
+    public static final ShogiValue<SprinklerBlockEntity, ?> WATER_SPRINKLER_ENTITY_EFFECTS =
+            SCOPE.maybe(id("sprinkler/water/entity_effects"), SprinklerBlockEntity::extinguishEntities);
     public static final ShogiValue<SprinklerBlockEntity, ?> LAVA_SPRINKLER_ENTITY_EFFECTS =
             SCOPE.maybe(id("sprinkler/lava/entity_effects"), SprinklerBlockEntity::igniteEntities);
     public static final ShogiValue<SprinklerBlockEntity, ?> HONEY_SPRINKLER_ENTITY_EFFECTS =

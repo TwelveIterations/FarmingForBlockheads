@@ -27,11 +27,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseFireBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FarmlandBlock;
-import net.minecraft.world.level.block.SnowLayerBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -44,27 +40,10 @@ import java.util.List;
 
 public class SprinklerBlockEntity extends BlockEntity {
 
-    private static final int ENTITY_EFFECT_INTERVAL = 10;
-    private static final int WATER_HYDRATION_INTERVAL = 20;
-    private static final int SPECIAL_BLOCK_EFFECT_INTERVAL = 40;
-    private static final float SPECIAL_BLOCK_EFFECT_CHANCE = 0.35f;
-    private static final int PARTICLE_INTERVAL = 2;
     private static final int ACTIVE_DURATION = 10 * 20;
-    private static final int BREAK_DURATION = 60 * 20;
-    private static final int CYCLE_DURATION = ACTIVE_DURATION + BREAK_DURATION;
+    private static final int COOLDOWN_DURATION = 60 * 20;
+    private static final int CYCLE_DURATION = ACTIVE_DURATION + COOLDOWN_DURATION;
     public static final int RANGE = 2;
-    private static final double PIPE_END_OFFSET = 5.5 / 16d;
-    private static final double NOZZLE_CLEARANCE = 2d / 16d;
-    private static final double PIPE_HEIGHT = 12d / 16d;
-    private static final double STREAM_DISTANCE = 2d;
-    private static final double STREAM_END_HEIGHT = 1.5d / 16d;
-    private static final int STREAM_PARTICLES = 7;
-    private static final double PARTICLE_SPEED = 0.08d;
-    private static final double ROTATION_SPEED = 20d;
-    private static final int LAVA_FIRE_SECONDS = 4;
-    private static final int SLIME_SLOWNESS_TICKS = 6 * 20;
-    private static final int SNOW_FREEZE_TICKS = 2 * 20;
-    private static final int SULFUR_NAUSEA_TICKS = 4 * 20;
 
     private int ticksPassed;
     private ItemStack head = ItemStack.EMPTY;
@@ -171,12 +150,12 @@ public class SprinklerBlockEntity extends BlockEntity {
         updateLitState(level);
         if (isActive(ticksPassed)) {
             final var sprinkleMode = getSprinkleMode(level);
-            if ((ticksPassed + 1) % ENTITY_EFFECT_INTERVAL == 0) {
+            if ((ticksPassed + 1) % 10 == 0) {
                 applyEntityEffects(sprinkleMode);
             }
-            if (sprinkleMode == SprinkleMode.WATER && (ticksPassed + 1) % WATER_HYDRATION_INTERVAL == 0 && level instanceof ServerLevel serverLevel) {
+            if (sprinkleMode == SprinkleMode.WATER && (ticksPassed + 1) % 20 == 0 && level instanceof ServerLevel serverLevel) {
                 hydrateFarmland(level, serverLevel);
-            } else if ((ticksPassed + 1) % SPECIAL_BLOCK_EFFECT_INTERVAL == 0) {
+            } else if ((ticksPassed + 1) % 40 == 0) {
                 applySpecialBlockEffects(level, sprinkleMode);
             }
         }
@@ -190,7 +169,7 @@ public class SprinklerBlockEntity extends BlockEntity {
             case SLIME -> FarmingForBlockheadsRules.SLIME_SPRINKLER_ENTITY_EFFECTS.get(this);
             case SNOW -> FarmingForBlockheadsRules.SNOW_SPRINKLER_ENTITY_EFFECTS.get(this);
             case SULFUR -> FarmingForBlockheadsRules.SULFUR_SPRINKLER_ENTITY_EFFECTS.get(this);
-            case WATER -> extinguishEntities();
+            case WATER -> FarmingForBlockheadsRules.WATER_SPRINKLER_ENTITY_EFFECTS.get(this);
         }
     }
 
@@ -237,15 +216,16 @@ public class SprinklerBlockEntity extends BlockEntity {
 
     public Either<Object, ?> igniteEntities() {
         for (final var entity : getEntitiesInRange(Entity.class)) {
-            entity.igniteForSeconds(LAVA_FIRE_SECONDS);
+            entity.igniteForSeconds(4);
         }
         return Either.left(true);
     }
 
-    private void extinguishEntities() {
+    public Either<Object, ?> extinguishEntities() {
         for (final var entity : getEntitiesInRange(Entity.class)) {
             entity.extinguishFire();
         }
+        return Either.left(true);
     }
 
     private void extinguishFires(Level level) {
@@ -268,18 +248,16 @@ public class SprinklerBlockEntity extends BlockEntity {
 
         final RandomSource random = level.getRandom();
         BlockPos.betweenClosed(worldPosition.offset(-RANGE, -1, -RANGE), worldPosition.offset(RANGE, 0, RANGE)).forEach(targetPos -> {
-            if (random.nextFloat() >= SPECIAL_BLOCK_EFFECT_CHANCE) {
-                return;
-            }
+            if (random.nextFloat() < 0.35f) {
+                final var state = level.getBlockState(targetPos);
+                final var targetContext = targetContext(level, targetPos, state);
+                if (canMelt && (state.is(ModBlockTags.MELTS_INTO_AIR) || state.is(ModBlockTags.MELTS_INTO_WATER)) && FarmingForBlockheadsRules.LAVA_SPRINKLER_CAN_MELT_AT.getOrDefault(targetContext)) {
+                    meltBlock(level, targetPos, state);
+                }
 
-            final var state = level.getBlockState(targetPos);
-            final var targetContext = targetContext(level, targetPos, state);
-            if (canMelt && (state.is(ModBlockTags.MELTS_INTO_AIR) || state.is(ModBlockTags.MELTS_INTO_WATER)) && FarmingForBlockheadsRules.LAVA_SPRINKLER_CAN_MELT_AT.getOrDefault(targetContext)) {
-                meltBlock(level, targetPos, state);
-            }
-
-            if (canIgnite && state.ignitedByLava() && FarmingForBlockheadsRules.LAVA_SPRINKLER_CAN_IGNITE_AT.getOrDefault(targetContext)) {
-                igniteFlammableBlock(level, targetPos, random);
+                if (canIgnite && state.ignitedByLava() && FarmingForBlockheadsRules.LAVA_SPRINKLER_CAN_IGNITE_AT.getOrDefault(targetContext)) {
+                    igniteFlammableBlock(level, targetPos, random);
+                }
             }
         });
     }
@@ -326,7 +304,7 @@ public class SprinklerBlockEntity extends BlockEntity {
 
     public Either<Object, ?> slowEntities() {
         for (final LivingEntity entity : getEntitiesInRange(LivingEntity.class)) {
-            entity.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, SLIME_SLOWNESS_TICKS, 3));
+            entity.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 6 * 20, 3));
         }
         return Either.left(true);
     }
@@ -335,7 +313,7 @@ public class SprinklerBlockEntity extends BlockEntity {
         for (final var entity : getEntitiesInRange(Entity.class)) {
             entity.extinguishFire();
             if (entity.canFreeze()) {
-                entity.setTicksFrozen(Math.min(entity.getTicksRequiredToFreeze(), entity.getTicksFrozen() + SNOW_FREEZE_TICKS));
+                entity.setTicksFrozen(Math.min(entity.getTicksRequiredToFreeze(), entity.getTicksFrozen() + 2 * 20));
             }
         }
         return Either.left(true);
@@ -343,7 +321,7 @@ public class SprinklerBlockEntity extends BlockEntity {
 
     public Either<Object, ?> nauseateEntities() {
         for (final LivingEntity entity : getEntitiesInRange(LivingEntity.class)) {
-            entity.addEffect(new MobEffectInstance(MobEffects.NAUSEA, SULFUR_NAUSEA_TICKS));
+            entity.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 4 * 20));
         }
         return Either.left(true);
     }
@@ -371,42 +349,36 @@ public class SprinklerBlockEntity extends BlockEntity {
 
         final RandomSource random = level.getRandom();
         BlockPos.betweenClosed(worldPosition.offset(-RANGE, -1, -RANGE), worldPosition.offset(RANGE, -1, RANGE)).forEach(targetPos -> {
-            if (random.nextFloat() >= SPECIAL_BLOCK_EFFECT_CHANCE) {
-                return;
-            }
-
-            final var state = level.getBlockState(targetPos);
-            if (canFreeze && state.is(Blocks.WATER) && FarmingForBlockheadsRules.SNOW_SPRINKLER_CAN_FREEZE_AT.getOrDefault(targetContext(level, targetPos, state))) {
-                level.setBlock(targetPos, Blocks.ICE.defaultBlockState(), Block.UPDATE_CLIENTS);
-            }
-
-            if (!canCreateSnow) {
-                return;
-            }
-
-            final var snowPos = targetPos.above();
-            final var snowState = level.getBlockState(snowPos);
-            if (!FarmingForBlockheadsRules.SNOW_SPRINKLER_CAN_CREATE_SNOW_AT.getOrDefault(targetContext(level, snowPos, snowState))) {
-                return;
-            }
-
-            final int maxLayers = getMaxSnowLayersForPosition(snowPos);
-            if (snowState.is(Blocks.SNOW)) {
-                final int layers = snowState.getValue(SnowLayerBlock.LAYERS);
-                if (layers < maxLayers) {
-                    level.setBlock(snowPos, snowState.setValue(SnowLayerBlock.LAYERS, layers + 1), Block.UPDATE_CLIENTS);
+            if (random.nextFloat() < 0.35f) {
+                final var state = level.getBlockState(targetPos);
+                if (canFreeze && state.is(Blocks.WATER) && FarmingForBlockheadsRules.SNOW_SPRINKLER_CAN_FREEZE_AT.getOrDefault(targetContext(level, targetPos, state))) {
+                    level.setBlock(targetPos, Blocks.ICE.defaultBlockState(), Block.UPDATE_CLIENTS);
                 }
-            } else if (snowState.isAir()) {
-                final var newSnowState = Blocks.SNOW.defaultBlockState();
-                if (newSnowState.canSurvive(level, snowPos)) {
-                    level.setBlock(snowPos, newSnowState, Block.UPDATE_CLIENTS);
+
+                if (!canCreateSnow) {
+                    return;
+                }
+
+                final var snowPos = targetPos.above();
+                final var snowState = level.getBlockState(snowPos);
+                if (!FarmingForBlockheadsRules.SNOW_SPRINKLER_CAN_CREATE_SNOW_AT.getOrDefault(targetContext(level, snowPos, snowState))) {
+                    return;
+                }
+
+                final int maxLayers = getMaxSnowLayersForPosition(snowPos);
+                if (snowState.is(Blocks.SNOW)) {
+                    final int layers = snowState.getValue(SnowLayerBlock.LAYERS);
+                    if (layers < maxLayers) {
+                        level.setBlock(snowPos, snowState.setValue(SnowLayerBlock.LAYERS, layers + 1), Block.UPDATE_CLIENTS);
+                    }
+                } else if (snowState.isAir()) {
+                    final var newSnowState = Blocks.SNOW.defaultBlockState();
+                    if (newSnowState.canSurvive(level, snowPos)) {
+                        level.setBlock(snowPos, newSnowState, Block.UPDATE_CLIENTS);
+                    }
                 }
             }
         });
-    }
-
-    private ShogiContext targetContext(Level level, BlockPos targetPos) {
-        return targetContext(level, targetPos, level.getBlockState(targetPos));
     }
 
     private ShogiContext targetContext(Level level, BlockPos targetPos, BlockState targetState) {
@@ -447,29 +419,32 @@ public class SprinklerBlockEntity extends BlockEntity {
     }
 
     private void clientTick(Level level) {
-        if (isActive(ticksPassed) && (ticksPassed + 1) % PARTICLE_INTERVAL == 0) {
+        if (isActive(ticksPassed) && (ticksPassed + 1) % 2 == 0) {
             final RandomSource random = level.getRandom();
             final SprinkleMode sprinkleMode = getSprinkleMode(level);
             final SimpleParticleType fallingParticle = getFallingParticle(sprinkleMode);
             final SimpleParticleType landingParticle = getLandingParticle(sprinkleMode);
-            final double rotation = Math.toRadians(getActiveGameTime(ticksPassed) * ROTATION_SPEED);
+            final double rotation = Math.toRadians(getActiveGameTime(ticksPassed) * 20d);
             final double directionX = Math.cos(rotation);
             final double directionZ = Math.sin(rotation);
-            final double offsetX = directionX * (PIPE_END_OFFSET + NOZZLE_CLEARANCE);
-            final double offsetZ = directionZ * (PIPE_END_OFFSET + NOZZLE_CLEARANCE);
+            final double offsetX = directionX * (5.5 / 16d + 2d / 16d);
+            final double offsetZ = directionZ * (5.5 / 16d + 2d / 16d);
             final double centerX = worldPosition.getX() + 0.5;
-            final double y = worldPosition.getY() + PIPE_HEIGHT;
+            final double y = worldPosition.getY() + 12d / 16d;
             final double centerZ = worldPosition.getZ() + 0.5;
+            final var particleSpeed = 0.08d;
+            final var particleDistance = 2d;
             for (int direction = -1; direction <= 1; direction += 2) {
-                final double motionX = directionX * PARTICLE_SPEED * direction;
-                final double motionZ = directionZ * PARTICLE_SPEED * direction;
+                final double motionX = directionX * particleSpeed * direction;
+                final double motionZ = directionZ * particleSpeed * direction;
                 final double startX = centerX + offsetX * direction;
                 final double startZ = centerZ + offsetZ * direction;
-                final double endX = centerX + directionX * STREAM_DISTANCE * direction;
-                final double endY = worldPosition.getY() + STREAM_END_HEIGHT;
-                final double endZ = centerZ + directionZ * STREAM_DISTANCE * direction;
-                for (int i = 0; i < STREAM_PARTICLES; i++) {
-                    final double progress = Math.min(1d, (i + random.nextDouble() * 0.2) / (STREAM_PARTICLES - 1));
+                final double endX = centerX + directionX * particleDistance * direction;
+                final double endY = worldPosition.getY() + 1.5d / 16d;
+                final double endZ = centerZ + directionZ * particleDistance * direction;
+                final var particleCount = 7;
+                for (int i = 0; i < particleCount; i++) {
+                    final double progress = Math.min(1d, (i + random.nextDouble() * 0.2) / (particleCount - 1));
                     final double particleX = startX + (endX - startX) * progress + (random.nextDouble() - 0.5) * 0.035;
                     final double particleY = y + (endY - y) * progress * progress + (random.nextDouble() - 0.5) * 0.025;
                     final double particleZ = startZ + (endZ - startZ) * progress + (random.nextDouble() - 0.5) * 0.035;
@@ -480,7 +455,7 @@ public class SprinklerBlockEntity extends BlockEntity {
                             motionX,
                             -0.02 - progress * 0.04,
                             motionZ);
-                    if (i == STREAM_PARTICLES - 1 && random.nextBoolean()) {
+                    if (i == particleCount - 1 && random.nextBoolean()) {
                         level.addParticle(landingParticle,
                                 particleX,
                                 particleY,

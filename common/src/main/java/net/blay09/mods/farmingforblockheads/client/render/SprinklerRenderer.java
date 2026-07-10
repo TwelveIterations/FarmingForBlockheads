@@ -49,19 +49,14 @@ public class SprinklerRenderer implements BlockEntityRenderer<SprinklerBlockEnti
     @Override
     public void extractRenderState(SprinklerBlockEntity blockEntity, SprinklerRenderState renderState, float delta, Vec3 vec, ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderState.extractBase(blockEntity, renderState, crumblingOverlay);
-        final var level = blockEntity.getLevel();
-        if (level != null) {
-            final int ticksPassed = blockEntity.getTicksPassed();
-            final float frameDelta = SprinklerBlockEntity.isActive(ticksPassed) ? delta : 0f;
-            renderState.rotation = (SprinklerBlockEntity.getActiveGameTime(ticksPassed) + frameDelta) * ROTATION_SPEED;
-        } else {
-            renderState.rotation = 0f;
-        }
+        final int ticksPassed = blockEntity.getTicksPassed();
+        final float frameDelta = SprinklerBlockEntity.isActive(ticksPassed) ? delta : 0f;
+        renderState.rotation = (SprinklerBlockEntity.getActiveGameTime(ticksPassed) + frameDelta) * ROTATION_SPEED;
 
         renderState.rodParts.clear();
         ModRenderers.sprinklerRodModel.asBlockStateModel()
                 .collectParts(RandomSource.create(blockEntity.getBlockPos().asLong()), renderState.rodParts);
-        itemModelResolver.updateForTopItem(renderState.head, blockEntity.getHead(), ItemDisplayContext.FIXED, level, null, (int) renderState.blockPos.asLong());
+        itemModelResolver.updateForTopItem(renderState.head, blockEntity.getHead(), ItemDisplayContext.FIXED, blockEntity.getLevel(), null, (int) renderState.blockPos.asLong());
     }
 
     @Override
