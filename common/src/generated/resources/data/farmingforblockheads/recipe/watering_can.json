@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "B": "minecraft:bucket",
+    "B": "minecraft:water_bucket",
     "I": "minecraft:iron_ingot"
   },
   "pattern": [
