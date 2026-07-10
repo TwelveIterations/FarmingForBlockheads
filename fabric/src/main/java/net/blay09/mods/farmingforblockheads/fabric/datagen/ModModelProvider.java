@@ -2,6 +2,7 @@ package net.blay09.mods.farmingforblockheads.fabric.datagen;
 
 import net.blay09.mods.farmingforblockheads.block.MarketBlock;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
+import net.blay09.mods.farmingforblockheads.block.SprinklerBlock;
 import net.blay09.mods.farmingforblockheads.item.ModItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
@@ -34,8 +35,9 @@ public class ModModelProvider extends FabricModelProvider {
     @Override
     public void generateBlockStateModels(BlockModelGenerators generators) {
         generators.createNonTemplateModelBlock(ModBlocks.feedingTrough.asBlock());
+        createSprinkler(generators);
+        generators.registerSimpleItemModel(ModBlocks.sprinkler.asBlock(), ModelLocationUtils.getModelLocation(ModBlocks.sprinkler.asItem()));
         generators.createNonTemplateHorizontalBlock(ModBlocks.shippingBin.asBlock());
-        generators.registerSimpleItemModel(ModBlocks.shippingBin.asBlock(), ModelLocationUtils.getModelLocation(ModBlocks.shippingBin.asBlock()));
 
         createDoubleBlockMarket(generators, ModBlocks.market.asBlock(), ModBlocks.market.asBlock());
         generators.createNonTemplateHorizontalBlock(ModBlocks.chickenNest.asBlock());
@@ -67,6 +69,13 @@ public class ModModelProvider extends FabricModelProvider {
                 generators.modelOutput));
         generators.blockStateOutput.accept(MultiVariantGenerator.dispatch(farmland)
                 .with(createEmptyOrFullDispatch(BlockStateProperties.MOISTURE, 7, moistVariant, variant)));
+    }
+
+    private void createSprinkler(BlockModelGenerators generators) {
+        final var block = ModBlocks.sprinkler.asBlock();
+        final var model = plainVariant(ModelLocationUtils.getModelLocation(block));
+        generators.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
+                .with(PropertyDispatch.initial(SprinklerBlock.LIT).generate(_ -> model)));
     }
 
     private void createDoubleBlockMarket(BlockModelGenerators generators, Block block, Block modelBlock) {

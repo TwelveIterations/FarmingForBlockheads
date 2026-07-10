@@ -33,6 +33,7 @@ public class ModItems {
                             output.accept(ModBlocks.shippingBin);
                             output.accept(ModBlocks.chickenNest);
                             output.accept(ModBlocks.feedingTrough);
+                            output.accept(ModBlocks.sprinkler);
                             output.accept(greenFertilizer);
                             output.accept(redFertilizer);
                             output.accept(yellowFertilizer);

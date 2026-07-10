@@ -5,6 +5,9 @@ import net.blay09.mods.farmingforblockheads.tag.ModItemTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.references.BlockItemIds;
+import net.minecraft.references.ItemIds;
+import net.minecraft.world.item.Items;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -27,5 +30,15 @@ public class ModItemTagProvider extends FabricTagsProvider.ItemTagsProvider {
                 ModBlocks.fertilizedFarmlandStable.asBlockItemId(),
                 ModBlocks.fertilizedFarmlandHealthy.asBlockItemId(),
                 ModBlocks.fertilizedFarmlandRich.asBlockItemId());
+
+        builder(ModItemTags.SPRINKLER_TOPS).add(
+                BlockItemIds.CARVED_PUMPKIN,
+                BlockItemIds.JACK_O_LANTERN,
+                BlockItemIds.PLAYER_HEAD,
+                BlockItemIds.CREEPER_HEAD,
+                BlockItemIds.DRAGON_HEAD,
+                BlockItemIds.PIGLIN_HEAD,
+                BlockItemIds.ZOMBIE_HEAD
+        );
     }
 }

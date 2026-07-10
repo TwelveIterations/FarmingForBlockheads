@@ -6,6 +6,8 @@ import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.references.BlockIds;
+import net.minecraft.references.BlockItemIds;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 
@@ -31,6 +33,9 @@ public class ModBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
         final var mineableAxeTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("mineable/axe"));
         builder(mineableAxeTag).add(ModBlocks.market.asResourceKey(), ModBlocks.chickenNest.asResourceKey(), ModBlocks.feedingTrough.asResourceKey(), ModBlocks.shippingBin.asResourceKey());
 
+        final var mineablePickaxeTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("mineable/pickaxe"));
+        builder(mineablePickaxeTag).add(ModBlocks.sprinkler.asResourceKey());
+
         final var mineableShovelTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("mineable/shovel"));
         builder(mineableShovelTag).add(ModBlocks.fertilizedFarmlandHealthyStable.asResourceKey(),
                 ModBlocks.fertilizedFarmlandRichStable.asResourceKey(),
@@ -46,6 +51,16 @@ public class ModBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
 
         builder(ModBlockTags.FERTILIZED_FARMLAND).add(ModBlocks.fertilizedFarmlandHealthyStable.asResourceKey(), ModBlocks.fertilizedFarmlandRichStable.asResourceKey(),
                 ModBlocks.fertilizedFarmlandStable.asResourceKey(), ModBlocks.fertilizedFarmlandHealthy.asResourceKey(), ModBlocks.fertilizedFarmlandRich.asResourceKey());
+
+        builder(ModBlockTags.LAVA_SPRINKLER_BASE).add(BlockItemIds.MAGMA_BLOCK);
+        builder(ModBlockTags.MELTS_INTO_AIR).add(BlockItemIds.SNOW, BlockItemIds.SNOW_BLOCK, BlockItemIds.POWDER_SNOW);
+        builder(ModBlockTags.MELTS_INTO_WATER)
+                .add(BlockItemIds.ICE)
+                .add(BlockIds.FROSTED_ICE);
+        builder(ModBlockTags.HONEY_SPRINKLER_BASE).add(BlockItemIds.HONEY_BLOCK);
+        builder(ModBlockTags.SLIME_SPRINKLER_BASE).add(BlockItemIds.SLIME_BLOCK);
+        builder(ModBlockTags.SNOW_SPRINKLER_BASE).add(BlockItemIds.SNOW_BLOCK, BlockItemIds.POWDER_SNOW);
+        builder(ModBlockTags.SULFUR_SPRINKLER_BASE).add(BlockItemIds.POTENT_SULFUR);
     }
 
 }
