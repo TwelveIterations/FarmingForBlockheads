@@ -52,6 +52,14 @@ public class HydratedFarmlandData extends SavedData {
         return false;
     }
 
+    public boolean reset(ServerLevel level, BlockPos pos) {
+        if (positions.remove(pos.asLong())) {
+            setDirty();
+            return true;
+        }
+        return false;
+    }
+
     public void dailyReset(ServerLevel level) {
         final var currentDay = level.getOverworldClockTime() / 24000L;
         if (lastDay != currentDay) {

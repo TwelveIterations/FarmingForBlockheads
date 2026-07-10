@@ -20,6 +20,7 @@ public class ModBlockLootTableProvider extends FabricBlockLootSubProvider {
         add(ModBlocks.market.asBlock(), createSinglePropConditionTable(ModBlocks.market.asBlock(), MarketBlock.HALF, DoubleBlockHalf.LOWER));
         dropSelf(ModBlocks.chickenNest.asBlock());
         dropSelf(ModBlocks.feedingTrough.asBlock());
+        dropSelf(ModBlocks.sprinkler.asBlock());
         dropSelf(ModBlocks.shippingBin.asBlock());
         dropOther(ModBlocks.fertilizedFarmlandHealthy.asBlock(), Blocks.DIRT);
         dropOther(ModBlocks.fertilizedFarmlandRich.asBlock(), Blocks.DIRT);

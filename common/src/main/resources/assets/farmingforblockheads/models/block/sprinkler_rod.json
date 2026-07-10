@@ -1,0 +1,52 @@
+{
+	"format_version": "1.21.11",
+	"parent": "block/block",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"1": "farmingforblockheads:block/sprinkler",
+		"particle": "minecraft:block/spruce_log"
+	},
+	"elements": [
+		{
+			"name": "rod",
+			"from": [7, 3, 7],
+			"to": [9, 16, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 2, 7]},
+			"faces": {
+				"north": {"uv": [6, 0, 8, 13], "texture": "#1"},
+				"east": {"uv": [6, 0, 8, 13], "texture": "#1"},
+				"south": {"uv": [6, 0, 8, 13], "texture": "#1"},
+				"west": {"uv": [6, 0, 8, 13], "texture": "#1"},
+				"up": {"uv": [6, 14, 8, 16], "texture": "#1"}
+			}
+		},
+		{
+			"name": "outlet",
+			"from": [6.5, 10, 6.5],
+			"to": [9.5, 14, 9.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 11, 7]},
+			"faces": {
+				"north": {"uv": [0, 12, 3, 16], "texture": "#1"},
+				"east": {"uv": [0, 12, 3, 16], "texture": "#1"},
+				"south": {"uv": [0, 12, 3, 16], "texture": "#1"},
+				"west": {"uv": [0, 12, 3, 16], "texture": "#1"},
+				"up": {"uv": [3, 12, 6, 15], "texture": "#1"},
+				"down": {"uv": [3, 12, 6, 15], "texture": "#1"}
+			}
+		},
+		{
+			"name": "pipe",
+			"from": [2.5, 11, 7],
+			"to": [13.5, 13, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, 11, 7]},
+			"faces": {
+				"north": {"uv": [8, 0, 10, 11], "rotation": 90, "texture": "#1"},
+				"east": {"uv": [8, 12, 10, 14], "texture": "#1"},
+				"south": {"uv": [8, 0, 10, 11], "rotation": 90, "texture": "#1"},
+				"west": {"uv": [8, 12, 10, 14], "texture": "#1"},
+				"up": {"uv": [8, 0, 10, 11], "rotation": 90, "texture": "#1"},
+				"down": {"uv": [8, 0, 10, 11], "rotation": 90, "texture": "#1"}
+			}
+		}
+	]
+}

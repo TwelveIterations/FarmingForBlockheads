@@ -6,6 +6,7 @@ import net.blay09.mods.farmingforblockheads.component.DescriptionComponent;
 import net.blay09.mods.farmingforblockheads.component.ModComponents;
 import net.blay09.mods.farmingforblockheads.item.FertilizerItem;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.block.SoundType;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class ModBlocks {
     public static DeferredBlock shippingBin;
     public static DeferredBlock chickenNest;
     public static DeferredBlock feedingTrough;
+    public static DeferredBlock sprinkler;
     public static DeferredBlock fertilizedFarmlandRich;
     public static DeferredBlock fertilizedFarmlandRichStable;
     public static DeferredBlock fertilizedFarmlandHealthy;
@@ -36,6 +38,9 @@ public class ModBlocks {
         feedingTrough = blocks.register("feeding_trough", FeedingTroughBlock::new, it -> it)
                 .withDefaultItem(it -> it.component(ModComponents.description.value(),
                         new DescriptionComponent(Component.translatable("tooltip.farmingforblockheads.feeding_trough"))))
+                .asDeferredBlock();
+        sprinkler = blocks.register("sprinkler", SprinklerBlock::new, it -> it.sound(SoundType.METAL).strength(2f).lightLevel(state -> state.getValue(SprinklerBlock.LIT) ? 15 : 0))
+                .withDefaultItem()
                 .asDeferredBlock();
         fertilizedFarmlandRich = blocks.register("fertilized_farmland_rich", FertilizedFarmlandBlock::new, it -> it)
                 .withDefaultItem(it -> it.component(ModComponents.description.value(),

@@ -1,6 +1,5 @@
 package net.blay09.mods.farmingforblockheads.fabric.datagen;
 
-import net.blay09.mods.balm.world.level.block.DeferredBlock;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
 import net.blay09.mods.farmingforblockheads.tag.ModBlockTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
@@ -9,6 +8,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -32,6 +32,9 @@ public class ModBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
         final var mineableAxeTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("mineable/axe"));
         valueLookupBuilder(mineableAxeTag).add(ModBlocks.market.asBlock(), ModBlocks.chickenNest.asBlock(), ModBlocks.feedingTrough.asBlock(), ModBlocks.shippingBin.asBlock());
 
+        final var mineablePickaxeTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("mineable/pickaxe"));
+        valueLookupBuilder(mineablePickaxeTag).add(ModBlocks.sprinkler.asBlock());
+
         final var mineableShovelTag = TagKey.create(Registries.BLOCK, Identifier.withDefaultNamespace("mineable/shovel"));
         valueLookupBuilder(mineableShovelTag).add(ModBlocks.fertilizedFarmlandHealthyStable.asBlock(),
                 ModBlocks.fertilizedFarmlandRichStable.asBlock(),
@@ -47,6 +50,15 @@ public class ModBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
 
         valueLookupBuilder(ModBlockTags.FERTILIZED_FARMLAND).add(ModBlocks.fertilizedFarmlandHealthyStable.asBlock(), ModBlocks.fertilizedFarmlandRichStable.asBlock(),
                 ModBlocks.fertilizedFarmlandStable.asBlock(), ModBlocks.fertilizedFarmlandHealthy.asBlock(), ModBlocks.fertilizedFarmlandRich.asBlock());
+
+        valueLookupBuilder(ModBlockTags.LAVA_SPRINKLER_BASE).add(Blocks.MAGMA_BLOCK);
+        valueLookupBuilder(ModBlockTags.MELTS_INTO_AIR).add(Blocks.SNOW, Blocks.SNOW_BLOCK, Blocks.POWDER_SNOW);
+        valueLookupBuilder(ModBlockTags.MELTS_INTO_WATER)
+                .add(Blocks.ICE)
+                .add(Blocks.FROSTED_ICE);
+        valueLookupBuilder(ModBlockTags.HONEY_SPRINKLER_BASE).add(Blocks.HONEY_BLOCK);
+        valueLookupBuilder(ModBlockTags.SLIME_SPRINKLER_BASE).add(Blocks.SLIME_BLOCK);
+        valueLookupBuilder(ModBlockTags.SNOW_SPRINKLER_BASE).add(Blocks.SNOW_BLOCK, Blocks.POWDER_SNOW);
     }
 
 }
