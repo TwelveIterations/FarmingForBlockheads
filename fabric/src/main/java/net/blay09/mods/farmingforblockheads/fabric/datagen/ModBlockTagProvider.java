@@ -61,7 +61,6 @@ public class ModBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
         builder(ModBlockTags.SLIME_SPRINKLER_BASE).add(BlockItemIds.SLIME_BLOCK);
         builder(ModBlockTags.SNOW_SPRINKLER_BASE).add(BlockItemIds.SNOW_BLOCK, BlockItemIds.POWDER_SNOW);
         builder(ModBlockTags.SULFUR_SPRINKLER_BASE).add(BlockItemIds.POTENT_SULFUR);
-        builder(ModBlockTags.SCULK_SPRINKLER_BASE).add(BlockItemIds.SCULK);
     }
 
 }

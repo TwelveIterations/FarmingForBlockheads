@@ -45,10 +45,6 @@ public final class FarmingForBlockheadsRules {
             SCOPE.booleanValue(id("sprinkler/snow/can_create_snow"), _ -> true);
     public static final ShogiValue<ShogiContext, Boolean> SNOW_SPRINKLER_CAN_CREATE_SNOW_AT =
             SCOPE.booleanValue(id("sprinkler/snow/can_create_snow_at"), _ -> true);
-    public static final ShogiValue<SprinklerBlockEntity, Boolean> SCULK_SPRINKLER_CAN_EMIT_VIBRATIONS =
-            SCOPE.booleanValue(id("sprinkler/sculk/can_emit_vibrations"), _ -> true);
-    public static final ShogiValue<ShogiContext, Boolean> SCULK_SPRINKLER_CAN_EMIT_VIBRATIONS_AT =
-            SCOPE.booleanValue(id("sprinkler/sculk/can_emit_vibrations_at"), _ -> true);
 
     private FarmingForBlockheadsRules() {
     }

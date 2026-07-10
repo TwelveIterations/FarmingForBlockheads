@@ -54,7 +54,6 @@ public class ModPoiTypes {
                 || stateBelow.is(ModBlockTags.HONEY_SPRINKLER_BASE)
                 || stateBelow.is(ModBlockTags.SLIME_SPRINKLER_BASE)
                 || stateBelow.is(ModBlockTags.SNOW_SPRINKLER_BASE)
-                || stateBelow.is(ModBlockTags.SULFUR_SPRINKLER_BASE)
-                || stateBelow.is(ModBlockTags.SCULK_SPRINKLER_BASE);
+                || stateBelow.is(ModBlockTags.SULFUR_SPRINKLER_BASE);
     }
 }

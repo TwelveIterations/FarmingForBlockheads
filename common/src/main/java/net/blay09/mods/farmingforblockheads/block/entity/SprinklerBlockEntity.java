@@ -35,7 +35,6 @@ import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
@@ -76,8 +75,7 @@ public class SprinklerBlockEntity extends BlockEntity {
         HONEY,
         SLIME,
         SNOW,
-        SULFUR,
-        SCULK
+        SULFUR
     }
 
     public SprinklerBlockEntity(BlockPos pos, BlockState state) {
@@ -193,8 +191,6 @@ public class SprinklerBlockEntity extends BlockEntity {
             case SNOW -> FarmingForBlockheadsRules.SNOW_SPRINKLER_ENTITY_EFFECTS.get(this);
             case SULFUR -> FarmingForBlockheadsRules.SULFUR_SPRINKLER_ENTITY_EFFECTS.get(this);
             case WATER -> extinguishEntities();
-            case SCULK -> {
-            }
         }
     }
 
@@ -206,7 +202,6 @@ public class SprinklerBlockEntity extends BlockEntity {
                 extinguishFires(level);
                 freezeWaterAndCreateSnow(level);
             }
-            case SCULK -> emitVibrations(level);
             case HONEY, SLIME, SULFUR -> {
             }
         }
@@ -224,8 +219,6 @@ public class SprinklerBlockEntity extends BlockEntity {
             return SprinkleMode.SNOW;
         } else if (stateBelow.is(ModBlockTags.SULFUR_SPRINKLER_BASE)) {
             return SprinkleMode.SULFUR;
-        } else if (stateBelow.is(ModBlockTags.SCULK_SPRINKLER_BASE)) {
-            return SprinkleMode.SCULK;
         }
 
         return SprinkleMode.WATER;
@@ -353,20 +346,6 @@ public class SprinklerBlockEntity extends BlockEntity {
             entity.addEffect(new MobEffectInstance(MobEffects.NAUSEA, SULFUR_NAUSEA_TICKS));
         }
         return Either.left(true);
-    }
-
-    private void emitVibrations(Level level) {
-        if (!FarmingForBlockheadsRules.SCULK_SPRINKLER_CAN_EMIT_VIBRATIONS.getOrDefault(this)) {
-            return;
-        }
-
-        final RandomSource random = level.getRandom();
-        BlockPos.betweenClosed(worldPosition.offset(-RANGE, -1, -RANGE), worldPosition.offset(RANGE, 0, RANGE)).forEach(targetPos -> {
-            if (random.nextFloat() < SPECIAL_BLOCK_EFFECT_CHANCE
-                    && FarmingForBlockheadsRules.SCULK_SPRINKLER_CAN_EMIT_VIBRATIONS_AT.getOrDefault(targetContext(level, targetPos))) {
-                level.gameEvent(GameEvent.BLOCK_ACTIVATE, targetPos, GameEvent.Context.of(getBlockState()));
-            }
-        });
     }
 
     private <T extends Entity> List<T> getEntitiesInRange(Class<T> entityClass) {
@@ -524,7 +503,6 @@ public class SprinklerBlockEntity extends BlockEntity {
             case SLIME -> ParticleTypes.ITEM_SLIME;
             case SNOW -> ParticleTypes.SNOWFLAKE;
             case SULFUR -> ParticleTypes.NOXIOUS_GAS;
-            case SCULK -> ParticleTypes.SCULK_CHARGE_POP;
         };
     }
 
@@ -536,7 +514,6 @@ public class SprinklerBlockEntity extends BlockEntity {
             case SLIME -> ParticleTypes.ITEM_SLIME;
             case SNOW -> ParticleTypes.SNOWFLAKE;
             case SULFUR -> ParticleTypes.NOXIOUS_GAS_CLOUD;
-            case SCULK -> ParticleTypes.SCULK_SOUL;
         };
     }
 }
