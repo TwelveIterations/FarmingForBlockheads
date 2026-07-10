@@ -103,8 +103,8 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .save(exporter);
 
                 shaped(RecipeCategory.DECORATIONS, ModBlocks.sprinkler)
-                        .pattern("IWI")
-                        .pattern("CBC")
+                        .pattern("IBI")
+                        .pattern(" W ")
                         .pattern("CRC")
                         .define('I', Items.IRON_INGOT)
                         .define('W', ItemTags.LOGS)

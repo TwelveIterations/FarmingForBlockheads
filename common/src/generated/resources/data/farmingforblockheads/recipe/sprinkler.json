@@ -8,8 +8,8 @@
     "W": "#minecraft:logs"
   },
   "pattern": [
-    "IWI",
-    "CBC",
+    "IBI",
+    " W ",
     "CRC"
   ],
   "result": {
