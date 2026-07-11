@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "N": "minecraft:nautilus_shell",
+    "P": "#minecraft:planks",
+    "R": "minecraft:redstone",
+    "S": "minecraft:string"
+  },
+  "pattern": [
+    "PSP",
+    "PNP",
+    "PRP"
+  ],
+  "result": {
+    "id": "farmingforblockheads:fishing_barrel"
+  }
+}

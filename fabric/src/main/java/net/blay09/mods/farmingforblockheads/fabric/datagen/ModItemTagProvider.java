@@ -5,9 +5,11 @@ import net.blay09.mods.farmingforblockheads.tag.ModItemTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.references.BlockItemIds;
 import net.minecraft.references.ItemIds;
-import net.minecraft.world.item.Items;
+import net.minecraft.resources.Identifier;
+import net.minecraft.tags.TagKey;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -18,6 +20,9 @@ public class ModItemTagProvider extends FabricTagsProvider.ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider lookup) {
+        builder(ModItemTags.FISHING_RODS)
+                .add(ItemIds.FISHING_ROD)
+                .addOptionalTag(TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("c", "tools/fishing_rods")));
         builder(ModItemTags.RICH_FARMLAND).add(ModBlocks.fertilizedFarmlandRichStable.asBlockItemId(), ModBlocks.fertilizedFarmlandRich.asBlockItemId());
         builder(ModItemTags.HEALTHY_FARMLAND).add(ModBlocks.fertilizedFarmlandHealthyStable.asBlockItemId(),
                 ModBlocks.fertilizedFarmlandHealthy.asBlockItemId());
