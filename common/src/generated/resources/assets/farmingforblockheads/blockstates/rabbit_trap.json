@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=east,triggered=false": {
+      "model": "farmingforblockheads:block/rabbit_trap",
+      "y": 90
+    },
+    "facing=east,triggered=true": {
+      "model": "farmingforblockheads:block/rabbit_trap",
+      "y": 90
+    },
+    "facing=north,triggered=false": {
+      "model": "farmingforblockheads:block/rabbit_trap"
+    },
+    "facing=north,triggered=true": {
+      "model": "farmingforblockheads:block/rabbit_trap"
+    },
+    "facing=south,triggered=false": {
+      "model": "farmingforblockheads:block/rabbit_trap",
+      "y": 180
+    },
+    "facing=south,triggered=true": {
+      "model": "farmingforblockheads:block/rabbit_trap",
+      "y": 180
+    },
+    "facing=west,triggered=false": {
+      "model": "farmingforblockheads:block/rabbit_trap",
+      "y": 270
+    },
+    "facing=west,triggered=true": {
+      "model": "farmingforblockheads:block/rabbit_trap",
+      "y": 270
+    }
+  }
+}

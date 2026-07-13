@@ -2,6 +2,7 @@ package net.blay09.mods.farmingforblockheads.fabric.datagen;
 
 import net.blay09.mods.farmingforblockheads.block.MarketBlock;
 import net.blay09.mods.farmingforblockheads.block.ModBlocks;
+import net.blay09.mods.farmingforblockheads.block.RabbitTrapBlock;
 import net.blay09.mods.farmingforblockheads.block.SprinklerBlock;
 import net.blay09.mods.farmingforblockheads.item.ModItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
@@ -44,6 +45,7 @@ public class ModModelProvider extends FabricModelProvider {
 
         createDoubleBlockMarket(generators, ModBlocks.market.asBlock(), ModBlocks.market.asBlock());
         generators.createNonTemplateHorizontalBlock(ModBlocks.chickenNest.asBlock());
+        createRabbitTrap(generators);
 
         createFertilizedFarmland(generators, ModBlocks.fertilizedFarmlandHealthy.asBlock());
         createFertilizedFarmland(generators, ModBlocks.fertilizedFarmlandRich.asBlock());
@@ -79,6 +81,15 @@ public class ModModelProvider extends FabricModelProvider {
         final var model = plainVariant(ModelLocationUtils.getModelLocation(block));
         generators.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
                 .with(PropertyDispatch.initial(SprinklerBlock.LIT).generate(_ -> model)));
+    }
+
+    private void createRabbitTrap(BlockModelGenerators generators) {
+        final var block = ModBlocks.rabbitTrap.asBlock();
+        final var model = plainVariant(ModelLocationUtils.getModelLocation(block));
+        generators.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
+                .with(PropertyDispatch.initial(RabbitTrapBlock.TRIGGERED).generate(_ -> model))
+                .with(ROTATION_HORIZONTAL_FACING));
+        generators.registerSimpleItemModel(block, ModelLocationUtils.getModelLocation(block));
     }
 
     private void createDoubleBlockMarket(BlockModelGenerators generators, Block block, Block modelBlock) {

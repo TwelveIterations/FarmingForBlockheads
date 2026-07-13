@@ -1,0 +1,46 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "conditions": [
+        {
+          "chance": 5.0E-4,
+          "condition": "minecraft:random_chance"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "italic": false,
+                "translate": "item.farmingforblockheads.fox_note"
+              }
+            },
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "color": "gray",
+                  "italic": false,
+                  "translate": "item.farmingforblockheads.fox_note.lore.1"
+                },
+                {
+                  "color": "dark_gray",
+                  "italic": true,
+                  "translate": "item.farmingforblockheads.fox_note.lore.2"
+                }
+              ],
+              "mode": "append"
+            }
+          ],
+          "name": "minecraft:paper"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "farmingforblockheads:rabbit_trap"
+}
