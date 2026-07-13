@@ -1,19 +1,15 @@
 package net.blay09.mods.farmingforblockheads.block.entity;
 
 import net.blay09.mods.balm.Balm;
-import net.blay09.mods.balm.world.BalmContainerProvider;
-import net.blay09.mods.balm.world.BalmMenuProvider;
-import net.blay09.mods.balm.world.ContainerUtils;
-import net.blay09.mods.balm.world.DefaultContainer;
-import net.blay09.mods.balm.world.SubContainer;
+import net.blay09.mods.balm.world.*;
 import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.blay09.mods.farmingforblockheads.block.FishingBarrelBlock;
 import net.blay09.mods.farmingforblockheads.menu.FishingBarrelMenu;
 import net.blay09.mods.farmingforblockheads.recipe.FarmingForBlockheadsRules;
 import net.blay09.mods.farmingforblockheads.tag.ModItemTags;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
@@ -83,7 +79,7 @@ public class FishingBarrelBlockEntity extends BlockEntity implements BalmContain
 
         @Override
         public void setChanged() {
-            isDirty = true;
+            needsClientSync = true;
             FishingBarrelBlockEntity.this.setChanged();
         }
     };
@@ -110,7 +106,7 @@ public class FishingBarrelBlockEntity extends BlockEntity implements BalmContain
     private final List<ItemStack> outputBuffer = new ArrayList<>();
     private final List<ItemStack> pendingCatchItems = new ArrayList<>();
 
-    private boolean isDirty;
+    private boolean needsClientSync;
     private int remainingFishingTicks;
     private int fishingIntervalTicks;
     private int catchAnimationTicks;
@@ -125,9 +121,9 @@ public class FishingBarrelBlockEntity extends BlockEntity implements BalmContain
     public static void serverTick(Level level, BlockPos pos, BlockState state, FishingBarrelBlockEntity blockEntity) {
         if (level instanceof ServerLevel serverLevel) {
             blockEntity.tick(serverLevel);
-            if (blockEntity.isDirty) {
+            if (blockEntity.needsClientSync) {
                 BalmBlockEntityUtils.sync(blockEntity);
-                blockEntity.isDirty = false;
+                blockEntity.needsClientSync = false;
             }
         }
     }
@@ -275,75 +271,75 @@ public class FishingBarrelBlockEntity extends BlockEntity implements BalmContain
     }
 
     private void tick(ServerLevel level) {
-        boolean changed = moveBufferedOutputsToStorageSlots();
-        if (catchAnimationTicks > 0) {
-            spawnCatchParticles(level);
-            catchAnimationTicks--;
-            if (catchAnimationTicks <= 0) {
-                changed |= movePendingCatchToStorageSlots();
-            }
+        if (moveBufferedOutputsToStorageSlots()) {
+            setChanged();
+            needsClientSync = true;
         }
+        continueCatch(level);
 
         final var rod = container.getItem(ROD_SLOT);
         if (rod.isEmpty() || !isFishingRod(rod)) {
-            if (remainingFishingTicks != 0) {
-                remainingFishingTicks = 0;
-                changed = true;
-            }
-            if (catchAnimationTicks != 0 || !pendingCatchItems.isEmpty()) {
-                catchAnimationTicks = 0;
-                changed |= movePendingCatchToStorageSlots();
-            }
-            if (changed) {
-                setChanged();
-                isDirty = true;
-            }
+            stopFishing();
             return;
         }
 
         if (catchAnimationTicks > 0 || hasBufferedOutputs() || hasPendingCatchItems()) {
-            if (changed) {
-                setChanged();
-                isDirty = true;
-            }
             return;
         }
 
         if (!canFishAtCurrentPosition(level)) {
-            if (remainingFishingTicks != 0) {
-                remainingFishingTicks = 0;
-                changed = true;
-            }
-            if (catchAnimationTicks != 0 || !pendingCatchItems.isEmpty()) {
-                catchAnimationTicks = 0;
-                changed |= movePendingCatchToStorageSlots();
-            }
-            if (changed) {
-                setChanged();
-                isDirty = true;
-            }
+            stopFishing();
             return;
         }
 
         if (remainingFishingTicks <= 0) {
             scheduleNextFishing(rod);
-            changed = true;
+            setChanged();
+        } else {
+            remainingFishingTicks--;
+            setChanged();
         }
 
-        remainingFishingTicks--;
-        changed = true;
         if (remainingFishingTicks <= 0 && fish(level, rod)) {
             damageRod(level, rod);
             catchAnimationTicks = CATCH_ANIMATION_TICKS;
             catchAnimationId++;
             scheduleNextFishing(rod);
-            changed = true;
+            setChanged();
+            needsClientSync = true;
         }
 
-        changed |= moveBufferedOutputsToStorageSlots();
-        if (changed) {
+        if (moveBufferedOutputsToStorageSlots()) {
             setChanged();
-            isDirty = true;
+            needsClientSync = true;
+        }
+    }
+
+    private void continueCatch(ServerLevel level) {
+        if (catchAnimationTicks <= 0) {
+            return;
+        }
+
+        spawnCatchParticles(level);
+        catchAnimationTicks--;
+        if (catchAnimationTicks <= 0 && movePendingCatchToStorageSlots()) {
+            setChanged();
+            needsClientSync = true;
+        }
+    }
+
+    private void stopFishing() {
+        if (remainingFishingTicks != 0) {
+            remainingFishingTicks = 0;
+            setChanged();
+        }
+
+        if (catchAnimationTicks != 0 || !pendingCatchItems.isEmpty()) {
+            needsClientSync = true;
+            catchAnimationTicks = 0;
+            if (movePendingCatchToStorageSlots()) {
+                setChanged();
+            }
         }
     }
 
