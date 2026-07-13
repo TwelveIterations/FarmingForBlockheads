@@ -1,0 +1,74 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"2": "farmingforblockheads:block/fishing_barrel_front",
+		"3": "farmingforblockheads:block/fishing_barrel_back",
+		"particle": "farmingforblockheads:block/fishing_barrel_side",
+		"side": "farmingforblockheads:block/fishing_barrel_side",
+		"bottom": "farmingforblockheads:block/fishing_barrel_bottom"
+	},
+	"elements": [
+		{
+			"from": [2, 0, 0],
+			"to": [14, 16, 2],
+			"faces": {
+				"north": {"uv": [2, 0, 14, 16], "texture": "#3"},
+				"east": {"uv": [0, 0, 2, 16], "texture": "#side"},
+				"south": {"uv": [2, 0, 14, 16], "texture": "#3"},
+				"west": {"uv": [14, 0, 16, 16], "texture": "#side"},
+				"up": {"uv": [2, 0, 14, 2], "texture": "#3"},
+				"down": {"uv": [2, 14, 14, 16], "texture": "#bottom"}
+			}
+		},
+		{
+			"from": [2, 0, 14],
+			"to": [14, 16, 16],
+			"faces": {
+				"north": {"uv": [2, 0, 14, 16], "texture": "#side"},
+				"east": {"uv": [14, 0, 16, 16], "texture": "#side"},
+				"south": {"uv": [2, 0, 14, 16], "texture": "#2"},
+				"west": {"uv": [0, 0, 2, 16], "texture": "#side"},
+				"up": {"uv": [2, 14, 14, 16], "texture": "#bottom"},
+				"down": {"uv": [2, 0, 14, 2], "texture": "#bottom"}
+			}
+		},
+		{
+			"from": [0, 0, 2],
+			"to": [2, 16, 14],
+			"faces": {
+				"north": {"uv": [0, 0, 2, 16], "texture": "#side"},
+				"east": {"uv": [2, 0, 14, 16], "texture": "#side"},
+				"south": {"uv": [14, 0, 16, 16], "texture": "#side"},
+				"west": {"uv": [2, 0, 14, 16], "texture": "#side"},
+				"up": {"uv": [0, 2, 2, 14], "texture": "#bottom"},
+				"down": {"uv": [14, 2, 16, 14], "texture": "#bottom"}
+			}
+		},
+		{
+			"from": [14, 0, 2],
+			"to": [16, 16, 14],
+			"faces": {
+				"north": {"uv": [14, 0, 16, 16], "texture": "#side"},
+				"east": {"uv": [2, 0, 14, 16], "texture": "#side"},
+				"south": {"uv": [0, 0, 2, 16], "texture": "#side"},
+				"west": {"uv": [2, 0, 14, 16], "texture": "#side"},
+				"up": {"uv": [14, 2, 16, 14], "texture": "#bottom"},
+				"down": {"uv": [0, 2, 2, 14], "texture": "#bottom"}
+			}
+		},
+		{
+			"from": [2, 0, 2],
+			"to": [14, 2, 14],
+			"faces": {
+				"north": {"uv": [2, 14, 14, 16], "texture": "#side"},
+				"east": {"uv": [2, 14, 14, 16], "texture": "#side"},
+				"south": {"uv": [2, 14, 14, 16], "texture": "#side"},
+				"west": {"uv": [2, 14, 14, 16], "texture": "#side"},
+				"up": {"uv": [2, 2, 14, 14], "texture": "#bottom"},
+				"down": {"uv": [2, 2, 14, 14], "texture": "#bottom"}
+			}
+		}
+	]
+}

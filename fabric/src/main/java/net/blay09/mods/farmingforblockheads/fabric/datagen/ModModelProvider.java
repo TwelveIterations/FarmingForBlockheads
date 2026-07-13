@@ -38,6 +38,9 @@ public class ModModelProvider extends FabricModelProvider {
         createSprinkler(generators);
         generators.registerSimpleItemModel(ModBlocks.sprinkler.asBlock(), ModelLocationUtils.getModelLocation(ModBlocks.sprinkler.asItem()));
         generators.createNonTemplateHorizontalBlock(ModBlocks.shippingBin.asBlock());
+        generators.registerSimpleItemModel(ModBlocks.shippingBin.asBlock(), ModelLocationUtils.getModelLocation(ModBlocks.shippingBin.asBlock()));
+        generators.createNonTemplateHorizontalBlock(ModBlocks.fishingBarrel.asBlock());
+        generators.registerSimpleItemModel(ModBlocks.fishingBarrel.asBlock(), ModelLocationUtils.getModelLocation(ModBlocks.fishingBarrel.asBlock()));
 
         createDoubleBlockMarket(generators, ModBlocks.market.asBlock(), ModBlocks.market.asBlock());
         generators.createNonTemplateHorizontalBlock(ModBlocks.chickenNest.asBlock());

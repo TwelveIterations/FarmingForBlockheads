@@ -124,6 +124,17 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .define('G', Items.WOOL.green())
                         .unlockedBy("has_wool", has(ItemTags.WOOL))
                         .save(exporter);
+
+                shaped(RecipeCategory.DECORATIONS, ModBlocks.fishingBarrel)
+                        .pattern("PSP")
+                        .pattern("PNP")
+                        .pattern("PRP")
+                        .define('P', ItemTags.PLANKS)
+                        .define('S', Items.STRING)
+                        .define('N', Items.NAUTILUS_SHELL)
+                        .define('R', Items.REDSTONE)
+                        .unlockedBy("has_nautilus_shell", has(Items.NAUTILUS_SHELL))
+                        .save(exporter);
             }
         };
     }

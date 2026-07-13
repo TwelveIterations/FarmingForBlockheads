@@ -27,6 +27,7 @@ public class ModRenderers {
         renderers.register(ModBlockEntities.feedingTrough, FeedingTroughRenderer::new);
         renderers.register(ModBlockEntities.shippingBin, ShippingBinRenderer::new);
         renderers.register(ModBlockEntities.sprinkler, SprinklerRenderer::new);
+        renderers.register(ModBlockEntities.fishingBarrel, FishingBarrelRenderer::new);
     }
 
     public static void initialize(BalmModelLayerRegistrar modelLayers) {

@@ -14,6 +14,7 @@ import net.minecraft.world.inventory.MenuType;
 public class ModMenus {
     public static Holder<MenuType<MarketMenu>> market;
     public static Holder<MenuType<ShippingBinMenu>> shippingBin;
+    public static Holder<MenuType<FishingBarrelMenu>> fishingBarrel;
 
     public static void initialize(BalmMenuTypeRegistrar menus) {
         market = menus.register("market", new BalmMenuFactory<MarketMenu, BlockPos>() {
@@ -31,6 +32,17 @@ public class ModMenus {
             @Override
             public ShippingBinMenu create(int windowId, Inventory inventory, Unit data) {
                 return new ShippingBinMenu(windowId, inventory);
+            }
+
+            @Override
+            public StreamCodec<RegistryFriendlyByteBuf, Unit> getStreamCodec() {
+                return Unit.STREAM_CODEC.cast();
+            }
+        }).asHolder();
+        fishingBarrel = menus.register("fishing_barrel", new BalmMenuFactory<FishingBarrelMenu, Unit>() {
+            @Override
+            public FishingBarrelMenu create(int windowId, Inventory inventory, Unit data) {
+                return new FishingBarrelMenu(windowId, inventory);
             }
 
             @Override
