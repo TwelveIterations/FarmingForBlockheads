@@ -62,8 +62,8 @@ public class FishingBarrelBlockEntity extends BlockEntity implements BalmContain
     public static final int ROD_SLOT = 0;
     public static final int STORAGE_SLOTS = 8;
     public static final int CONTAINER_SIZE = 1 + STORAGE_SLOTS;
-    public static final int DATA_TICKS_UNTIL_FISHING = 0;
-    public static final int DATA_NEXT_FISHING_INTERVAL = 1;
+    public static final int DATA_REMAINING_FISHING_TICKS = 0;
+    public static final int DATA_FISHING_INTERVAL_TICKS = 1;
     public static final int DATA_COUNT = 2;
     public static final int CATCH_ANIMATION_TICKS = 36;
     public static final int CATCH_BITE_TICKS = 10;
@@ -92,8 +92,8 @@ public class FishingBarrelBlockEntity extends BlockEntity implements BalmContain
         @Override
         public int get(int index) {
             return switch (index) {
-                case DATA_TICKS_UNTIL_FISHING -> ticksUntilFishing;
-                case DATA_NEXT_FISHING_INTERVAL -> nextFishingInterval;
+                case DATA_REMAINING_FISHING_TICKS -> remainingFishingTicks;
+                case DATA_FISHING_INTERVAL_TICKS -> fishingIntervalTicks;
                 default -> 0;
             };
         }
@@ -111,8 +111,8 @@ public class FishingBarrelBlockEntity extends BlockEntity implements BalmContain
     private final List<ItemStack> pendingCatchItems = new ArrayList<>();
 
     private boolean isDirty;
-    private int ticksUntilFishing;
-    private int nextFishingInterval;
+    private int remainingFishingTicks;
+    private int fishingIntervalTicks;
     private int catchAnimationTicks;
     private int catchAnimationId;
     private int clientCatchAnimationTicks;
@@ -142,8 +142,8 @@ public class FishingBarrelBlockEntity extends BlockEntity implements BalmContain
         outputBuffer.clear();
         pendingCatchItems.clear();
         input.child("ItemHandler").ifPresent(it -> ContainerHelper.loadAllItems(it, container.getItems()));
-        ticksUntilFishing = input.getIntOr("TicksUntilFishing", 0);
-        nextFishingInterval = input.getIntOr("NextFishingInterval", 0);
+        remainingFishingTicks = input.getIntOr("RemainingFishingTicks", input.getIntOr("TicksUntilFishing", 0));
+        fishingIntervalTicks = input.getIntOr("FishingIntervalTicks", input.getIntOr("NextFishingInterval", 0));
         catchAnimationTicks = 0;
         catchAnimationId = input.getIntOr("CatchAnimationId", 0);
         for (final var stack : input.listOrEmpty("OutputBuffer", ItemStack.CODEC)) {
@@ -164,8 +164,8 @@ public class FishingBarrelBlockEntity extends BlockEntity implements BalmContain
     @Override
     public void saveAdditional(ValueOutput output) {
         ContainerHelper.saveAllItems(output.child("ItemHandler"), container.getItems());
-        output.putInt("TicksUntilFishing", ticksUntilFishing);
-        output.putInt("NextFishingInterval", nextFishingInterval);
+        output.putInt("RemainingFishingTicks", remainingFishingTicks);
+        output.putInt("FishingIntervalTicks", fishingIntervalTicks);
         output.putInt("CatchAnimationId", catchAnimationId);
         final var outputBufferList = output.list("OutputBuffer", ItemStack.CODEC);
         for (final var stack : outputBuffer) {
@@ -286,8 +286,8 @@ public class FishingBarrelBlockEntity extends BlockEntity implements BalmContain
 
         final var rod = container.getItem(ROD_SLOT);
         if (rod.isEmpty() || !isFishingRod(rod)) {
-            if (ticksUntilFishing != 0) {
-                ticksUntilFishing = 0;
+            if (remainingFishingTicks != 0) {
+                remainingFishingTicks = 0;
                 changed = true;
             }
             if (catchAnimationTicks != 0 || !pendingCatchItems.isEmpty()) {
@@ -310,8 +310,8 @@ public class FishingBarrelBlockEntity extends BlockEntity implements BalmContain
         }
 
         if (!canFishAtCurrentPosition(level)) {
-            if (ticksUntilFishing != 0) {
-                ticksUntilFishing = 0;
+            if (remainingFishingTicks != 0) {
+                remainingFishingTicks = 0;
                 changed = true;
             }
             if (catchAnimationTicks != 0 || !pendingCatchItems.isEmpty()) {
@@ -325,14 +325,14 @@ public class FishingBarrelBlockEntity extends BlockEntity implements BalmContain
             return;
         }
 
-        if (ticksUntilFishing <= 0) {
+        if (remainingFishingTicks <= 0) {
             scheduleNextFishing(rod);
             changed = true;
         }
 
-        ticksUntilFishing--;
+        remainingFishingTicks--;
         changed = true;
-        if (ticksUntilFishing <= 0 && fish(level, rod)) {
+        if (remainingFishingTicks <= 0 && fish(level, rod)) {
             damageRod(level, rod);
             catchAnimationTicks = CATCH_ANIMATION_TICKS;
             catchAnimationId++;
@@ -382,8 +382,8 @@ public class FishingBarrelBlockEntity extends BlockEntity implements BalmContain
     }
 
     private void scheduleNextFishing(ItemStack rod) {
-        nextFishingInterval = FarmingForBlockheadsRules.getFishingBarrelInterval(this, rod);
-        ticksUntilFishing = nextFishingInterval;
+        fishingIntervalTicks = FarmingForBlockheadsRules.getFishingBarrelInterval(this, rod);
+        remainingFishingTicks = fishingIntervalTicks;
     }
 
     private boolean moveBufferedOutputsToStorageSlots() {

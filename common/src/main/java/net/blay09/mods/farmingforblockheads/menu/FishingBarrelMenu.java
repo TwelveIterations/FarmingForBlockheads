@@ -71,11 +71,11 @@ public class FishingBarrelMenu extends AbstractContainerMenu {
         container.stopOpen(player);
     }
 
-    public int getTicksUntilFishing() {
-        return containerData.get(FishingBarrelBlockEntity.DATA_TICKS_UNTIL_FISHING);
+    public int getRemainingFishingTicks() {
+        return containerData.get(FishingBarrelBlockEntity.DATA_REMAINING_FISHING_TICKS);
     }
 
-    public int getNextFishingInterval() {
-        return containerData.get(FishingBarrelBlockEntity.DATA_NEXT_FISHING_INTERVAL);
+    public int getFishingIntervalTicks() {
+        return containerData.get(FishingBarrelBlockEntity.DATA_FISHING_INTERVAL_TICKS);
     }
 }
