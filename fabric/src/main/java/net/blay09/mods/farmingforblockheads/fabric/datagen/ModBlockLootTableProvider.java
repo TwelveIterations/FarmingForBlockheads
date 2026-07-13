@@ -21,6 +21,7 @@ public class ModBlockLootTableProvider extends FabricBlockLootSubProvider {
         dropSelf(ModBlocks.chickenNest.asBlock());
         dropSelf(ModBlocks.feedingTrough.asBlock());
         dropSelf(ModBlocks.sprinkler.asBlock());
+        dropSelf(ModBlocks.fishingBarrel.asBlock());
         dropSelf(ModBlocks.shippingBin.asBlock());
         dropOther(ModBlocks.fertilizedFarmlandHealthy.asBlock(), Blocks.DIRT);
         dropOther(ModBlocks.fertilizedFarmlandRich.asBlock(), Blocks.DIRT);

@@ -14,6 +14,7 @@ public class ModBlocks {
 
     public static DeferredBlock market;
     public static DeferredBlock shippingBin;
+    public static DeferredBlock fishingBarrel;
     public static DeferredBlock chickenNest;
     public static DeferredBlock feedingTrough;
     public static DeferredBlock sprinkler;
@@ -28,6 +29,9 @@ public class ModBlocks {
 
         market = blocks.register("market", MarketBlock::new, it -> it).withDefaultItem().asDeferredBlock();
         shippingBin = blocks.register("shipping_bin", ShippingBinBlock::new, it -> it)
+                .withDefaultItem()
+                .asDeferredBlock();
+        fishingBarrel = blocks.register("fishing_barrel", FishingBarrelBlock::new, it -> it.sound(SoundType.WOOD).strength(2f))
                 .withDefaultItem()
                 .asDeferredBlock();
         chickenNest = blocks.register("chicken_nest", ChickenNestBlock::new, it -> it)

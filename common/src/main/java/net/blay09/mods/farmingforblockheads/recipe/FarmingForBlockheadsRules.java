@@ -1,11 +1,17 @@
 package net.blay09.mods.farmingforblockheads.recipe;
 
+import net.blay09.mods.farmingforblockheads.block.entity.FishingBarrelBlockEntity;
 import net.blay09.mods.farmingforblockheads.block.entity.ShippingBinBlockEntity;
 import net.blay09.mods.farmingforblockheads.block.entity.SprinklerBlockEntity;
 import net.blay09.mods.shogi.Shogi;
 import net.blay09.mods.shogi.ShogiValue;
+import net.blay09.mods.shogi.context.MutableShogiContext;
 import net.blay09.mods.shogi.context.ShogiContext;
 import net.blay09.mods.shogi.scope.ShogiScope;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 
 import java.util.List;
 
@@ -45,12 +51,29 @@ public final class FarmingForBlockheadsRules {
             SCOPE.booleanValue(id("sprinkler/snow/can_create_snow"), _ -> true);
     public static final ShogiValue<ShogiContext, Boolean> SNOW_SPRINKLER_CAN_CREATE_SNOW_AT =
             SCOPE.booleanValue(id("sprinkler/snow/can_create_snow_at"), _ -> true);
+    public static final ShogiValue<ShogiContext, Integer> FISHING_BARREL_INTERVAL =
+            SCOPE.intValue(id("fishing_barrel/interval"), FarmingForBlockheadsRules::getDefaultFishingBarrelInterval);
 
     private FarmingForBlockheadsRules() {
     }
 
     public static int getShippingBinCapacity(ShippingBinBlockEntity blockEntity) {
         return Math.max(1, SHIPPING_BIN_CAPACITY.getOrDefault(blockEntity));
+    }
+
+    public static int getFishingBarrelInterval(FishingBarrelBlockEntity blockEntity, ItemStack rod) {
+        final var context = MutableShogiContext.of(blockEntity).withItemStack(rod);
+        return Math.max(40, FISHING_BARREL_INTERVAL.getOrDefault(context));
+    }
+
+    private static int getDefaultFishingBarrelInterval(ShogiContext context) {
+        final var level = context.requireLevel();
+        final var lure = level.registryAccess()
+                .lookupOrThrow(Registries.ENCHANTMENT)
+                .get(Enchantments.LURE)
+                .map(it -> EnchantmentHelper.getItemEnchantmentLevel(it, context.itemStack()))
+                .orElse(0);
+        return 100 + level.getRandom().nextInt(501) - lure * 100;
     }
 
 }
