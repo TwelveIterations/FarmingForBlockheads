@@ -80,11 +80,8 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
 
         @Override
         public void setChanged() {
-            isDirty = true;
+            needsClientSync = true;
             ShippingBinBlockEntity.this.setChanged();
-            if (!processing && level instanceof ServerLevel serverLevel) {
-                tryProcessSales(serverLevel, false);
-            }
         }
     };
 
@@ -113,8 +110,7 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
     private final List<ItemStack> outputBuffer = new ArrayList<>();
     private final NonNullList<ItemStack> displayedItems = NonNullList.withSize(DISPLAYED_ITEM_SLOTS, ItemStack.EMPTY);
 
-    private boolean isDirty;
-    private boolean processing;
+    private boolean needsClientSync;
     private int shipmentValue;
     private int saleProgress;
     private int saleCooldown;
@@ -125,10 +121,10 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ShippingBinBlockEntity blockEntity) {
         if (level instanceof ServerLevel serverLevel) {
-            blockEntity.tryProcessSales(serverLevel, true);
-            if (blockEntity.isDirty) {
+            blockEntity.tickSales(serverLevel);
+            if (blockEntity.needsClientSync) {
                 BalmBlockEntityUtils.sync(blockEntity);
-                blockEntity.isDirty = false;
+                blockEntity.needsClientSync = false;
             }
         }
     }
@@ -238,66 +234,59 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
         return shipmentValue == 0 || shipmentCapacity <= 0 ? 0 : Math.min(DISPLAYED_ITEM_SLOTS, (int) Math.ceilDiv((long) shipmentValue * DISPLAYED_ITEM_SLOTS, shipmentCapacity));
     }
 
-    private void tryProcessSales(ServerLevel level, boolean advanceSaleProgress) {
-        if (processing) {
+    private void tickSales(ServerLevel level) {
+        if (!refreshSaleContents(level)) {
             return;
         }
 
-        processing = true;
-        try {
-            shipmentValue = getShipmentValue(level);
-            boolean changed = updateDisplayedItems();
-            changed |= moveBufferedOutputsToOutputSlots();
-            if (hasBufferedOutputs()) {
-                if (saleProgress != 0) {
-                    saleProgress = 0;
-                    changed = true;
-                }
-                if (changed) {
-                    setChanged();
-                    isDirty = true;
-                }
-                return;
-            }
+        if (saleCooldown > 0) {
+            resetSaleProgress();
+            saleCooldown--;
+            setChanged();
+            return;
+        }
 
-            if (saleCooldown > 0) {
-                if (saleProgress != 0) {
-                    saleProgress = 0;
-                    changed = true;
-                }
-                if (advanceSaleProgress) {
-                    saleCooldown--;
-                    changed = true;
-                }
-            } else if (shipmentValue < getShipmentCapacity()) {
-                if (saleProgress != 0) {
-                    saleProgress = 0;
-                    changed = true;
-                }
-            } else if (advanceSaleProgress) {
-                saleProgress++;
-                changed = true;
-                if (saleProgress >= SALE_CYCLE_TICKS) {
-                    saleProgress = 0;
-                    if (processSaleCycle(level)) {
-                        saleCooldown = SALE_COOLDOWN_TICKS;
-                        changed = true;
-                    }
-                }
-            }
+        if (shipmentValue < getShipmentCapacity()) {
+            resetSaleProgress();
+            return;
+        }
 
-            if (changed) {
-                changed |= moveBufferedOutputsToOutputSlots();
+        saleProgress++;
+        if (saleProgress >= SALE_CYCLE_TICKS) {
+            saleProgress = 0;
+            if (processSaleCycle(level)) {
+                saleCooldown = SALE_COOLDOWN_TICKS;
+                moveBufferedOutputsToOutputSlots();
                 shipmentValue = getShipmentValue(level);
-                changed |= updateDisplayedItems();
+                if (updateDisplayedItems()) {
+                    needsClientSync = true;
+                }
             }
+        }
+        setChanged();
+    }
 
-            if (changed) {
-                setChanged();
-                isDirty = true;
-            }
-        } finally {
-            processing = false;
+    private boolean refreshSaleContents(ServerLevel level) {
+        shipmentValue = getShipmentValue(level);
+        if (updateDisplayedItems()) {
+            setChanged();
+            needsClientSync = true;
+        }
+        if (moveBufferedOutputsToOutputSlots()) {
+            setChanged();
+        }
+        if (hasBufferedOutputs()) {
+            resetSaleProgress();
+            return false;
+        }
+
+        return true;
+    }
+
+    private void resetSaleProgress() {
+        if (saleProgress != 0) {
+            saleProgress = 0;
+            setChanged();
         }
     }
 
