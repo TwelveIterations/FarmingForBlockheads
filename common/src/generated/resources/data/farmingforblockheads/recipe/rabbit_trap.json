@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "minecraft:carrot",
+    "P": "#minecraft:planks",
+    "S": "minecraft:stick"
+  },
+  "pattern": [
+    " PP",
+    "SCP"
+  ],
+  "result": {
+    "id": "farmingforblockheads:rabbit_trap"
+  }
+}

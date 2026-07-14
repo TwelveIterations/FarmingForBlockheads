@@ -24,6 +24,7 @@ public class ModRenderers {
 
     public static void initialize(BalmBlockEntityRendererRegistrar renderers) {
         renderers.register(ModBlockEntities.chickenNest, ChickenNestRenderer::new);
+        renderers.register(ModBlockEntities.rabbitTrap, RabbitTrapRenderer::new);
         renderers.register(ModBlockEntities.feedingTrough, FeedingTroughRenderer::new);
         renderers.register(ModBlockEntities.shippingBin, ShippingBinRenderer::new);
         renderers.register(ModBlockEntities.sprinkler, SprinklerRenderer::new);

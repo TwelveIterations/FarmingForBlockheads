@@ -16,6 +16,7 @@ public class ModBlocks {
     public static DeferredBlock shippingBin;
     public static DeferredBlock fishingBarrel;
     public static DeferredBlock chickenNest;
+    public static DeferredBlock rabbitTrap;
     public static DeferredBlock feedingTrough;
     public static DeferredBlock sprinkler;
     public static DeferredBlock fertilizedFarmlandRich;
@@ -37,6 +38,9 @@ public class ModBlocks {
         chickenNest = blocks.register("chicken_nest", ChickenNestBlock::new, it -> it)
                 .withDefaultItem(it -> it.component(ModComponents.description.value(),
                         new DescriptionComponent(Component.translatable("tooltip.farmingforblockheads.chicken_nest"))))
+                .asDeferredBlock();
+        rabbitTrap = blocks.register("rabbit_trap", RabbitTrapBlock::new, it -> it)
+                .withDefaultItem()
                 .asDeferredBlock();
 
         feedingTrough = blocks.register("feeding_trough", FeedingTroughBlock::new, it -> it)
