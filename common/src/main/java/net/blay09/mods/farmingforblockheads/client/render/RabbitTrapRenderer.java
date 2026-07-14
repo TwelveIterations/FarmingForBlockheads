@@ -44,7 +44,6 @@ public class RabbitTrapRenderer implements BlockEntityRenderer<RabbitTrapBlockEn
         public final ItemStackRenderState stick = new ItemStackRenderState();
         public final ItemStackRenderState carrot = new ItemStackRenderState();
         public Direction facing = Direction.NORTH;
-        public boolean hasCatch;
         public boolean triggered;
         public float fallProgress;
         public float wiggle;
@@ -70,7 +69,6 @@ public class RabbitTrapRenderer implements BlockEntityRenderer<RabbitTrapBlockEn
         BlockEntityRenderState.extractBase(blockEntity, renderState, crumblingOverlay);
         renderState.facing = blockEntity.getBlockState().getValue(RabbitTrapBlock.FACING);
         renderState.triggered = blockEntity.getBlockState().getValue(RabbitTrapBlock.TRIGGERED);
-        renderState.hasCatch = blockEntity.hasCatch();
 
         long gameTime = blockEntity.getLevel() != null ? blockEntity.getLevel().getGameTime() : 0;
         long caughtGameTime = blockEntity.getCaughtGameTime();
@@ -82,7 +80,7 @@ public class RabbitTrapRenderer implements BlockEntityRenderer<RabbitTrapBlockEn
             renderState.fallProgress = renderState.triggered ? 1f : 0f;
         }
 
-        if (renderState.hasCatch && renderState.fallProgress >= 1f) {
+        if (renderState.triggered && renderState.fallProgress >= 1f) {
             renderState.wiggle = getWiggle(blockEntity.getBlockPos().asLong(), gameTime, delta);
         } else {
             renderState.wiggle = 0f;
