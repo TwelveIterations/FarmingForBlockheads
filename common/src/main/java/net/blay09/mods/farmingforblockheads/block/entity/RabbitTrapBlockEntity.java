@@ -314,6 +314,7 @@ public class RabbitTrapBlockEntity extends BlockEntity {
                 serverLevel.addFreshEntity(itemEntity);
             }
             serverLevel.sendParticles(ParticleTypes.POOF, origin.x, origin.y, origin.z, 12, 0.25, 0.25, 0.25, 0.03);
+            serverLevel.playSound(null, worldPosition, SoundEvents.CHICKEN_EGG, SoundSource.BLOCKS, 0.8f, 0.8f);
         }
 
         if (caughtEntity != null) {
@@ -329,6 +330,7 @@ public class RabbitTrapBlockEntity extends BlockEntity {
                 entity.setXRot(0f);
                 serverLevel.addFreshEntity(entity);
                 serverLevel.sendParticles(ParticleTypes.POOF, entity.getX(), entity.getY() + entity.getBbHeight() * 0.5, entity.getZ(), 12, 0.25, 0.25, 0.25, 0.03);
+                serverLevel.playSound(null, worldPosition, SoundEvents.CHICKEN_EGG, SoundSource.BLOCKS, 0.8f, 0.8f);
             });
         }
 
