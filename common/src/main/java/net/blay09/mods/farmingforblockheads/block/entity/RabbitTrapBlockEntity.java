@@ -314,37 +314,31 @@ public class RabbitTrapBlockEntity extends BlockEntity {
                 serverLevel.addFreshEntity(itemEntity);
             }
             serverLevel.sendParticles(ParticleTypes.POOF, origin.x, origin.y, origin.z, 12, 0.25, 0.25, 0.25, 0.03);
-            clearCatch();
-            return;
         }
 
-        if (caughtEntity == null) {
-            return;
+        if (caughtEntity != null) {
+            final var entityTag = caughtEntity.copy();
+            entityTag.remove(Entity.TAG_UUID);
+            final var input = TagValueInput.create(ProblemReporter.DISCARDING, serverLevel.registryAccess(), entityTag);
+            EntityType.create(input, level, new EntitySpawnRequest(EntitySpawnReason.TRIGGERED, true)).ifPresent(entity -> {
+                final var facing = getBlockState().getValue(RabbitTrapBlock.FACING);
+                final var offsetX = facing.getStepX() * 0.8;
+                final var offsetZ = facing.getStepZ() * 0.8;
+                entity.setPos(worldPosition.getX() + 0.5 + offsetX, worldPosition.getY() + 0.1, worldPosition.getZ() + 0.5 + offsetZ);
+                entity.setYRot(facing.toYRot());
+                entity.setXRot(0f);
+                serverLevel.addFreshEntity(entity);
+                serverLevel.sendParticles(ParticleTypes.POOF, entity.getX(), entity.getY() + entity.getBbHeight() * 0.5, entity.getZ(), 12, 0.25, 0.25, 0.25, 0.03);
+            });
         }
 
-        final var entityTag = caughtEntity.copy();
-        entityTag.remove(Entity.TAG_UUID);
-        final var input = TagValueInput.create(ProblemReporter.DISCARDING, serverLevel.registryAccess(), entityTag);
-        EntityType.create(input, level, new EntitySpawnRequest(EntitySpawnReason.TRIGGERED, true)).ifPresent(entity -> {
-            final var facing = getBlockState().getValue(RabbitTrapBlock.FACING);
-            final var offsetX = facing.getStepX() * 0.8;
-            final var offsetZ = facing.getStepZ() * 0.8;
-            entity.setPos(worldPosition.getX() + 0.5 + offsetX, worldPosition.getY() + 0.1, worldPosition.getZ() + 0.5 + offsetZ);
-            entity.setYRot(facing.toYRot());
-            entity.setXRot(0f);
-            serverLevel.addFreshEntity(entity);
-            serverLevel.sendParticles(ParticleTypes.POOF, entity.getX(), entity.getY() + entity.getBbHeight() * 0.5, entity.getZ(), 12, 0.25, 0.25, 0.25, 0.03);
-            clearCatch();
-        });
+        clearCatch();
     }
 
     private void clearCatch() {
         caughtEntity = null;
         caughtItems.clear();
         caughtGameTime = -1;
-        if (level != null) {
-            level.playSound(null, worldPosition, SoundEvents.WOODEN_TRAPDOOR_OPEN, SoundSource.BLOCKS, 0.8f, 1.0f);
-        }
         setChanged();
         needsClientSync = true;
     }
