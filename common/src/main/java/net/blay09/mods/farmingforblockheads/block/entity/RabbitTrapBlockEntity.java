@@ -63,10 +63,10 @@ public class RabbitTrapBlockEntity extends BlockEntity {
     private long caughtGameTime = -1;
     private long setupGameTime = -1;
     private long lastGameTime = -1;
-    private long lastDirtyGameTime = -1;
+    private int ticksSinceMarkChanged;
     private int unattendedTicks;
     private int damage;
-    private int tickTimer;
+    private int ticksSinceRoll;
     private boolean needsClientSync;
 
     public RabbitTrapBlockEntity(BlockPos pos, BlockState state) {
@@ -78,9 +78,9 @@ public class RabbitTrapBlockEntity extends BlockEntity {
     }
 
     public void serverTick(Level level, BlockPos pos) {
-        tickTimer++;
-        if (tickTimer >= TICK_INTERVAL) {
-            tickTimer = 0;
+        ticksSinceRoll++;
+        if (ticksSinceRoll >= TICK_INTERVAL) {
+            ticksSinceRoll = 0;
             if (!hasCatch()) {
                 final var gameTime = level.getGameTime();
                 final var elapsedTicks = lastGameTime >= 0 ? Math.max(0, gameTime - lastGameTime) : 0;
@@ -102,12 +102,14 @@ public class RabbitTrapBlockEntity extends BlockEntity {
                 }
             }
 
-            final var gameTime = level.getGameTime();
-            lastGameTime = gameTime;
-            if (lastDirtyGameTime < 0 || gameTime - lastDirtyGameTime >= UNATTENDED_ROLL_INTERVAL) {
-                lastDirtyGameTime = gameTime;
-                setChanged();
-            }
+            lastGameTime = level.getGameTime();
+        }
+
+        // We periodically mark as changed so that lastGameTime is saved
+        ticksSinceMarkChanged += TICK_INTERVAL;
+        if (ticksSinceMarkChanged >= 1200) {
+            ticksSinceMarkChanged = 0;
+            setChanged();
         }
 
         if (needsClientSync) {
@@ -128,7 +130,6 @@ public class RabbitTrapBlockEntity extends BlockEntity {
         caughtGameTime = input.getLongOr("CaughtGameTime", hasCatch() ? 0 : -1);
         setupGameTime = input.getLongOr("SetupGameTime", -1);
         lastGameTime = input.getLongOr("LastGameTime", -1);
-        lastDirtyGameTime = lastGameTime;
         unattendedTicks = input.getIntOr("UnattendedTicks", 0);
         damage = input.getIntOr("Damage", 0);
     }
