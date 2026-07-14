@@ -55,6 +55,7 @@ public class RabbitTrapBlockEntity extends BlockEntity {
     private static final int TICK_INTERVAL = 10;
     private static final int UNATTENDED_ROLL_INTERVAL = 1200;
     private static final int OFFLINE_CAPTURE_FULL_CHANCE_TICKS = 24000;
+    private static final double UNATTENDED_BABY_CHANCE = 0.1;
     private static final double ATTRACT_RANGE = 8.0;
     private static final double CAPTURE_RANGE = 0.45;
 
@@ -215,7 +216,11 @@ public class RabbitTrapBlockEntity extends BlockEntity {
             final var entityType = candidates.remove(candidateIndex);
             final var entity = entityType.create(level, EntitySpawnReason.TRIGGERED);
             if (entity instanceof Animal animal) {
-                animal.setAge(0);
+                if (level.getRandom().nextDouble() < UNATTENDED_BABY_CHANCE) {
+                    animal.setBaby(true);
+                } else {
+                    animal.setAge(0);
+                }
                 if (saveCatch(serverLevel, animal)) {
                     triggerTrap(serverLevel);
                     return;
@@ -229,7 +234,7 @@ public class RabbitTrapBlockEntity extends BlockEntity {
     }
 
     private boolean canCatch(Animal animal) {
-        return animal.isAlive() && !animal.isBaby() && animal.is(ModEntityTypeTags.RABBIT_TRAP_CAPTURABLE);
+        return animal.isAlive() && animal.is(ModEntityTypeTags.RABBIT_TRAP_CAPTURABLE);
     }
 
     private void capture(Animal animal) {
