@@ -1,0 +1,27 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"1": "farmingforblockheads:block/rabbit_trap_bottom",
+		"2": "farmingforblockheads:block/rabbit_trap_front",
+		"3": "farmingforblockheads:block/rabbit_trap",
+		"particle": "farmingforblockheads:block/rabbit_trap"
+	},
+	"elements": [
+		{
+			"name": "box",
+			"from": [1.5, 0.25, 1.5],
+			"to": [14.5, 13.25, 14.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 6.75, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 12, 12], "texture": "#2"},
+				"east": {"uv": [0, 0, 12, 12], "texture": "#3"},
+				"south": {"uv": [0, 0, 12, 12], "texture": "#3"},
+				"west": {"uv": [0, 0, 12, 12], "texture": "#3"},
+				"up": {"uv": [0, 0, 12, 12], "texture": "#3"},
+				"down": {"uv": [0, 0, 12, 12], "texture": "#1"}
+			}
+		}
+	]
+}

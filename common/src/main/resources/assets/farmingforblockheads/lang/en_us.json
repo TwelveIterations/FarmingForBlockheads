@@ -1,6 +1,7 @@
 {
   "block.farmingforblockheads.market": "Market",
   "block.farmingforblockheads.chicken_nest": "Chicken Nest",
+  "block.farmingforblockheads.rabbit_trap": "Rabbit Trap",
   "block.farmingforblockheads.feeding_trough": "Feeding Trough",
   "block.farmingforblockheads.sprinkler": "Sprinkler",
   "block.farmingforblockheads.shipping_bin": "Shipping Bin",
@@ -15,6 +16,9 @@
   "item.farmingforblockheads.yellow_fertilizer": "Yellow Fertilizer",
   "item.farmingforblockheads.iron_scythe": "Scythe",
   "item.farmingforblockheads.watering_can": "Watering Can",
+  "item.farmingforblockheads.fox_note": "Mysterious Note",
+  "item.farmingforblockheads.fox_note.lore.1": "I stole your carrot.",
+  "item.farmingforblockheads.fox_note.lore.2": "- The Fox",
   "tooltip.farmingforblockheads.chicken_nest": "Collects eggs laid by chicken",
   "tooltip.farmingforblockheads.feeding_trough": "Auto-feeds nearby animals ready to mate",
   "tooltip.farmingforblockheads.red_fertilizer": "Speeds up growth",

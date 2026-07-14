@@ -83,6 +83,15 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy("has_wheat", has(Items.WHEAT))
                         .save(exporter);
 
+                shaped(RecipeCategory.DECORATIONS, ModBlocks.rabbitTrap)
+                        .pattern(" PP")
+                        .pattern("SCP")
+                        .define('S', Items.STICK)
+                        .define('P', ItemTags.PLANKS)
+                        .define('C', Items.CARROT)
+                        .unlockedBy("has_carrot", has(Items.CARROT))
+                        .save(exporter);
+
                 shaped(RecipeCategory.DECORATIONS, ModBlocks.market)
                         .pattern("PCP")
                         .pattern("W W")
