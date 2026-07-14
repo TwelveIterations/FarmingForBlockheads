@@ -52,21 +52,21 @@ public class RabbitTrapBlockEntity extends BlockEntity {
 
     private static final ResourceKey<LootTable> LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, id("gameplay/rabbit_trap"));
 
-    private static final int TICK_INTERVAL = 10;
+    private static final int ROLL_INTERVAL = 10;
     private static final int UNATTENDED_ROLL_INTERVAL = 1200;
-    private static final int OFFLINE_CAPTURE_FULL_CHANCE_TICKS = 24000;
     private static final double UNATTENDED_BABY_CHANCE = 0.1;
+    private static final int OFFLINE_CAPTURE_FULL_CHANCE_TICKS = 24000;
     private static final double ATTRACT_RANGE = 8.0;
     private static final double CAPTURE_RANGE = 0.45;
 
-    private @Nullable CompoundTag capturedEntity;
+    private @Nullable CompoundTag caughtEntity;
     private final List<ItemStack> caughtItems = new ArrayList<>();
     private long caughtGameTime = -1;
     private long setupGameTime = -1;
-    private long lastGameTime = -1;
-    private int ticksSinceMarkChanged;
-    private int unattendedTicks;
+    private long lastRollGameTime = -1;
     private int damage;
+    private int unattendedTicks;
+    private int ticksSinceMarkChanged;
     private int ticksSinceRoll;
     private boolean needsClientSync;
 
@@ -80,11 +80,11 @@ public class RabbitTrapBlockEntity extends BlockEntity {
 
     public void serverTick(Level level, BlockPos pos) {
         ticksSinceRoll++;
-        if (ticksSinceRoll >= TICK_INTERVAL) {
+        if (ticksSinceRoll >= ROLL_INTERVAL) {
             ticksSinceRoll = 0;
             if (!hasCatch()) {
                 final var gameTime = level.getGameTime();
-                final var elapsedTicks = lastGameTime >= 0 ? Math.max(0, gameTime - lastGameTime) : 0;
+                final var elapsedTicks = lastRollGameTime >= 0 ? Math.max(0, gameTime - lastRollGameTime) : 0;
                 if (elapsedTicks >= UNATTENDED_ROLL_INTERVAL) {
                     tryCaptureUnattended(level, elapsedTicks);
                 }
@@ -95,7 +95,7 @@ public class RabbitTrapBlockEntity extends BlockEntity {
                         attractAndCapture(level, pos);
                     } else {
                         final var previousUnattendedTicks = unattendedTicks;
-                        unattendedTicks = Math.min(OFFLINE_CAPTURE_FULL_CHANCE_TICKS, unattendedTicks + TICK_INTERVAL);
+                        unattendedTicks = Math.min(OFFLINE_CAPTURE_FULL_CHANCE_TICKS, unattendedTicks + ROLL_INTERVAL);
                         if (unattendedTicks / UNATTENDED_ROLL_INTERVAL > previousUnattendedTicks / UNATTENDED_ROLL_INTERVAL) {
                             tryCaptureUnattended(level, unattendedTicks);
                         }
@@ -103,11 +103,11 @@ public class RabbitTrapBlockEntity extends BlockEntity {
                 }
             }
 
-            lastGameTime = level.getGameTime();
+            lastRollGameTime = level.getGameTime();
         }
 
-        // We periodically mark as changed so that lastGameTime is saved
-        ticksSinceMarkChanged += TICK_INTERVAL;
+        // We periodically mark as changed so that lastRollGameTime is saved
+        ticksSinceMarkChanged += ROLL_INTERVAL;
         if (ticksSinceMarkChanged >= 1200) {
             ticksSinceMarkChanged = 0;
             setChanged();
@@ -121,7 +121,7 @@ public class RabbitTrapBlockEntity extends BlockEntity {
 
     @Override
     protected void loadAdditional(ValueInput input) {
-        capturedEntity = input.read("CapturedEntity", CompoundTag.CODEC).map(CompoundTag::copy).orElse(null);
+        caughtEntity = input.read("CaughtEntity", CompoundTag.CODEC).map(CompoundTag::copy).orElse(null);
         caughtItems.clear();
         for (final var stack : input.listOrEmpty("CaughtItems", ItemStack.CODEC)) {
             if (!stack.isEmpty()) {
@@ -130,20 +130,20 @@ public class RabbitTrapBlockEntity extends BlockEntity {
         }
         caughtGameTime = input.getLongOr("CaughtGameTime", hasCatch() ? 0 : -1);
         setupGameTime = input.getLongOr("SetupGameTime", -1);
-        lastGameTime = input.getLongOr("LastGameTime", -1);
+        lastRollGameTime = input.getLongOr("LastRollGameTime", -1);
         unattendedTicks = input.getIntOr("UnattendedTicks", 0);
         damage = input.getIntOr("Damage", 0);
     }
 
     @Override
     public void saveAdditional(ValueOutput output) {
-        output.putLong("LastGameTime", lastGameTime);
+        output.putLong("LastRollGameTime", lastRollGameTime);
         output.putLong("SetupGameTime", setupGameTime);
         output.putInt("UnattendedTicks", unattendedTicks);
         output.putInt("Damage", damage);
 
-        if (capturedEntity != null) {
-            output.store("CapturedEntity", CompoundTag.CODEC, capturedEntity);
+        if (caughtEntity != null) {
+            output.store("CaughtEntity", CompoundTag.CODEC, caughtEntity);
             output.putLong("CaughtGameTime", caughtGameTime);
         }
 
@@ -257,8 +257,8 @@ public class RabbitTrapBlockEntity extends BlockEntity {
             return false;
         }
 
-        capturedEntity = output.buildResult();
-        capturedEntity.remove(Entity.TAG_UUID);
+        caughtEntity = output.buildResult();
+        caughtEntity.remove(Entity.TAG_UUID);
         caughtGameTime = serverLevel.getGameTime();
         unattendedTicks = 0;
         return true;
@@ -274,7 +274,7 @@ public class RabbitTrapBlockEntity extends BlockEntity {
             return false;
         }
 
-        capturedEntity = null;
+        caughtEntity = null;
         caughtItems.clear();
         for (final var itemStack : loot) {
             if (!itemStack.isEmpty()) {
@@ -318,11 +318,11 @@ public class RabbitTrapBlockEntity extends BlockEntity {
             return;
         }
 
-        if (capturedEntity == null) {
+        if (caughtEntity == null) {
             return;
         }
 
-        final var entityTag = capturedEntity.copy();
+        final var entityTag = caughtEntity.copy();
         entityTag.remove(Entity.TAG_UUID);
         final var input = TagValueInput.create(ProblemReporter.DISCARDING, serverLevel.registryAccess(), entityTag);
         EntityType.create(input, level, new EntitySpawnRequest(EntitySpawnReason.TRIGGERED, true)).ifPresent(entity -> {
@@ -339,7 +339,7 @@ public class RabbitTrapBlockEntity extends BlockEntity {
     }
 
     private void clearCatch() {
-        capturedEntity = null;
+        caughtEntity = null;
         caughtItems.clear();
         caughtGameTime = -1;
         if (level != null) {
@@ -381,7 +381,7 @@ public class RabbitTrapBlockEntity extends BlockEntity {
     }
 
     public boolean hasCatch() {
-        return capturedEntity != null || !caughtItems.isEmpty();
+        return caughtEntity != null || !caughtItems.isEmpty();
     }
 
     public long getCaughtGameTime() {
