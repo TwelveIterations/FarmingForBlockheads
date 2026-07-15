@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "N": "minecraft:nautilus_shell",
     "P": "#minecraft:planks",
