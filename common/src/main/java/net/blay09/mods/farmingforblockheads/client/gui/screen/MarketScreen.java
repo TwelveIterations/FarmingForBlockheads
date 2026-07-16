@@ -1,5 +1,6 @@
 package net.blay09.mods.farmingforblockheads.client.gui.screen;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.blay09.mods.balm.mixin.ScreenAccessor;
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheads;
 import net.blay09.mods.farmingforblockheads.client.gui.widget.MarketFilterButton;
@@ -137,7 +138,7 @@ public class MarketScreen extends AbstractContainerScreen<MarketMenu> implements
 
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
-        if (searchBar != null && event.button() == 1 && event.x() >= searchBar.getX() && event.y() < searchBar.getX() + searchBar.getWidth() && event.y() >= searchBar.getY() && event.y() < searchBar.getY() + searchBar.getHeight()) {
+        if (searchBar != null && event.button() == InputConstants.MOUSE_BUTTON_RIGHT && event.x() >= searchBar.getX() && event.y() < searchBar.getX() + searchBar.getWidth() && event.y() >= searchBar.getY() && event.y() < searchBar.getY() + searchBar.getHeight()) {
             searchBar.setValue("");
             menu.setSearch(null);
             menu.updateListingSlots();
