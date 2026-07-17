@@ -1,11 +1,25 @@
-Note: This version changes the conditional loading of market recipes. 
-
-If you are creating and sharing custom data pack JSONs to add market recipes, you should now explicitly add an `is_group_enabled` load condition so that users can easily toggle your group of recipes. See [here](https://github.com/TwelveIterations/FarmingForBlockheads/commit/74eb480653e499a84e1a469ffe0a2c3fd3cf636d) for an example.
-
-- Added `/farmingforblockheads list` command to view enabled/disabled groups
-- Added `/farmingforblockheads enable` and `/farmingforblockheads disable` command for easy toggling of groups
-- Added dedicated category for spawn eggs and soils, if enabled
-- Added `is_group_enabled` resource load condition
-- Changed Soul Sand to be grouped under `nether.soils`
-- Fixed market block being relocatable by other mods, which would leave a broken half block behind
-- Fixed incorrect translation keys for item blocks
+- Added Shipping Bin
+  - Fill it with crops to prepare a shipment.
+  - Receive emeralds in response once full.
+  - Data Packs can control what items can be sold, how much they are worth, and what kind of payment is given
+- Added Rabbit Trap
+  - Place it somewhere and leave the area.
+  - Return later to see if it has caught anything.
+- Added Fishing Barrel
+  - Place it on the shore and watch as it catches fish for you.
+  - Replace the Fishing Rod when it breaks.
+- Added Scythe
+  - The scythe will break grown crops in an area of effect when a crop is broken or right-clicked.
+  - Allows quickly harvesting your crops without having to check every crop individually.
+- Added Watering Can
+  - Hydrates farmland for a day.
+  - Hydrated farmland does not lose its moisture even if there is no water blocks around.
+  - Hydrated farmland has a small passive growth boost on its crops.
+- Added Sprinkler
+  - Place it in your farm for automatic watering.
+  - Like the Watering Can, it will hydrate farmland.
+  - Try putting something on top to turn it into a Scarecrow and prevent crop trampling nearby.
+- Added `disableVanillaWatering` option (default: `false`)
+  - When enabled, makes it so nearby water is no longer enough to hydrate farmland.
+  - Instead, the Watering Can can be used to water farmland for a day, or a sprinkler can be set up for automatic watering.
+  - This could be used for farming-based packs that want Stardew-like chores.
