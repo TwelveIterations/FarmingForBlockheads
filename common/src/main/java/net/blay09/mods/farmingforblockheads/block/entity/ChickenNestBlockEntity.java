@@ -13,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.Entity;
@@ -133,7 +134,7 @@ public class ChickenNestBlockEntity extends BlockEntity implements BalmContainer
     }
 
     private boolean isEggItem(ItemStack item) {
-        return item.is(BalmItemTags.EGGS);
+        return item.is(ItemTags.EGGS);
     }
 
     public int getEggCount() {
