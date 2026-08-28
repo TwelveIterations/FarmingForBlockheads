@@ -1,1 +1,1 @@
-- Fixed Chicken Nest not picking up other items tagged `minecraft:eggs`
+- Fixed Shipping Bin crashing on dedicated servers
