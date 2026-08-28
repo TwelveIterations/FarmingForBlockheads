@@ -1,7 +1,6 @@
 package net.blay09.mods.farmingforblockheads.block.entity;
 
 import net.blay09.mods.balm.Balm;
-import net.blay09.mods.balm.mixin.RecipeManagerAccessor;
 import net.blay09.mods.balm.world.*;
 import net.blay09.mods.balm.world.level.block.entity.BalmBlockEntityUtils;
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheads;
@@ -12,6 +11,7 @@ import net.blay09.mods.farmingforblockheads.entity.ShippingBalloonEntity;
 import net.blay09.mods.farmingforblockheads.entity.ShippingCrateEntity;
 import net.blay09.mods.farmingforblockheads.loot.ModLootContextParams;
 import net.blay09.mods.farmingforblockheads.menu.ShippingBinMenu;
+import net.blay09.mods.farmingforblockheads.mixin.RecipeManagerAccessor;
 import net.blay09.mods.farmingforblockheads.recipe.FarmingForBlockheadsRules;
 import net.blay09.mods.farmingforblockheads.recipe.ModRecipes;
 import net.blay09.mods.farmingforblockheads.recipe.ShippingBinRecipe;
@@ -342,7 +342,7 @@ public class ShippingBinBlockEntity extends BlockEntity implements BalmContainer
 
     private @Nullable RecipeHolder<ShippingBinRecipe> findRecipe(ServerLevel level, ItemStack itemStack) {
         final var recipeInput = new SingleRecipeInput(itemStack);
-        final var recipeMap = ((RecipeManagerAccessor) level.getServer().getRecipeManager()).balm$getRecipeMap();
+        final var recipeMap = ((RecipeManagerAccessor) level.getServer().getRecipeManager()).getRecipes();
         return recipeMap.byType(ModRecipes.shippingBinRecipe.type()).stream()
                 .filter(it -> it.value().matches(recipeInput, level))
                 .filter(it -> it.value().canSell(this, itemStack, it.id().identifier()))
