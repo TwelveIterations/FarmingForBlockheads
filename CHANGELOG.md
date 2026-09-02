@@ -1,1 +1,1 @@
-- Fixed Shipping Bin crashing on dedicated servers
+- Updated to Minecraft 26.3
