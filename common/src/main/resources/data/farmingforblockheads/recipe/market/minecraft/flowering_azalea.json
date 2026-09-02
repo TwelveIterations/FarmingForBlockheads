@@ -4,17 +4,5 @@
     "count": 1,
     "item": "minecraft:flowering_azalea"
   },
-  "defaults": "selling.rare.saplings.minecraft.flowering_azalea",
-  "fabric:load_conditions": [
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.rare.saplings.minecraft.flowering_azalea"
-    }
-  ],
-  "neoforge:conditions": [
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.rare.saplings.minecraft.flowering_azalea"
-    }
-  ]
+  "defaults": "selling.rare.saplings.minecraft.flowering_azalea"
 }

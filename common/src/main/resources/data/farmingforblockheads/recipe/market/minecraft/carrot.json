@@ -5,17 +5,5 @@
     "count": 1,
     "item": "minecraft:carrot"
   },
-  "defaults": "selling.seed_crops.minecraft.carrot",
-  "fabric:load_conditions": [
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.seed_crops.minecraft.carrot"
-    }
-  ],
-  "neoforge:conditions": [
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.seed_crops.minecraft.carrot"
-    }
-  ]
+  "defaults": "selling.seed_crops.minecraft.carrot"
 }

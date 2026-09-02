@@ -16,20 +16,12 @@
       "values": [
         "minecolonies"
       ]
-    },
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.soils.minecolonies.composted_dirt"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "minecolonies"
-    },
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.soils.minecolonies.composted_dirt"
     }
   ]
 }

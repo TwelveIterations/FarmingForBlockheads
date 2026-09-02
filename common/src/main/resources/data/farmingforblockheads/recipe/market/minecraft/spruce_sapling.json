@@ -4,17 +4,5 @@
     "count": 1,
     "item": "minecraft:spruce_sapling"
   },
-  "defaults": "selling.saplings.minecraft.spruce_sapling",
-  "fabric:load_conditions": [
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.saplings.minecraft.spruce_sapling"
-    }
-  ],
-  "neoforge:conditions": [
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.saplings.minecraft.spruce_sapling"
-    }
-  ]
+  "defaults": "selling.saplings.minecraft.spruce_sapling"
 }

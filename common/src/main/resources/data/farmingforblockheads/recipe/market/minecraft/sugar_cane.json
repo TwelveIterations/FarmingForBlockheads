@@ -4,17 +4,5 @@
     "count": 1,
     "item": "minecraft:sugar_cane"
   },
-  "defaults": "selling.crops.minecraft.sugar_cane",
-  "fabric:load_conditions": [
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.crops.minecraft.sugar_cane"
-    }
-  ],
-  "neoforge:conditions": [
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.crops.minecraft.sugar_cane"
-    }
-  ]
+  "defaults": "selling.crops.minecraft.sugar_cane"
 }

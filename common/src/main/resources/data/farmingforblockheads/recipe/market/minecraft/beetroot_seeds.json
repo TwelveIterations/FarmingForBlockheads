@@ -4,17 +4,5 @@
     "count": 1,
     "item": "minecraft:beetroot_seeds"
   },
-  "defaults": "selling.seeds.minecraft.beetroot_seeds",
-  "fabric:load_conditions": [
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.seeds.minecraft.beetroot_seeds"
-    }
-  ],
-  "neoforge:conditions": [
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.seeds.minecraft.beetroot_seeds"
-    }
-  ]
+  "defaults": "selling.seeds.minecraft.beetroot_seeds"
 }

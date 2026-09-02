@@ -4,17 +4,5 @@
     "count": 1,
     "item": "minecraft:cornflower"
   },
-  "defaults": "selling.flowers.minecraft.cornflower",
-  "fabric:load_conditions": [
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.flowers.minecraft.cornflower"
-    }
-  ],
-  "neoforge:conditions": [
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.flowers.minecraft.cornflower"
-    }
-  ]
+  "defaults": "selling.flowers.minecraft.cornflower"
 }

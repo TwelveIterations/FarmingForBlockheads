@@ -16,20 +16,12 @@
       "values": [
         "theabyss"
       ]
-    },
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.saplings.theabyss.tall_rub_shroom"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "theabyss"
-    },
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.saplings.theabyss.tall_rub_shroom"
     }
   ]
 }

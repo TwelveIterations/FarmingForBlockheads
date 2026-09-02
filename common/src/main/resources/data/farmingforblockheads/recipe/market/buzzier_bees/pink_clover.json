@@ -17,20 +17,12 @@
       "values": [
         "buzzier_bees"
       ]
-    },
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.bees.buzzier_bees.pink_clover"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "buzzier_bees"
-    },
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.bees.buzzier_bees.pink_clover"
     }
   ]
 }

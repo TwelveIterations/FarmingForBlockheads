@@ -16,20 +16,12 @@
       "values": [
         "pamhc2crops"
       ]
-    },
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.seeds.pamhc2crops.lentilseeditem"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "pamhc2crops"
-    },
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.seeds.pamhc2crops.lentilseeditem"
     }
   ]
 }

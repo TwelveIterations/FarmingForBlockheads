@@ -16,20 +16,12 @@
       "values": [
         "betterendforge"
       ]
-    },
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.seeds.betterendforge.blue_vine_seed"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "betterendforge"
-    },
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.seeds.betterendforge.blue_vine_seed"
     }
   ]
 }
