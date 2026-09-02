@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "farmingforblockheads:chicken_nest"
+        "recipes": "farmingforblockheads:chicken_nest"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

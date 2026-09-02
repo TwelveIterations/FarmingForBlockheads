@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "farmingforblockheads:market"
+        "recipes": "farmingforblockheads:market"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "farmingforblockheads:red_fertilizer"
+        "recipes": "farmingforblockheads:red_fertilizer"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

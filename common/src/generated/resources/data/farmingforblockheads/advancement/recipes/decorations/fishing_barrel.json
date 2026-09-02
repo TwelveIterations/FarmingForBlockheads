@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "farmingforblockheads:fishing_barrel"
+        "recipes": "farmingforblockheads:fishing_barrel"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

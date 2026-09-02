@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "farmingforblockheads:rabbit_trap"
+        "recipes": "farmingforblockheads:rabbit_trap"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

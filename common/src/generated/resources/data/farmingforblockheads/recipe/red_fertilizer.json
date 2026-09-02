@@ -3,7 +3,7 @@
   "key": {
     "B": "minecraft:bone_meal",
     "N": "minecraft:gold_nugget",
-    "R": "#c:dyes/red",
+    "R": "minecraft:red_dye",
     "S": "minecraft:wheat_seeds"
   },
   "pattern": [
