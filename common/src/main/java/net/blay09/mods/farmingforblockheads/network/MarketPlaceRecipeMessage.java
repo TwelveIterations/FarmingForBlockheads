@@ -2,6 +2,7 @@ package net.blay09.mods.farmingforblockheads.network;
 
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheads;
 import net.blay09.mods.farmingforblockheads.menu.MarketMenu;
+import net.blay09.mods.farmingforblockheads.recipe.MarketRecipeImpl;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -36,7 +37,9 @@ public record MarketPlaceRecipeMessage(int containerId, RecipeDisplayId recipe, 
                 if (serverDisplayInfo != null) {
                     final var recipeHolder = serverDisplayInfo.parent();
                     if (player.containerMenu instanceof MarketMenu marketMenu) {
-                        if (marketMenu.containsRecipeDisplayId(message.recipe())) {
+                        if (recipeHolder.value() instanceof MarketRecipeImpl marketRecipe
+                                && marketRecipe.isEnabled()
+                                && marketMenu.containsRecipeDisplayId(message.recipe())) {
                             if (recipeHolder.value().placementInfo().isImpossibleToPlace()) {
                                 FarmingForBlockheads.logger.debug("Player {} tried to place impossible recipe {}", player, recipeHolder.id().identifier());
                                 return;
