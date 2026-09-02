@@ -53,6 +53,10 @@ public class MarketRecipeImpl implements Recipe<RecipeInput>, MarketRecipe {
 
     @Override
     public boolean matches(RecipeInput recipeInput, Level level) {
+        if (!isEnabled()) {
+            return false;
+        }
+
         final var effectivePayment = MarketDefaultsRegistry.resolvePayment(this);
         final var ingredient = effectivePayment.ingredient();
         final var itemStack = recipeInput.getItem(0);
@@ -153,8 +157,14 @@ public class MarketRecipeImpl implements Recipe<RecipeInput>, MarketRecipe {
         return Optional.ofNullable(predicate);
     }
 
+    public boolean isEnabled() {
+        return MarketDefaultsRegistry.isEnabled(defaults);
+    }
+
     public boolean isVisibleFor(Player player, @Nullable BlockEntity blockEntity) {
-        if (predicate == null) {
+        if (!isEnabled()) {
+            return false;
+        } else if (predicate == null) {
             return true;
         }
 
