@@ -41,7 +41,7 @@ public class ShippingBalloonRenderer extends EntityRenderer<ShippingBalloonEntit
         poseStack.pushPose();
         final float scale = getInflationScale(renderState.ageInTicks);
         poseStack.scale(scale, scale, scale);
-        submitNodeCollector.submitModel(model, Unit.INSTANCE, poseStack, RenderTypes.entityCutout(TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0, null);
+        submitNodeCollector.submitModel(model, Unit.INSTANCE, poseStack, RenderTypes.entityCutout(TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         poseStack.popPose();
 
         super.submit(renderState, poseStack, submitNodeCollector, cameraRenderState);

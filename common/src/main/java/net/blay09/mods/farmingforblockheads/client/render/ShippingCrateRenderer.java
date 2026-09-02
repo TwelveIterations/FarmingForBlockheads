@@ -49,8 +49,8 @@ public class ShippingCrateRenderer extends EntityRenderer<ShippingCrateEntity, S
         poseStack.pushPose();
         final float scale = getAppearScale(renderState.ageInTicks);
         poseStack.scale(scale, scale, scale);
-        poseStack.mulPose(Axis.YP.rotationDegrees(180f - renderState.yRot));
-        submitNodeCollector.submitModel(model, Unit.INSTANCE, poseStack, RenderTypes.entityCutout(TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0, null);
+        poseStack.rotateDegrees(Axis.YP, 180f - renderState.yRot);
+        submitNodeCollector.submitModel(model, Unit.INSTANCE, poseStack, RenderTypes.entityCutout(TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         poseStack.popPose();
 
         super.submit(renderState, poseStack, submitNodeCollector, cameraRenderState);

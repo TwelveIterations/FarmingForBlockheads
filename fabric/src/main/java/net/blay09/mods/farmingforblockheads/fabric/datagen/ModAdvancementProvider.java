@@ -30,12 +30,11 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                 .display(ModBlocks.shippingBin.asItem(),
                         Component.translatable("advancements.farmingforblockheads.lost_in_transit.title"),
                         Component.translatable("advancements.farmingforblockheads.lost_in_transit.description"),
-                        null,
                         AdvancementType.GOAL,
                         true,
                         true,
                         true)
                 .addCriterion("lost_in_transit", new Criterion<>(CriteriaTriggers.IMPOSSIBLE, new ImpossibleTrigger.TriggerInstance()))
-                .save(consumer, FarmingForBlockheads.id("lost_in_transit").toString());
+                .save(consumer, FarmingForBlockheads.id("lost_in_transit"));
     }
 }

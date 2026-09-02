@@ -1,6 +1,5 @@
 package net.blay09.mods.farmingforblockheads.block;
 
-import com.mojang.serialization.MapCodec;
 import net.blay09.mods.balm.world.ContainerUtils;
 import net.blay09.mods.farmingforblockheads.block.entity.FeedingTroughBlockEntity;
 import net.blay09.mods.farmingforblockheads.block.entity.ModBlockEntities;
@@ -26,8 +25,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class FeedingTroughBlock extends BaseEntityBlock {
-
-    public static final MapCodec<FeedingTroughBlock> CODEC = simpleCodec(FeedingTroughBlock::new);
 
     private static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 10, 16);
     private static final VoxelShape RENDER_SHAPE = SHAPE.move(0, 0.01, 0);
@@ -88,8 +85,4 @@ public class FeedingTroughBlock extends BaseEntityBlock {
         return level.isClientSide() ? null : createTickerHelper(type, ModBlockEntities.feedingTrough.value(), FeedingTroughBlockEntity::serverTick);
     }
 
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 }

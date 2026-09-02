@@ -61,12 +61,12 @@ public class ChickenNestRenderer implements BlockEntityRenderer<ChickenNestBlock
     @Override
     public void submit(ChickenNestRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         poseStack.translate(0.5, 0, 0.5);
-        poseStack.mulPose(Axis.YP.rotationDegrees(renderState.facing.toYRot()));
+        poseStack.rotateDegrees(Axis.YP, renderState.facing.toYRot());
         for (int i = 0; i < Math.min(EGG_POSITIONS.length / 3, renderState.count); i++) {
             poseStack.pushPose();
             poseStack.translate(0f, 0.2f, 0f);
             poseStack.translate(EGG_POSITIONS[i * 3], EGG_POSITIONS[i * 3 + 1], EGG_POSITIONS[i * 3 + 2]);
-            poseStack.mulPose(Axis.XP.rotationDegrees(45f));
+            poseStack.rotateDegrees(Axis.XP, 45f);
             final var scale = 0.5f;
             poseStack.scale(scale, scale, scale);
             renderState.item.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);

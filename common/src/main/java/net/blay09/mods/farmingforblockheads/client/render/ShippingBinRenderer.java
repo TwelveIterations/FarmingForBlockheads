@@ -89,8 +89,8 @@ public class ShippingBinRenderer implements BlockEntityRenderer<ShippingBinBlock
             poseStack.pushPose();
             poseStack.translate(0.5f, 0.5f, 0.5f);
             poseStack.translate(offset[0], offset[1], offset[2]);
-            poseStack.mulPose(Axis.YP.rotationDegrees(CONTENT_ROTATIONS[i]));
-            poseStack.mulPose(Axis.XP.rotationDegrees(i % 2 == 0 ? 62f : 72f));
+            poseStack.rotateDegrees(Axis.YP, CONTENT_ROTATIONS[i]);
+            poseStack.rotateDegrees(Axis.XP, i % 2 == 0 ? 62f : 72f);
             final var scale = 0.36f;
             poseStack.scale(scale, scale, scale);
             renderState.items[i].submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);

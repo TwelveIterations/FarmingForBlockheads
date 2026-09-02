@@ -10,6 +10,7 @@ import net.minecraft.world.inventory.RecipeBookMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.ArrayList;
@@ -122,7 +123,7 @@ public class ServerPlaceMarketRecipe {
 
     private void clearPayment() {
         final var itemstack = paymentSlot.getItem().copy();
-        inventory.placeItemBackInInventory(itemstack, false);
+        inventory.placeItemBackInInventory(itemstack, false, Prediction.SERVER_ONLY);
         paymentSlot.set(itemstack);
 
         menuAccess.clearCraftingContent();

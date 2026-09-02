@@ -1,6 +1,5 @@
 package net.blay09.mods.farmingforblockheads.block.entity;
 
-import net.blay09.mods.balm.tags.BalmItemTags;
 import net.blay09.mods.balm.world.BalmContainerProvider;
 import net.blay09.mods.balm.world.ContainerUtils;
 import net.blay09.mods.balm.world.DefaultContainer;

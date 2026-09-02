@@ -46,7 +46,7 @@ public class FarmingForBlockheads {
         registrars.poiTypes(ModPoiTypes::initialize);
         registrars.registrar(Registries.SOUND_EVENT, ModSounds::initialize);
         registrars.registrar(Registries.LOOT_CONDITION_TYPE, ModLootConditions::initialize);
-        registrars.registrar(Registries.LOOT_NUMBER_PROVIDER_TYPE, ModLootNumberProviders::initialize);
+        registrars.registrar(Registries.CONTEXT_INT_PROVIDER_TYPE, ModLootNumberProviders::initialize);
         registrars.menuTypes(ModMenus::initialize);
         registrars.recipeTypes(ModRecipes::initialize);
         ModLootModifiers.initialize(Balm.lootModifiers());
@@ -56,7 +56,6 @@ public class FarmingForBlockheads {
         registrars.resourceReloadListeners(registrar -> {
             registrar.register("market_category_loader", new MarketCategoryLoader());
             registrar.register("market_defaults_loader", MarketDefaultsLoader::new);
-            registrar.addDependency(id("market_defaults_loader"), registrar.vanillaKeys().recipes());
         });
 
         CropCallback.Grow.After.EVENT.register(FarmlandHandler::onFertilizerGrowEvent);

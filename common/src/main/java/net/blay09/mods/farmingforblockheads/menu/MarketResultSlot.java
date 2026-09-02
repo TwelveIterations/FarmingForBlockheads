@@ -5,6 +5,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.RecipeCraftingHolder;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.util.Prediction;
 
 public class MarketResultSlot extends Slot {
 
@@ -74,7 +75,7 @@ public class MarketResultSlot extends Slot {
                 remainingStack.grow(paymentStack.getCount());
                 paymentSlots.setItem(paymentSlot, remainingStack);
             } else if (!player.getInventory().add(remainingStack)) {
-                player.drop(remainingStack, false);
+                player.drop(remainingStack, false, Prediction.SERVER_ONLY);
             }
         }
     }

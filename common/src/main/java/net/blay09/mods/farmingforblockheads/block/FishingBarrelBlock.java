@@ -1,6 +1,5 @@
 package net.blay09.mods.farmingforblockheads.block;
 
-import com.mojang.serialization.MapCodec;
 import net.blay09.mods.farmingforblockheads.block.entity.FishingBarrelBlockEntity;
 import net.blay09.mods.farmingforblockheads.block.entity.ModBlockEntities;
 import net.minecraft.core.BlockPos;
@@ -30,7 +29,6 @@ import org.jspecify.annotations.Nullable;
 
 public class FishingBarrelBlock extends BaseEntityBlock {
 
-    public static final MapCodec<FishingBarrelBlock> CODEC = simpleCodec(FishingBarrelBlock::new);
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     private static final VoxelShape SHAPE = Shapes.or(
             Block.box(2, 0, 0, 14, 16, 2),
@@ -98,8 +96,4 @@ public class FishingBarrelBlock extends BaseEntityBlock {
                 : createTickerHelper(type, ModBlockEntities.fishingBarrel.value(), FishingBarrelBlockEntity::serverTick);
     }
 
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 }

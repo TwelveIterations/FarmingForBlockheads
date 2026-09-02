@@ -60,7 +60,7 @@ public class FeedingTroughRenderer implements BlockEntityRenderer<FeedingTroughB
             poseStack.pushPose();
             poseStack.translate(0.5f, 0.5f, 0.5f);
             poseStack.translate(x + CONTENT_POSITIONS[i * 3], y + CONTENT_POSITIONS[i * 3 + 1], z + CONTENT_POSITIONS[i * 3 + 2]);
-            poseStack.mulPose(Axis.XP.rotationDegrees(90f));
+            poseStack.rotateDegrees(Axis.XP, 90f);
             final var scale = 0.5f;
             poseStack.scale(scale, scale, scale);
             renderState.item.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);

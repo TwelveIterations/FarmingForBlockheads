@@ -1,6 +1,5 @@
 package net.blay09.mods.farmingforblockheads.block;
 
-import com.mojang.serialization.MapCodec;
 import net.blay09.mods.farmingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.farmingforblockheads.block.entity.ShippingBinBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -30,8 +29,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class ShippingBinBlock extends BaseEntityBlock {
-
-    public static final MapCodec<ShippingBinBlock> CODEC = simpleCodec(ShippingBinBlock::new);
 
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
@@ -122,8 +119,4 @@ public class ShippingBinBlock extends BaseEntityBlock {
         return level.isClientSide() ? null : createTickerHelper(type, ModBlockEntities.shippingBin.value(), ShippingBinBlockEntity::serverTick);
     }
 
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 }

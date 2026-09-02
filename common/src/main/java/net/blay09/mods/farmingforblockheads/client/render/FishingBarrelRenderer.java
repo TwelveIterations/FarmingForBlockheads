@@ -187,8 +187,8 @@ public class FishingBarrelRenderer implements BlockEntityRenderer<FishingBarrelB
             poseStack.pushPose();
             poseStack.translate(0.5f, 0.5f, 0.5f);
             poseStack.translate(offset[0], offset[1], offset[2]);
-            poseStack.mulPose(Axis.YP.rotationDegrees(CONTENT_ROTATIONS[i]));
-            poseStack.mulPose(Axis.XP.rotationDegrees(i % 2 == 0 ? 62f : 72f));
+            poseStack.rotateDegrees(Axis.YP, CONTENT_ROTATIONS[i]);
+            poseStack.rotateDegrees(Axis.XP, i % 2 == 0 ? 62f : 72f);
             final var scale = 0.36f;
             poseStack.scale(scale, scale, scale);
             renderState.contentItems[i].submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
@@ -269,7 +269,7 @@ public class FishingBarrelRenderer implements BlockEntityRenderer<FishingBarrelB
         poseStack.pushPose();
         poseStack.translate(bobber.x, bobber.y, bobber.z);
         poseStack.scale(0.35f, 0.35f, 0.35f);
-        poseStack.mulPose(cameraRenderState.orientation);
+        poseStack.rotate(cameraRenderState.orientation);
         submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.entityCutoutCull(BOBBER_TEXTURE), (pose, buffer) -> {
             bobberVertex(buffer, pose, renderState.lightCoords, -0.5f, -0.5f, 0, 1);
             bobberVertex(buffer, pose, renderState.lightCoords, 0.5f, -0.5f, 1, 1);
@@ -291,8 +291,8 @@ public class FishingBarrelRenderer implements BlockEntityRenderer<FishingBarrelB
     private static void submitRodItem(FishingBarrelRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, Vec3 rodBase) {
         poseStack.pushPose();
         poseStack.translate(rodBase.x, rodBase.y, rodBase.z);
-        poseStack.mulPose(Axis.YP.rotationDegrees(270 - renderState.facing.toYRot()));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(getRodCatchRotation(renderState)));
+        poseStack.rotateDegrees(Axis.YP, 270 - renderState.facing.toYRot());
+        poseStack.rotateDegrees(Axis.ZP, getRodCatchRotation(renderState));
         final float scale = 1f;
         final float forwardScale = getRodCatchForwardScale(renderState);
         poseStack.scale(forwardScale, scale, scale);
@@ -385,7 +385,7 @@ public class FishingBarrelRenderer implements BlockEntityRenderer<FishingBarrelB
 
             poseStack.pushPose();
             poseStack.translate(itemPos.x, itemPos.y, itemPos.z);
-            poseStack.mulPose(Axis.XP.rotationDegrees(45f));
+            poseStack.rotateDegrees(Axis.XP, 45f);
             final float scale = 0.28f;
             poseStack.scale(scale, scale, scale);
             renderState.catchItems[i].submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
