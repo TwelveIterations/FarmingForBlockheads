@@ -16,20 +16,12 @@
       "values": [
         "create"
       ]
-    },
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.fertilizers.create.tree_fertilizer"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "create"
-    },
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.fertilizers.create.tree_fertilizer"
     }
   ]
 }

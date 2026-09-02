@@ -4,17 +4,5 @@
     "count": 1,
     "item": "minecraft:nether_wart"
   },
-  "defaults": "selling.crops.minecraft.nether_wart",
-  "fabric:load_conditions": [
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.crops.minecraft.nether_wart"
-    }
-  ],
-  "neoforge:conditions": [
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.crops.minecraft.nether_wart"
-    }
-  ]
+  "defaults": "selling.crops.minecraft.nether_wart"
 }

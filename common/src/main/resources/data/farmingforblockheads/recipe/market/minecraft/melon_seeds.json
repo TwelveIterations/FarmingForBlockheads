@@ -4,17 +4,5 @@
     "count": 1,
     "item": "minecraft:melon_seeds"
   },
-  "defaults": "selling.seeds.minecraft.melon_seeds",
-  "fabric:load_conditions": [
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.seeds.minecraft.melon_seeds"
-    }
-  ],
-  "neoforge:conditions": [
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.seeds.minecraft.melon_seeds"
-    }
-  ]
+  "defaults": "selling.seeds.minecraft.melon_seeds"
 }

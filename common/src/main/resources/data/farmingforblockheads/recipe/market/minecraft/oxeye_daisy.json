@@ -4,17 +4,5 @@
     "count": 1,
     "item": "minecraft:oxeye_daisy"
   },
-  "defaults": "selling.flowers.minecraft.oxeye_daisy",
-  "fabric:load_conditions": [
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.flowers.minecraft.oxeye_daisy"
-    }
-  ],
-  "neoforge:conditions": [
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.flowers.minecraft.oxeye_daisy"
-    }
-  ]
+  "defaults": "selling.flowers.minecraft.oxeye_daisy"
 }

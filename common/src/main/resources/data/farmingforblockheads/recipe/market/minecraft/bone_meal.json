@@ -4,17 +4,5 @@
     "count": 1,
     "item": "minecraft:bone_meal"
   },
-  "defaults": "selling.fertilizers.minecraft.bone_meal",
-  "fabric:load_conditions": [
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.fertilizers.minecraft.bone_meal"
-    }
-  ],
-  "neoforge:conditions": [
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.fertilizers.minecraft.bone_meal"
-    }
-  ]
+  "defaults": "selling.fertilizers.minecraft.bone_meal"
 }

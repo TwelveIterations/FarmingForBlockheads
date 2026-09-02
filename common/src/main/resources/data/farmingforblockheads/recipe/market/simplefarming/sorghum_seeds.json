@@ -16,20 +16,12 @@
       "values": [
         "simplefarming"
       ]
-    },
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.seeds.simplefarming.sorghum_seeds"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "simplefarming"
-    },
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.seeds.simplefarming.sorghum_seeds"
     }
   ]
 }

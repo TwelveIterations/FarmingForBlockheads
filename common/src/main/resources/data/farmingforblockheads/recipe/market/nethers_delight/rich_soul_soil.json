@@ -16,20 +16,12 @@
       "values": [
         "nethers_delight"
       ]
-    },
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.nether.soils.nethers_delight.rich_soul_soil"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "nethers_delight"
-    },
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.nether.soils.nethers_delight.rich_soul_soil"
     }
   ]
 }

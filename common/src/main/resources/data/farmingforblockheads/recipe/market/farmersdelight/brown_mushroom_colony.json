@@ -16,20 +16,12 @@
       "values": [
         "farmersdelight"
       ]
-    },
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.mushrooms.farmersdelight.brown_mushroom_colony"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "farmersdelight"
-    },
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.mushrooms.farmersdelight.brown_mushroom_colony"
     }
   ]
 }

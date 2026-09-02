@@ -4,17 +4,5 @@
     "count": 1,
     "item": "minecraft:red_mushroom"
   },
-  "defaults": "selling.mushrooms.minecraft.red_mushroom",
-  "fabric:load_conditions": [
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.mushrooms.minecraft.red_mushroom"
-    }
-  ],
-  "neoforge:conditions": [
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.mushrooms.minecraft.red_mushroom"
-    }
-  ]
+  "defaults": "selling.mushrooms.minecraft.red_mushroom"
 }

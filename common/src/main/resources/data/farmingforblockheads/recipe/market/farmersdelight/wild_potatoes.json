@@ -17,20 +17,12 @@
       "values": [
         "farmersdelight"
       ]
-    },
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.wild.crops.farmersdelight.wild_potatoes"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "farmersdelight"
-    },
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.wild.crops.farmersdelight.wild_potatoes"
     }
   ]
 }

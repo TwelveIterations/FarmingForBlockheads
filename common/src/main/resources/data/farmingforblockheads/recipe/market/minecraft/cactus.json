@@ -4,17 +4,5 @@
     "count": 1,
     "item": "minecraft:cactus"
   },
-  "defaults": "selling.crops.minecraft.cactus",
-  "fabric:load_conditions": [
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.crops.minecraft.cactus"
-    }
-  ],
-  "neoforge:conditions": [
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.crops.minecraft.cactus"
-    }
-  ]
+  "defaults": "selling.crops.minecraft.cactus"
 }

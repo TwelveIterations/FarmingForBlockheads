@@ -4,17 +4,5 @@
     "count": 1,
     "item": "minecraft:lily_of_the_valley"
   },
-  "defaults": "selling.flowers.minecraft.lily_of_the_valley",
-  "fabric:load_conditions": [
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.flowers.minecraft.lily_of_the_valley"
-    }
-  ],
-  "neoforge:conditions": [
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.flowers.minecraft.lily_of_the_valley"
-    }
-  ]
+  "defaults": "selling.flowers.minecraft.lily_of_the_valley"
 }

@@ -16,20 +16,12 @@
       "values": [
         "biomeswevegone"
       ]
-    },
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.saplings.biomeswevegone.blue_spruce_sapling"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "biomeswevegone"
-    },
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.saplings.biomeswevegone.blue_spruce_sapling"
     }
   ]
 }

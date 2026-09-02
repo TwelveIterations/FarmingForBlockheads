@@ -4,17 +4,5 @@
     "count": 1,
     "item": "minecraft:orange_tulip"
   },
-  "defaults": "selling.flowers.minecraft.orange_tulip",
-  "fabric:load_conditions": [
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.flowers.minecraft.orange_tulip"
-    }
-  ],
-  "neoforge:conditions": [
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.flowers.minecraft.orange_tulip"
-    }
-  ]
+  "defaults": "selling.flowers.minecraft.orange_tulip"
 }

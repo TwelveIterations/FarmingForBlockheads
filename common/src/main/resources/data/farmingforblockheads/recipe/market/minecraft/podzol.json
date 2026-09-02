@@ -4,17 +4,5 @@
     "count": 1,
     "item": "minecraft:podzol"
   },
-  "defaults": "selling.soils.minecraft.podzol",
-  "fabric:load_conditions": [
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.soils.minecraft.podzol"
-    }
-  ],
-  "neoforge:conditions": [
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.soils.minecraft.podzol"
-    }
-  ]
+  "defaults": "selling.soils.minecraft.podzol"
 }

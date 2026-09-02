@@ -16,20 +16,12 @@
       "values": [
         "biomesoplenty"
       ]
-    },
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.flowers.biomesoplenty.glowflower"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "biomesoplenty"
-    },
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.flowers.biomesoplenty.glowflower"
     }
   ]
 }

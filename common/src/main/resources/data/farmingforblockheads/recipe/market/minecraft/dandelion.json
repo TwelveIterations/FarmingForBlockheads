@@ -4,17 +4,5 @@
     "count": 1,
     "item": "minecraft:dandelion"
   },
-  "defaults": "selling.flowers.minecraft.dandelion",
-  "fabric:load_conditions": [
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.flowers.minecraft.dandelion"
-    }
-  ],
-  "neoforge:conditions": [
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.flowers.minecraft.dandelion"
-    }
-  ]
+  "defaults": "selling.flowers.minecraft.dandelion"
 }

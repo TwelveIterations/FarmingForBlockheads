@@ -4,17 +4,5 @@
     "count": 1,
     "item": "minecraft:poppy"
   },
-  "defaults": "selling.flowers.minecraft.poppy",
-  "fabric:load_conditions": [
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.flowers.minecraft.poppy"
-    }
-  ],
-  "neoforge:conditions": [
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.flowers.minecraft.poppy"
-    }
-  ]
+  "defaults": "selling.flowers.minecraft.poppy"
 }

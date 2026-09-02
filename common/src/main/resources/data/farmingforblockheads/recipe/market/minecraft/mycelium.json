@@ -4,17 +4,5 @@
     "count": 1,
     "item": "minecraft:mycelium"
   },
-  "defaults": "selling.soils.minecraft.mycelium",
-  "fabric:load_conditions": [
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.soils.minecraft.mycelium"
-    }
-  ],
-  "neoforge:conditions": [
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.soils.minecraft.mycelium"
-    }
-  ]
+  "defaults": "selling.soils.minecraft.mycelium"
 }

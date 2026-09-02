@@ -16,20 +16,12 @@
       "values": [
         "twilightforest"
       ]
-    },
-    {
-      "condition": "farmingforblockheads:is_group_enabled",
-      "group": "selling.saplings.twilightforest.darkwood_sapling"
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "twilightforest"
-    },
-    {
-      "type": "farmingforblockheads:is_group_enabled",
-      "group": "selling.saplings.twilightforest.darkwood_sapling"
     }
   ]
 }
