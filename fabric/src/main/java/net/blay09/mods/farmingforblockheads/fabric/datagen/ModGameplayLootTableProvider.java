@@ -16,7 +16,7 @@ import net.minecraft.world.level.storage.loot.functions.SetLoreFunction;
 import net.minecraft.world.level.storage.loot.functions.SetNameFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
@@ -30,11 +30,15 @@ public class ModGameplayLootTableProvider extends SimpleFabricLootTableSubProvid
     }
 
     @Override
+    public void run() {
+    }
+
+    @Override
     public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> exporter) {
         exporter.accept(RABBIT_TRAP, LootTable.lootTable()
                 .setRandomSequence(FarmingForBlockheads.id("rabbit_trap"))
                 .withPool(LootPool.lootPool()
-                        .setRolls(ConstantValue.exactly(1))
+                        .setRolls(ContextIntProviders.exactly(1))
                         .when(LootItemRandomChanceCondition.randomChance(1 / 2000f))
                         .add(LootItem.lootTableItem(Items.PAPER)
                                 .apply(SetNameFunction.setName(Component.translatable("item.farmingforblockheads.fox_note").withStyle(style -> style.withItalic(false)), SetNameFunction.Target.CUSTOM_NAME))

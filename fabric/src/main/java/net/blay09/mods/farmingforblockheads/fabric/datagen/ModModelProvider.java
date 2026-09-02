@@ -64,12 +64,14 @@ public class ModModelProvider extends FabricModelProvider {
     }
 
     private void createFertilizedFarmland(BlockModelGenerators generators, Block farmland) {
-        final var textureMapping = (new TextureMapping()).put(TextureSlot.DIRT, TextureMapping.getBlockTexture(Blocks.DIRT))
+        final var textureMapping = (new TextureMapping()).put(TextureSlot.SIDE, TextureMapping.getBlockTexture(Blocks.DIRT))
+                .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(Blocks.DIRT))
                 .put(TextureSlot.TOP, TextureMapping.getBlockTexture(farmland));
-        final var moistTextureMapping = (new TextureMapping()).put(TextureSlot.DIRT, TextureMapping.getBlockTexture(Blocks.DIRT))
+        final var moistTextureMapping = (new TextureMapping()).put(TextureSlot.SIDE, TextureMapping.getBlockTexture(Blocks.DIRT))
+                .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(Blocks.DIRT))
                 .put(TextureSlot.TOP, TextureMapping.getBlockTexture(farmland, "_moist"));
-        final var variant = plainVariant(ModelTemplates.FARMLAND.create(farmland, textureMapping, generators.modelOutput));
-        final var moistVariant = plainVariant(ModelTemplates.FARMLAND.create(ModelLocationUtils.getModelLocation(farmland, "_moist"),
+        final var variant = plainVariant(ModelTemplates.CUBE_BOTTOM_TOP_INDENTED.create(farmland, textureMapping, generators.modelOutput));
+        final var moistVariant = plainVariant(ModelTemplates.CUBE_BOTTOM_TOP_INDENTED.create(ModelLocationUtils.getModelLocation(farmland, "_moist"),
                 moistTextureMapping,
                 generators.modelOutput));
         generators.blockStateOutput.accept(MultiVariantGenerator.dispatch(farmland)

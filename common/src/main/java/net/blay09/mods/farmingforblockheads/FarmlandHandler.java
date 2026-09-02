@@ -8,6 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.FarmlandBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -20,8 +21,8 @@ public class FarmlandHandler {
             if (farmland.is(ModBlockTags.HEALTHY_FARMLAND)) {
                 final var doubleGrowthChance = (float) FarmingForBlockheadsConfig.getActive().fertilizerBonusGrowthChance;
                 if (Math.random() <= doubleGrowthChance) {
-                    if (growable.isValidBonemealTarget(levelAccessor, pos, plant)) {
-                        growable.performBonemeal(level, levelAccessor.getRandom(), pos, plant);
+                    if (growable.isValidBonemealTarget(levelAccessor, pos, plant, BonemealSource.INTERACTION)) {
+                        growable.performBonemeal(level, levelAccessor.getRandom(), pos, plant, BonemealSource.INTERACTION);
                         levelAccessor.levelEvent(2005, pos, 0);
                         rollRegression(level, pos.below(), farmland);
                     }
@@ -38,8 +39,8 @@ public class FarmlandHandler {
         BlockState plant = levelAccessor.getBlockState(pos);
         if (plant.getBlock() instanceof BonemealableBlock growable) {
             final var bonusGrowthChance = (float) FarmingForBlockheadsConfig.getActive().hydrationBonusGrowthChance;
-            if (Math.random() <= bonusGrowthChance && growable.isValidBonemealTarget(levelAccessor, pos, plant)) {
-                growable.performBonemeal(level, levelAccessor.getRandom(), pos, plant);
+            if (Math.random() <= bonusGrowthChance && growable.isValidBonemealTarget(levelAccessor, pos, plant, BonemealSource.INTERACTION)) {
+                growable.performBonemeal(level, levelAccessor.getRandom(), pos, plant, BonemealSource.INTERACTION);
                 levelAccessor.levelEvent(2005, pos, 0);
             }
         }

@@ -1,6 +1,5 @@
 package net.blay09.mods.farmingforblockheads.block;
 
-import com.mojang.serialization.MapCodec;
 import net.blay09.mods.farmingforblockheads.block.entity.MarketBlockEntity;
 import net.blay09.mods.farmingforblockheads.entity.MerchantEntity;
 import net.blay09.mods.farmingforblockheads.entity.ModEntities;
@@ -30,8 +29,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class MarketBlock extends BaseEntityBlock {
-
-    public static final MapCodec<MarketBlock> CODEC = simpleCodec(MarketBlock::new);
 
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -183,8 +180,4 @@ public class MarketBlock extends BaseEntityBlock {
         return RENDER_SHAPE;
     }
 
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 }

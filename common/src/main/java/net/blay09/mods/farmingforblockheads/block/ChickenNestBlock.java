@@ -1,6 +1,5 @@
 package net.blay09.mods.farmingforblockheads.block;
 
-import com.mojang.serialization.MapCodec;
 import net.blay09.mods.balm.world.ContainerUtils;
 import net.blay09.mods.farmingforblockheads.block.entity.ChickenNestBlockEntity;
 import net.blay09.mods.farmingforblockheads.block.entity.ModBlockEntities;
@@ -31,8 +30,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class ChickenNestBlock extends BaseEntityBlock {
-
-    public static final MapCodec<ChickenNestBlock> CODEC = simpleCodec(ChickenNestBlock::new);
 
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
@@ -100,8 +97,4 @@ public class ChickenNestBlock extends BaseEntityBlock {
         return level.isClientSide() ? null : createTickerHelper(type, ModBlockEntities.chickenNest.value(), ChickenNestBlockEntity::serverTick);
     }
 
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 }

@@ -1,6 +1,5 @@
 package net.blay09.mods.farmingforblockheads.block;
 
-import com.mojang.serialization.MapCodec;
 import net.blay09.mods.farmingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.farmingforblockheads.block.entity.RabbitTrapBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -31,8 +30,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class RabbitTrapBlock extends BaseEntityBlock {
-
-    public static final MapCodec<RabbitTrapBlock> CODEC = simpleCodec(RabbitTrapBlock::new);
 
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty TRIGGERED = BlockStateProperties.TRIGGERED;
@@ -102,8 +99,4 @@ public class RabbitTrapBlock extends BaseEntityBlock {
         return level.isClientSide() ? null : createTickerHelper(type, ModBlockEntities.rabbitTrap.value(), RabbitTrapBlockEntity::serverTick);
     }
 
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 }

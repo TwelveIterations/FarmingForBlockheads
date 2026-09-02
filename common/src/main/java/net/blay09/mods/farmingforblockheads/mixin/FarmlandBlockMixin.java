@@ -48,12 +48,12 @@ public class FarmlandBlockMixin {
             method = "fallOn",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/world/level/block/FarmlandBlock;turnToDirt(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)V"
+                    target = "Lnet/minecraft/world/level/block/FarmlandBlock;turnToBaseBlock(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)V"
             )
     )
-    private void preventFarmlandTrampling(Entity sourceEntity, BlockState state, Level level, BlockPos pos, Operation<Void> original) {
+    private void preventFarmlandTrampling(FarmlandBlock farmland, Entity sourceEntity, BlockState state, Level level, BlockPos pos, Operation<Void> original) {
         if (!(level instanceof ServerLevel serverLevel) || !ModPoiTypes.hasNearbySprinklerWithHead(serverLevel, pos)) {
-            original.call(sourceEntity, state, level, pos);
+            original.call(farmland, sourceEntity, state, level, pos);
         }
     }
 
@@ -61,12 +61,12 @@ public class FarmlandBlockMixin {
             method = "randomTick",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/world/level/block/FarmlandBlock;turnToDirt(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)V"
+                    target = "Lnet/minecraft/world/level/block/FarmlandBlock;turnToBaseBlock(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)V"
             )
     )
-    private void preventFarmlandRegression(@Nullable Entity sourceEntity, BlockState state, Level level, BlockPos pos, Operation<Void> original) {
+    private void preventFarmlandRegression(FarmlandBlock farmland, @Nullable Entity sourceEntity, BlockState state, Level level, BlockPos pos, Operation<Void> original) {
         if (!(level instanceof ServerLevel serverLevel) || !ModPoiTypes.hasNearbyWaterSprinkler(serverLevel, pos)) {
-            original.call(sourceEntity, state, level, pos);
+            original.call(farmland, sourceEntity, state, level, pos);
         }
     }
 }

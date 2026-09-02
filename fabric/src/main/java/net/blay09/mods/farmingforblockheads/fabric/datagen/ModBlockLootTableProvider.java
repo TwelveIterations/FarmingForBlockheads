@@ -14,7 +14,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -30,7 +30,7 @@ public class ModBlockLootTableProvider extends FabricBlockLootSubProvider {
         add(ModBlocks.rabbitTrap.asBlock(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .when(ExplosionCondition.survivesExplosion())
-                        .setRolls(ConstantValue.exactly(1))
+                        .setRolls(ContextIntProviders.exactly(1))
                         .add(LootItem.lootTableItem(ModBlocks.rabbitTrap.asBlock())
                                 .apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContext.BlockEntityTarget.BLOCK_ENTITY.contextParam())
                                         .include(DataComponents.MAX_DAMAGE)

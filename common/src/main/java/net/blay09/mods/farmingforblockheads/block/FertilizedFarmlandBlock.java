@@ -1,6 +1,5 @@
 package net.blay09.mods.farmingforblockheads.block;
 
-import com.mojang.serialization.MapCodec;
 import net.blay09.mods.balm.world.level.block.CustomFarmBlock;
 import net.blay09.mods.farmingforblockheads.FarmingForBlockheadsConfig;
 import net.blay09.mods.farmingforblockheads.HydratedFarmlandData;
@@ -14,16 +13,15 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FarmlandBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class FertilizedFarmlandBlock extends FarmlandBlock implements CustomFarmBlock {
 
-    public static final MapCodec<FarmlandBlock> CODEC = simpleCodec(FertilizedFarmlandBlock::new);
-
     public FertilizedFarmlandBlock(Properties properties) {
-        super(properties.sound(SoundType.GRAVEL).strength(0.6f).randomTicks());
+        super(Blocks.DIRT, properties.sound(SoundType.GRAVEL).strength(0.6f).randomTicks());
     }
 
     @Override
@@ -64,15 +62,11 @@ public class FertilizedFarmlandBlock extends FarmlandBlock implements CustomFarm
             if (moisture > 0) {
                 level.setBlock(pos, state.setValue(MOISTURE, moisture - 1), 2);
             } else if (!FarmlandBlockAccessor.callShouldMaintainFarmland(level, pos) && state.is(ModBlockTags.STABLE_FARMLAND)) {
-                turnToDirt(null, state, level, pos);
+                turnToBaseBlock(null, state, level, pos);
             }
         } else if (moisture < 7) {
             level.setBlock(pos, state.setValue(MOISTURE, 7), 2);
         }
     }
 
-    @Override
-    public MapCodec<FarmlandBlock> codec() {
-        return CODEC;
-    }
 }

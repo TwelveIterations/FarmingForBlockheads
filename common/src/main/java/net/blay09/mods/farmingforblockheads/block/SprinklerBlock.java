@@ -1,6 +1,5 @@
 package net.blay09.mods.farmingforblockheads.block;
 
-import com.mojang.serialization.MapCodec;
 import net.blay09.mods.farmingforblockheads.block.entity.ModBlockEntities;
 import net.blay09.mods.farmingforblockheads.block.entity.SprinklerBlockEntity;
 import net.blay09.mods.farmingforblockheads.tag.ModItemTags;
@@ -28,7 +27,6 @@ import org.jspecify.annotations.Nullable;
 
 public class SprinklerBlock extends BaseEntityBlock {
 
-    public static final MapCodec<SprinklerBlock> CODEC = simpleCodec(SprinklerBlock::new);
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
     private static final VoxelShape SHAPE = Block.box(2, 0, 2, 14, 16, 14);
@@ -103,8 +101,4 @@ public class SprinklerBlock extends BaseEntityBlock {
         return createTickerHelper(type, ModBlockEntities.sprinkler.value(), level.isClientSide() ? SprinklerBlockEntity::clientTick : SprinklerBlockEntity::serverTick);
     }
 
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 }

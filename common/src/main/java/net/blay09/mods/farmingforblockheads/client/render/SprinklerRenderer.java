@@ -63,7 +63,7 @@ public class SprinklerRenderer implements BlockEntityRenderer<SprinklerBlockEnti
     public void submit(SprinklerRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         poseStack.pushPose();
         poseStack.translate(0.5f, 0f, 0.5f);
-        poseStack.mulPose(Axis.YP.rotationDegrees(Mth.wrapDegrees(renderState.rotation)));
+        poseStack.rotateDegrees(Axis.YP, Mth.wrapDegrees(renderState.rotation));
         poseStack.translate(-0.5f, 0f, -0.5f);
         submitNodeCollector.submitBlockModel(poseStack, Sheets.cutoutBlockItemSheet(), renderState.rodParts, BlockModelRenderState.EMPTY_TINTS, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         if (!renderState.head.isEmpty()) {

@@ -108,7 +108,7 @@ public class RabbitTrapRenderer implements BlockEntityRenderer<RabbitTrapBlockEn
     public void submit(RabbitTrapRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         poseStack.pushPose();
         poseStack.translate(0.5f, 0f, 0.5f);
-        poseStack.mulPose(Axis.YP.rotationDegrees(-renderState.facing.toYRot()));
+        poseStack.rotateDegrees(Axis.YP, -renderState.facing.toYRot());
         poseStack.translate(-0.5f, 0f, -0.5f);
 
         renderCarrot(renderState, poseStack, submitNodeCollector);
@@ -121,8 +121,8 @@ public class RabbitTrapRenderer implements BlockEntityRenderer<RabbitTrapBlockEn
     private void renderCarrot(RabbitTrapRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
         poseStack.pushPose();
         poseStack.translate(0.5f, 0.01f, 0.5f);
-        poseStack.mulPose(Axis.XP.rotationDegrees(90f));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(35f));
+        poseStack.rotateDegrees(Axis.XP, 90f);
+        poseStack.rotateDegrees(Axis.ZP, 35f);
         poseStack.scale(0.3f, 0.3f, 0.3f);
         renderState.carrot.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         poseStack.popPose();
@@ -132,8 +132,8 @@ public class RabbitTrapRenderer implements BlockEntityRenderer<RabbitTrapBlockEn
         final float fallProgress = easeOut(renderState.fallProgress);
         poseStack.pushPose();
         poseStack.translate(0.5f, Mth.lerp(fallProgress, 0.225f, 0.045f), Mth.lerp(fallProgress, 0.2f, 0.36f));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(fallProgress, 0f, 72f)));
-        poseStack.mulPose(Axis.YP.rotationDegrees(90f));
+        poseStack.rotateDegrees(Axis.ZP, Mth.lerp(fallProgress, 0f, 72f));
+        poseStack.rotateDegrees(Axis.YP, 90f);
         poseStack.scale(0.5f, 0.5f, 0.5f);
         renderState.stick.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         poseStack.popPose();
@@ -143,12 +143,12 @@ public class RabbitTrapRenderer implements BlockEntityRenderer<RabbitTrapBlockEn
         final float fallProgress = easeOut(renderState.fallProgress);
         poseStack.pushPose();
         poseStack.translate(0.5f, Mth.lerp(fallProgress, 0.28f, 0.02f), 0.5f);
-        poseStack.mulPose(Axis.XP.rotationDegrees(Mth.lerp(fallProgress, 45f, 0f)));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(renderState.wiggle));
+        poseStack.rotateDegrees(Axis.XP, Mth.lerp(fallProgress, 45f, 0f));
+        poseStack.rotateDegrees(Axis.ZP, renderState.wiggle);
         poseStack.translate(-0.5f, 0.0f, -0.5f);
         renderState.crate.submit(poseStack, submitNodeCollector, renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         if (renderState.breakProgress != null && !renderState.crateBreakingParts.isEmpty()) {
-            submitNodeCollector.submitBreakingBlockModel(poseStack, renderState.crateBreakingParts, renderState.breakProgress.progress());
+            submitNodeCollector.submitBreakingBlockModel(poseStack, renderState.crateBreakingParts, renderState.breakProgress.progress(), false);
         }
         poseStack.popPose();
     }

@@ -37,7 +37,7 @@ public class FallingShippingCrateRenderer extends EntityRenderer<FallingShipping
     @Override
     public void submit(EntityRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
         poseStack.pushPose();
-        submitNodeCollector.submitModel(model, Unit.INSTANCE, poseStack, RenderTypes.entityCutout(TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0, null);
+        submitNodeCollector.submitModel(model, Unit.INSTANCE, poseStack, RenderTypes.entityCutout(TEXTURE), renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         poseStack.popPose();
 
         super.submit(renderState, poseStack, submitNodeCollector, cameraRenderState);
