@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "farmingforblockheads:feeding_trough"
+        "recipes": "farmingforblockheads:feeding_trough"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

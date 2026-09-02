@@ -2,8 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "D": "minecraft:dirt",
-    "G": "#c:dyes/yellow",
-    "N": "#c:nuggets/gold",
+    "G": "minecraft:yellow_dye",
+    "N": "minecraft:gold_nugget",
     "S": "minecraft:wheat_seeds"
   },
   "pattern": [

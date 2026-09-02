@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "G": "#c:dyes/green",
+    "G": "minecraft:green_dye",
     "N": "minecraft:gold_nugget",
     "S": "minecraft:wheat_seeds",
     "W": "minecraft:wheat"
