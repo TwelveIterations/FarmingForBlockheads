@@ -5,8 +5,12 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.blay09.mods.balm.server.packs.resources.BalmResourceCondition;
 import net.blay09.mods.balm.server.packs.resources.ResourceConditionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public record IsGroupEnabledResourceCondition(String group) implements BalmResourceCondition {
+
+    private static final Logger logger = LoggerFactory.getLogger(IsGroupEnabledResourceCondition.class);
 
     public static final MapCodec<IsGroupEnabledResourceCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.STRING.fieldOf("group").forGetter(IsGroupEnabledResourceCondition::group)
@@ -14,6 +18,7 @@ public record IsGroupEnabledResourceCondition(String group) implements BalmResou
 
     @Override
     public boolean test(ResourceConditionContext context) {
-        return MarketDefaultsRegistry.isEnabled(group);
+        logger.error("Resource load condition `farmingforblockheads:is_group_enabled` is no longer supported and will always pass. Tested group: {}", group);
+        return true;
     }
 }
