@@ -99,23 +99,20 @@ public class MarketDefaultsRegistry {
     public static boolean isEnabled(String groupPath) {
         final var defaults = resolveDefaults(groupPath);
         final var recipeGroups = flattenDefaults(groupPath);
-        final var includedGroups = FarmingForBlockheadsConfig.getActive().includedGroups;
         final var excludedGroups = FarmingForBlockheadsConfig.getActive().excludedGroups;
+        if (recipeGroups.stream().anyMatch(excludedGroups::contains)) {
+            return false;
+        }
+
+        final var includedGroups = FarmingForBlockheadsConfig.getActive().includedGroups;
         final var useDefaultIncludedGroups = includedGroups.contains("default") && !excludedGroups.contains("default");
-        var enabled = false;
         for (final var group : recipeGroups.reversed()) {
-            if (excludedGroups.contains(group)) {
-                break;
-            } else if (includedGroups.contains(group)) {
-                enabled = true;
-                break;
-            } else if (useDefaultIncludedGroups && defaults.enabledByDefault().orElse(false)) {
-                enabled = true;
-                break;
+            if (includedGroups.contains(group)) {
+                return true;
             }
         }
 
-        return enabled;
+        return useDefaultIncludedGroups && defaults.enabledByDefault().orElse(false);
     }
 
     private static Identifier defaultCategory() {
