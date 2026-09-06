@@ -9,6 +9,6 @@ public class ModLootNumberProviders {
     public static Holder<MapCodec<? extends ContextIntProvider>> shipmentValue;
 
     public static void initialize(BalmRegistrar.Scoped<MapCodec<? extends ContextIntProvider>> registry) {
-        shipmentValue = registry.register("shipment_value", _ -> ShipmentValueNumberProvider.MAP_CODEC);
+        shipmentValue = registry.register("shipment_value", _ -> ShipmentValueNumberProvider.MAP_CODEC).asHolder();
     }
 }

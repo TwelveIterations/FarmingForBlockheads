@@ -8,7 +8,7 @@ public class ModSounds {
     public static Holder<SoundEvent> falling;
 
     public static void initialize(BalmRegistrar.Scoped<SoundEvent> sounds) {
-        falling = sounds.register("falling", SoundEvent::createVariableRangeEvent);
+        falling = sounds.register("falling", SoundEvent::createVariableRangeEvent).asHolder();
     }
 
 }

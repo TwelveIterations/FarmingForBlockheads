@@ -10,7 +10,7 @@ public class ModLootConditions {
     public static Holder<MapCodec<? extends LootItemCondition>> shipmentContains;
 
     public static void initialize(BalmRegistrar.Scoped<MapCodec<? extends LootItemCondition>> registry) {
-        shipmentValue = registry.register("shipment_value", _ -> ShipmentValueCondition.MAP_CODEC);
-        shipmentContains = registry.register("shipment_contains", _ -> ShipmentContainsCondition.MAP_CODEC);
+        shipmentValue = registry.register("shipment_value", _ -> ShipmentValueCondition.MAP_CODEC).asHolder();
+        shipmentContains = registry.register("shipment_contains", _ -> ShipmentContainsCondition.MAP_CODEC).asHolder();
     }
 }
