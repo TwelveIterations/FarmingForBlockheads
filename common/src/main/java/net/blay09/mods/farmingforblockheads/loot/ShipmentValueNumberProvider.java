@@ -29,7 +29,7 @@ public record ShipmentValueNumberProvider(LevelBasedValue amount) implements Con
 
     @Override
     public int getIntUnsafe(LootContext context) {
-        final var value = context.getOptionalParameter(ModLootContextParams.SHIPMENT_VALUE);
+        final var value = context.getOptional(ModLootContextParams.SHIPMENT_VALUE);
         return value != null ? Mth.floor(amount.calculate(value)) : 0;
     }
 

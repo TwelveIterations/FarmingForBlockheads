@@ -30,8 +30,8 @@ public class ModLootModifiers {
             @Override
             public void apply(LootContext context, List<ItemStack> loot, @Nullable ResourceKey<LootTable> lootTableId) {
                 Level level = context.getLevel();
-                Vec3 origin = context.getOptionalParameter(LootContextParams.ORIGIN);
-                BlockState plant = context.getOptionalParameter(LootContextParams.BLOCK_STATE);
+                Vec3 origin = context.getOptional(LootContextParams.ORIGIN);
+                BlockState plant = context.getOptional(LootContextParams.BLOCK_STATE);
                 if (origin == null || plant == null || !(plant.getBlock() instanceof BonemealableBlock)) {
                     return;
                 }

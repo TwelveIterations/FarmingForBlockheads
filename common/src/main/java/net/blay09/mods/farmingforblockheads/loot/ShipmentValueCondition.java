@@ -22,7 +22,7 @@ public record ShipmentValueCondition(Optional<Integer> min, Optional<Integer> ma
 
     @Override
     public boolean test(LootContext context) {
-        final var value = context.getOptionalParameter(ModLootContextParams.SHIPMENT_VALUE);
+        final var value = context.getOptional(ModLootContextParams.SHIPMENT_VALUE);
         if (value == null) {
             return false;
         }

@@ -19,7 +19,7 @@ public record ShipmentContainsCondition(ItemPredicate item) implements LootItemC
 
     @Override
     public boolean test(LootContext context) {
-        final var soldItems = context.getOptionalParameter(ModLootContextParams.SHIPMENT_ITEMS);
+        final var soldItems = context.getOptional(ModLootContextParams.SHIPMENT_ITEMS);
         return soldItems != null && soldItems.stream().anyMatch(item);
     }
 }
