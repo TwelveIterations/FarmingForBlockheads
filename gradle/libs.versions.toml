@@ -1,12 +1,12 @@
 [versions]
-balm = "26.3.0.1-SNAPSHOT"
+balm = "26.3.0.1"
 minecraft = "26.3"
 neoForm = "26.3-1"
 neoForge = "26.3.0.0-beta"
 forge = "63.0.2"
 fabricApi = "0.160.5+26.3"
 fabricLoader = "0.19.5"
-shogi = "26.3.0.1-SNAPSHOT"
+shogi = "26.3.0.1"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
