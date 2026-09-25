@@ -1,1 +1,1 @@
-- Fixed Shipping Bin crashing on dedicated servers
+- Fixed configured market group exclusions not applying correctly
