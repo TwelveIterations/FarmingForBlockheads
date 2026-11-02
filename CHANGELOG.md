@@ -1,1 +1,2 @@
-- Updated to Minecraft 26.3
+- Fixed damaged rabbit traps still being considered stackable
+- Fixed data pack load errors when referenced items don't exist
