@@ -372,6 +372,7 @@ public class RabbitTrapBlockEntity extends BlockEntity {
         if (damage > 0) {
             builder.set(DataComponents.MAX_DAMAGE, 8);
             builder.set(DataComponents.DAMAGE, damage);
+            builder.set(DataComponents.MAX_STACK_SIZE, 1);
         }
     }
 
