@@ -17,12 +17,24 @@
       "values": [
         "minecraft_earth_mod"
       ]
+    },
+    {
+      "condition": "fabric:registry_contains",
+      "registry": "minecraft:item",
+      "values": [
+        "minecraft_earth_mod:buttercup"
+      ]
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "minecraft_earth_mod"
+    },
+    {
+      "type": "neoforge:registered",
+      "registry": "minecraft:item",
+      "value": "minecraft_earth_mod:buttercup"
     }
   ]
 }

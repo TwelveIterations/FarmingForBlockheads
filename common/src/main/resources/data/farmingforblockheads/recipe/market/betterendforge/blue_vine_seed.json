@@ -16,12 +16,24 @@
       "values": [
         "betterendforge"
       ]
+    },
+    {
+      "condition": "fabric:registry_contains",
+      "registry": "minecraft:item",
+      "values": [
+        "betterendforge:blue_vine_seed"
+      ]
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "betterendforge"
+    },
+    {
+      "type": "neoforge:registered",
+      "registry": "minecraft:item",
+      "value": "betterendforge:blue_vine_seed"
     }
   ]
 }

@@ -17,12 +17,24 @@
       "values": [
         "buzzier_bees"
       ]
+    },
+    {
+      "condition": "fabric:registry_contains",
+      "registry": "minecraft:item",
+      "values": [
+        "buzzier_bees:pink_clover"
+      ]
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "buzzier_bees"
+    },
+    {
+      "type": "neoforge:registered",
+      "registry": "minecraft:item",
+      "value": "buzzier_bees:pink_clover"
     }
   ]
 }

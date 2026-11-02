@@ -16,12 +16,24 @@
       "values": [
         "betterendforge"
       ]
+    },
+    {
+      "condition": "fabric:registry_contains",
+      "registry": "minecraft:item",
+      "values": [
+        "betterendforge:shadow_grass"
+      ]
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "betterendforge"
+    },
+    {
+      "type": "neoforge:registered",
+      "registry": "minecraft:item",
+      "value": "betterendforge:shadow_grass"
     }
   ]
 }

@@ -16,12 +16,24 @@
       "values": [
         "pamhc2trees"
       ]
+    },
+    {
+      "condition": "fabric:registry_contains",
+      "registry": "minecraft:item",
+      "values": [
+        "pamhc2trees:breadfruit_sapling"
+      ]
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "pamhc2trees"
+    },
+    {
+      "type": "neoforge:registered",
+      "registry": "minecraft:item",
+      "value": "pamhc2trees:breadfruit_sapling"
     }
   ]
 }

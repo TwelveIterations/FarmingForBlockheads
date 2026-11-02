@@ -16,12 +16,24 @@
       "values": [
         "tropicraft"
       ]
+    },
+    {
+      "condition": "fabric:registry_contains",
+      "registry": "minecraft:item",
+      "values": [
+        "tropicraft:coffee_berry"
+      ]
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "tropicraft"
+    },
+    {
+      "type": "neoforge:registered",
+      "registry": "minecraft:item",
+      "value": "tropicraft:coffee_berry"
     }
   ]
 }

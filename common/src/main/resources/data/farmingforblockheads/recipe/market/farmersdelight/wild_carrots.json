@@ -17,12 +17,24 @@
       "values": [
         "farmersdelight"
       ]
+    },
+    {
+      "condition": "fabric:registry_contains",
+      "registry": "minecraft:item",
+      "values": [
+        "farmersdelight:wild_carrots"
+      ]
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "farmersdelight"
+    },
+    {
+      "type": "neoforge:registered",
+      "registry": "minecraft:item",
+      "value": "farmersdelight:wild_carrots"
     }
   ]
 }

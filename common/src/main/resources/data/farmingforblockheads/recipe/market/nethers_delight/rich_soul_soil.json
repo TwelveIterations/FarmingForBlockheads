@@ -16,12 +16,24 @@
       "values": [
         "nethers_delight"
       ]
+    },
+    {
+      "condition": "fabric:registry_contains",
+      "registry": "minecraft:item",
+      "values": [
+        "nethers_delight:rich_soul_soil"
+      ]
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "nethers_delight"
+    },
+    {
+      "type": "neoforge:registered",
+      "registry": "minecraft:item",
+      "value": "nethers_delight:rich_soul_soil"
     }
   ]
 }

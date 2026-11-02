@@ -16,12 +16,24 @@
       "values": [
         "simplefarming"
       ]
+    },
+    {
+      "condition": "fabric:registry_contains",
+      "registry": "minecraft:item",
+      "values": [
+        "simplefarming:radish_seeds"
+      ]
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "simplefarming"
+    },
+    {
+      "type": "neoforge:registered",
+      "registry": "minecraft:item",
+      "value": "simplefarming:radish_seeds"
     }
   ]
 }

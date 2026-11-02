@@ -12,12 +12,24 @@
       "values": [
         "pantryforblockheads"
       ]
+    },
+    {
+      "condition": "fabric:registry_contains",
+      "registry": "minecraft:item",
+      "values": [
+        "pantryforblockheads:mashed_produce"
+      ]
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "pantryforblockheads"
+    },
+    {
+      "type": "neoforge:registered",
+      "registry": "minecraft:item",
+      "value": "pantryforblockheads:mashed_produce"
     }
   ],
   "pools": [

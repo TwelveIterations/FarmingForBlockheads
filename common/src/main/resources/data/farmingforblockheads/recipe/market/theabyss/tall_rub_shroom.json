@@ -16,12 +16,24 @@
       "values": [
         "theabyss"
       ]
+    },
+    {
+      "condition": "fabric:registry_contains",
+      "registry": "minecraft:item",
+      "values": [
+        "theabyss:tall_rub_shroom"
+      ]
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "theabyss"
+    },
+    {
+      "type": "neoforge:registered",
+      "registry": "minecraft:item",
+      "value": "theabyss:tall_rub_shroom"
     }
   ]
 }

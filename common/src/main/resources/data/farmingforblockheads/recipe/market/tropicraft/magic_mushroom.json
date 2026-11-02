@@ -16,12 +16,24 @@
       "values": [
         "tropicraft"
       ]
+    },
+    {
+      "condition": "fabric:registry_contains",
+      "registry": "minecraft:item",
+      "values": [
+        "tropicraft:magic_mushroom"
+      ]
     }
   ],
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
       "modid": "tropicraft"
+    },
+    {
+      "type": "neoforge:registered",
+      "registry": "minecraft:item",
+      "value": "tropicraft:magic_mushroom"
     }
   ]
 }
