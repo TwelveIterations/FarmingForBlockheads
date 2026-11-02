@@ -1,1 +1,1 @@
-- Fixed configured market group exclusions not applying correctly
+- Fixed damaged rabbit traps still being considered stackable
